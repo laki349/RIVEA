@@ -8,9 +8,9 @@ import {
   routines,
   won,
 } from "@/data/catalog";
-import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
+import BuyBar from "@/components/BuyBar";
 
 export function generateStaticParams() {
   return routines.map((r) => ({ id: r.id }));
@@ -108,25 +108,13 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
         </section>
       </main>
 
-      {/* 하단 CTA — 찜 + 세트가 + 세트 담기 */}
-      <div className="sticky bottom-0 z-40 flex items-center gap-[14px] border-t border-line bg-surface px-4 pb-[max(11px,env(safe-area-inset-bottom))] pt-[11px]">
-        <button className="flex flex-col items-center text-rose" aria-label="찜">
-          <Icon name="heart" size={23} />
-          <span className="mt-[2px] text-[11px] font-medium">
-            {won(Object.values(routine.cohortAdds).reduce((a, b) => a + b, 0))}
-          </span>
-        </button>
-        <div className="flex-shrink-0">
-          <p className="text-[11px] text-meta">세트가</p>
-          <p className="text-[17px] font-bold leading-[1.1] text-ink">{won(routine.price)}</p>
-        </div>
-        <Link
-          href="/cart"
-          className="flex h-[52px] flex-1 items-center justify-center rounded-cta bg-ink text-[16px] font-medium text-on-ink"
-        >
-          세트 담기
-        </Link>
-      </div>
+      {/* 하단 CTA — 세트 담기 실동작 */}
+      <BuyBar
+        kind="routine"
+        id={routine.id}
+        likes={Object.values(routine.cohortAdds).reduce((a, b) => a + b, 0)}
+        price={routine.price}
+      />
     </>
   );
 }

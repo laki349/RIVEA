@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Icon from "./Icon";
+import CartLink from "./CartLink";
 
 /**
  * 앱바 — 뒤로/제목/우측 액션(검색·장바구니)
@@ -40,9 +41,7 @@ export default function AppBar({
             <Icon name="search" size={20} />
           </Link>
         )}
-        <Link href="/cart" aria-label="장바구니" className="flex h-11 w-9 items-center justify-center text-ink">
-          <Icon name="bag" size={20} />
-        </Link>
+        <CartLink size={20} />
       </div>
     </header>
   );

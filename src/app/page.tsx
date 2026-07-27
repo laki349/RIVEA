@@ -7,6 +7,7 @@ import SectionHeader from "@/components/SectionHeader";
 import ProductCard from "@/components/ProductCard";
 import RoutineCard from "@/components/RoutineCard";
 import CohortSection from "@/components/CohortSection";
+import CartLink from "@/components/CartLink";
 
 export default function HomePage() {
   const best = [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 4);
@@ -23,9 +24,7 @@ export default function HomePage() {
           <Link href="/search" aria-label="검색" className="flex h-11 w-8 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
-          <Link href="/cart" aria-label="장바구니" className="flex h-11 w-8 items-center justify-center">
-            <Icon name="bag" size={21} />
-          </Link>
+          <CartLink />
         </div>
       </header>
 

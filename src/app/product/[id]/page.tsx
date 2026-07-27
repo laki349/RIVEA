@@ -12,6 +12,7 @@ import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import RoutineCard from "@/components/RoutineCard";
+import BuyBar from "@/components/BuyBar";
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
@@ -271,25 +272,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         )}
       </main>
 
-      {/* 하단 구매 바 — 로즈 하트 + 둥근 CTA(예외 라운드) */}
-      <div className="sticky bottom-0 z-40 flex items-center gap-3 border-t border-line bg-surface px-4 pb-[max(11px,env(safe-area-inset-bottom))] pt-[11px]">
-        <button className="flex flex-col items-center text-rose" aria-label="찜">
-          <Icon name="heart" size={23} />
-          <span className="mt-[2px] text-[11px] font-medium">{won(product.likes)}</span>
-        </button>
-        <Link
-          href="/cart"
-          className="flex h-[50px] flex-1 items-center justify-center rounded-cta border border-ink text-[15px] font-medium text-ink"
-        >
-          장바구니
-        </Link>
-        <Link
-          href="/checkout"
-          className="flex h-[50px] flex-1 items-center justify-center rounded-cta bg-ink text-[15px] font-medium text-on-ink"
-        >
-          바로구매
-        </Link>
-      </div>
+      {/* 하단 구매 바 — 담기 실동작 */}
+      <BuyBar kind="product" id={product.id} likes={product.likes} price={product.price} />
     </>
   );
 }
