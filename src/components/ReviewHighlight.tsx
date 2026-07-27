@@ -40,7 +40,7 @@ export default function ReviewHighlight() {
       {reviews.map((r, i) => (
         <figure
           key={i}
-          className="flex flex-col rounded-2xl border border-line bg-white p-6 shadow-soft"
+          className="flex flex-col border-t-2 border-cocoa pt-5"
         >
           <span className="font-serif text-4xl leading-none text-gold-soft" aria-hidden>
             &ldquo;

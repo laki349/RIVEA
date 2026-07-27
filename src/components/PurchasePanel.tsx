@@ -45,13 +45,13 @@ export default function PurchasePanel({ product }: { product: Product }) {
       <div className="mt-4 grid grid-cols-2 gap-2">
         <button
           type="button"
-          className="rounded-full border border-cocoa bg-white py-3 text-[15px] font-semibold text-cocoa transition hover:bg-cream"
+          className="rounded-xl border border-cocoa bg-white py-3 text-[15px] font-semibold text-cocoa transition hover:bg-cream"
         >
           장바구니
         </button>
         <button
           type="button"
-          className="rounded-full bg-cocoa py-3 text-[15px] font-semibold text-ivory transition hover:bg-espresso"
+          className="rounded-xl bg-cocoa py-3 text-[15px] font-semibold text-ivory transition hover:bg-espresso"
         >
           바로 구매
         </button>
@@ -65,13 +65,13 @@ export default function PurchasePanel({ product }: { product: Product }) {
         <div className="mx-auto flex max-w-shell items-center gap-2 px-2">
           <button
             type="button"
-            className="flex-1 rounded-full border border-cocoa bg-white py-3 text-[15px] font-semibold text-cocoa"
+            className="flex-1 rounded-xl border border-cocoa bg-white py-3 text-[15px] font-semibold text-cocoa"
           >
             장바구니
           </button>
           <button
             type="button"
-            className="flex-[1.4] rounded-full bg-cocoa py-3 text-[15px] font-semibold text-ivory"
+            className="flex-[1.4] rounded-xl bg-cocoa py-3 text-[15px] font-semibold text-ivory"
           >
             {formatKRW(total)} 구매
           </button>

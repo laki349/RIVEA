@@ -29,7 +29,7 @@ export function BuyLink({
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => track("buy_click", { pick, product })}
-      className="inline-flex items-center gap-1 rounded-full bg-cocoa px-4 py-2 text-[13.5px] font-semibold text-ivory transition hover:bg-espresso"
+      className="inline-flex items-center gap-1 rounded-lg bg-cocoa px-4 py-2 text-[13.5px] font-semibold text-ivory transition hover:bg-espresso"
     >
       {label}
       <ChevronRight className="h-4 w-4" />
@@ -56,7 +56,7 @@ export function ShareButton({ pick, title }: { pick: string; title: string }) {
     <button
       type="button"
       onClick={onShare}
-      className="rounded-full border border-line-strong bg-white px-5 py-2.5 text-[14px] font-semibold text-cocoa transition hover:border-gold"
+      className="rounded-xl border border-line-strong bg-white px-5 py-2.5 text-[14px] font-semibold text-cocoa transition hover:border-gold"
     >
       이 Pick 공유하기
     </button>

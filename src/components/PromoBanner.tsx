@@ -28,7 +28,7 @@ export default function PromoBanner({
           </p>
           <Link
             href={href}
-            className="mt-6 inline-flex items-center gap-1 rounded-full bg-ivory px-5 py-2.5 text-[14px] font-semibold text-cocoa transition hover:bg-cream"
+            className="mt-6 inline-flex items-center gap-1 rounded-xl bg-ivory px-5 py-2.5 text-[14px] font-semibold text-cocoa transition hover:bg-cream"
           >
             {cta}
             <ChevronRight className="h-4 w-4" />

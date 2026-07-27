@@ -13,7 +13,7 @@ export default function SectionHeader({
 }) {
   return (
     <div className="mb-5 flex items-end justify-between gap-4">
-      <h2 className="text-xl font-semibold text-espresso sm:text-2xl">{title}</h2>
+      <h2 className="text-[22px] font-semibold leading-tight text-espresso sm:text-[26px]">{title}</h2>
       {href && (
         <Link
           href={href}

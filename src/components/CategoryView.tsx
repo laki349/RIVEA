@@ -70,14 +70,14 @@ export default function CategoryView({
         </p>
       </div>
 
-      {/* concern filter chips */}
-      <div className="no-scrollbar -mx-5 mb-4 flex gap-2 overflow-x-auto px-5">
+      {/* concern filter — 알약 버튼이 아니라 밑줄 탭 (버튼 소음 제거) */}
+      <div className="no-scrollbar -mx-5 mb-5 flex gap-5 overflow-x-auto border-b border-line px-5">
         <button
           onClick={() => setConcern(null)}
-          className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition ${
+          className={`shrink-0 -mb-px border-b-2 pb-2.5 text-[14px] font-medium transition ${
             concern === null
-              ? "border-cocoa bg-cocoa text-ivory"
-              : "border-line-strong bg-white text-taupe hover:border-gold"
+              ? "border-cocoa text-cocoa"
+              : "border-transparent text-stone hover:text-cocoa"
           }`}
         >
           전체
@@ -86,10 +86,10 @@ export default function CategoryView({
           <button
             key={c.slug}
             onClick={() => setConcern(c.slug)}
-            className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition ${
+            className={`shrink-0 -mb-px border-b-2 pb-2.5 text-[14px] font-medium transition ${
               concern === c.slug
-                ? "border-cocoa bg-cocoa text-ivory"
-                : "border-line-strong bg-white text-taupe hover:border-gold"
+                ? "border-cocoa text-cocoa"
+                : "border-transparent text-stone hover:text-cocoa"
             }`}
           >
             {c.name}

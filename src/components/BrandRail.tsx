@@ -7,7 +7,7 @@ export default function BrandRail() {
       {brands.map((b) => (
         <div
           key={b.id}
-          className="flex w-64 shrink-0 items-center gap-4 rounded-2xl border border-line bg-white p-4 shadow-soft transition hover:border-gold-soft sm:w-auto"
+          className="flex w-64 shrink-0 items-center gap-4 rounded-2xl border border-line p-4 transition hover:border-gold-soft sm:w-auto"
         >
           <ImageSlot
             src={b.logo}
