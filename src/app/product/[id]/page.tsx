@@ -14,6 +14,8 @@ import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import RoutineCard from "@/components/RoutineCard";
 import BuyBar from "@/components/BuyBar";
+import ArticleLink from "@/components/ArticleLink";
+import { articlesForProduct } from "@/data/magazine";
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
@@ -59,6 +61,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const rate = discountRate(product);
   const mainConcern = concernOf(product.concerns[0]);
   const review = sampleReviews[mainConcern.slug];
+  // 성분이 겹치는 기사 우선, 없으면 고민이 겹치는 기사
+  const productArticle = articlesForProduct(product)[0];
 
   // 같은 고민 대안 (비교표)
   const rivals = products
@@ -238,6 +242,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           <p className="mt-2 text-[13px] leading-[1.6] text-meta">
             핵심성분: {product.keyIngredient} · 용량: {product.volume}
           </p>
+
+          {/* 매거진 — 이 성분을 왜 이 나이대에 쓰는지 */}
+          {productArticle && (
+            <div className="mt-4">
+              <ArticleLink article={productArticle} heading="이 성분 알아보기" />
+            </div>
+          )}
         </section>
 
         {/* 리뷰 */}

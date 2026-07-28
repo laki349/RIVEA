@@ -13,6 +13,8 @@ import {
 import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import BuyBar from "@/components/BuyBar";
+import ArticleLink from "@/components/ArticleLink";
+import { articlesForConcern } from "@/data/magazine";
 
 export function generateStaticParams() {
   return routines.map((r) => ({ id: r.id }));
@@ -25,6 +27,8 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
   const listPrice = routineListPrice(routine);
   const rate = discountRate({ price: routine.price, listPrice });
   const savings = listPrice - routine.price;
+  // 이 루틴이 다루는 고민의 기사 중 첫 편
+  const routineArticle = articlesForConcern(routine.concern)[0];
 
   return (
     <>
@@ -58,6 +62,19 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
           <span className="mt-[9px] inline-block rounded bg-subtle px-[9px] py-[5px] text-[12px] font-medium text-ink">
             따로 사면 {won(savings)}원 더 비싸요
           </span>
+        </section>
+
+        {/* 왜 이 조합인가요 — 신뢰 근거 */}
+        <section className="border-b border-hairline px-4 py-4">
+          <h3 className="mb-[10px] text-[16px] font-bold text-ink">왜 이 조합인가요</h3>
+          <p className="text-[14px] leading-[1.65] text-soft">{routine.why}</p>
+
+          {/* 위 3문장의 근거 전문 */}
+          {routineArticle && (
+            <div className="mt-4">
+              <ArticleLink article={routineArticle} heading="이 조합의 근거" />
+            </div>
+          )}
         </section>
 
         {/* 사용 순서 — 주인공 */}

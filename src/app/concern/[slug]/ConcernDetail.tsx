@@ -14,10 +14,13 @@ import AppBar from "@/components/AppBar";
 import TabBar from "@/components/TabBar";
 import RoutineCard from "@/components/RoutineCard";
 import ProductCard from "@/components/ProductCard";
+import ArticleLink from "@/components/ArticleLink";
+import { articlesForConcern } from "@/data/magazine";
 
 export default function ConcernDetail({ concern }: { concern: Concern }) {
   const [cat, setCat] = useState<string | null>(null);
 
+  const concernArticles = articlesForConcern(concern.slug);
   const concernRoutines = routines.filter((r) => r.concern === concern.slug);
   const concernProducts = useMemo(() => {
     let l = products.filter((p) => p.concerns.includes(concern.slug));
@@ -62,6 +65,13 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
               </p>
             ))}
           </div>
+
+          {/* 매거진 — 위 요약의 근거 전문 */}
+          {concernArticles.length > 0 && (
+            <div className="mt-4">
+              <ArticleLink article={concernArticles[0]} heading="이 고민, 더 자세히" />
+            </div>
+          )}
         </section>
 
         {/* 추천 루틴 — 가로 스크롤 (여러 개 수용) */}

@@ -21,6 +21,13 @@ export default function HomePage() {
           RIVEA
         </Link>
         <div className="flex items-center gap-4 text-ink">
+          {/* 텍스트 라벨 — 아이콘 단독은 40대+ 판별이 어렵고, 유틸리티(검색·장바구니)와 종류가 다름을 드러낸다 */}
+          <Link
+            href="/magazine"
+            className="flex h-11 items-center text-[14px] font-medium text-ink"
+          >
+            매거진
+          </Link>
           <Link href="/search" aria-label="검색" className="flex h-11 w-8 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
