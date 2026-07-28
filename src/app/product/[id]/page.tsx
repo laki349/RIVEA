@@ -4,6 +4,7 @@ import {
   brandOf,
   concernOf,
   discountRate,
+  productImage,
   products,
   routines,
   won,
@@ -76,7 +77,11 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       <main className="flex-1">
         {/* 갤러리 */}
         <section className="relative border-b border-hairline">
-          <ImageSlot className="h-[300px] w-full" label="상품 이미지" />
+          <ImageSlot
+            className="h-[300px] w-full"
+            src={productImage(product.id)}
+            alt={`${brand.name} ${product.name}`}
+          />
           <span className="absolute bottom-[10px] right-3 rounded bg-[rgba(28,24,21,0.55)] px-[9px] py-[3px] text-[12px] text-white">
             1 / 5
           </span>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { brandOf, discountRate, won, type Product } from "@/data/catalog";
+import { brandOf, discountRate, productImage, won, type Product } from "@/data/catalog";
 import ImageSlot from "./ImageSlot";
 import Icon from "./Icon";
 
@@ -23,7 +23,11 @@ export default function ProductCard({
   return (
     <Link href={`/product/${product.id}`} className="block">
       <div className="relative">
-        <ImageSlot className={`w-full ${imageClassName}`} />
+        <ImageSlot
+          className={`w-full ${imageClassName}`}
+          src={productImage(product.id)}
+          alt={`${brandOf(product.brand).name} ${product.name}`}
+        />
         {rank !== undefined && (
           <span className="absolute left-0 top-0 flex h-[22px] min-w-[22px] items-center justify-center bg-ink px-[6px] text-[11px] font-medium text-on-ink">
             {rank}

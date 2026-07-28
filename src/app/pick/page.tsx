@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   discountRate,
   productOf,
+  routineImage,
   routineListPrice,
   routines,
   won,
@@ -64,7 +65,12 @@ export default function PickPage() {
           return (
             <Link key={r.id} href={`/routine/${r.id}`} className="block border-b border-hairline">
               <div className="relative">
-                <ImageSlot className="h-[200px] w-full" tone="warm" label="루틴 비주얼" />
+                <ImageSlot
+                  className="h-[200px] w-full"
+                  tone="warm"
+                  src={routineImage(r.id)}
+                  alt={r.title}
+                />
                 <span className="absolute left-3 top-[10px] rounded-badge bg-ink px-2 py-1 text-[11px] font-medium text-on-ink">
                   {r.badge}
                 </span>

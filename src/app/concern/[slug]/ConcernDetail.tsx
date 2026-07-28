@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import {
   categories,
+  concernImage,
   products,
   routines,
   type Concern,
@@ -35,7 +36,13 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
 
       <main className="flex-1">
         {/* 고민 무드 */}
-        <ImageSlot className="h-[140px] w-full border-b border-hairline" tone="warm" label="고민 무드 이미지" />
+        <ImageSlot
+          className="h-[140px] w-full border-b border-hairline"
+          tone="warm"
+          src={concernImage(concern.slug)}
+          alt={concern.name}
+          position="center 35%"
+        />
 
         {/* 인트로 + 관리 포인트 */}
         <section className="border-b border-hairline px-4 py-4">

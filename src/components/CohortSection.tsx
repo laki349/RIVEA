@@ -5,7 +5,9 @@ import Link from "next/link";
 import {
   brandOf,
   discountRate,
+  productImage,
   products,
+  routineImage,
   routines,
   routineListPrice,
   won,
@@ -96,7 +98,11 @@ export default function CohortSection({ userName = "김서연" }: { userName?: s
                   className="w-[140px] flex-shrink-0"
                 >
                   <div className="relative">
-                    <ImageSlot className="h-[140px] w-full rounded" />
+                    <ImageSlot
+                      className="h-[140px] w-full rounded"
+                      src={productImage(p.id)}
+                      alt={p.name}
+                    />
                     <span className="absolute bottom-0 left-0 rounded-tr bg-ink px-2 py-[2px] text-[14px] font-bold text-on-ink">
                       {i + 1}
                     </span>
@@ -133,7 +139,12 @@ export default function CohortSection({ userName = "김서연" }: { userName?: s
                   className="w-[160px] flex-shrink-0"
                 >
                   <div className="relative">
-                    <ImageSlot className="h-[140px] w-full rounded" tone="warm" />
+                    <ImageSlot
+                      className="h-[140px] w-full rounded"
+                      tone="warm"
+                      src={routineImage(r.id)}
+                      alt={r.title}
+                    />
                     <span className="absolute bottom-0 left-0 rounded-tr bg-ink px-2 py-[2px] text-[14px] font-bold text-on-ink">
                       {i + 1}
                     </span>

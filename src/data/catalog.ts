@@ -386,6 +386,13 @@ export const routines: Routine[] = [
   },
 ];
 
+// ── 이미지 경로 헬퍼 ────────────────────────────────
+// public/images/ 에 배치된 실사 이미지 (docs/04-photo-brief.md 기준 21장)
+export const productImage = (id: string) => `/images/product/${id.replace("p", "product-p")}.jpg`;
+export const routineImage = (id: string) => `/images/routine/routine-${id}.jpg`;
+export const concernImage = (slug: string) => `/images/concern/concern-${slug}.jpg`;
+export const heroImages = ["/images/hero/hero-1.jpg", "/images/hero/hero-2.jpg"];
+
 // ── 헬퍼 ──────────────────────────────────────────
 export const won = (n: number) => n.toLocaleString("ko-KR");
 

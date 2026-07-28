@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { brands, concerns, products, routines } from "@/data/catalog";
+import { brands, concernImage, concerns, heroImages, products, routines } from "@/data/catalog";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import TabBar from "@/components/TabBar";
@@ -35,7 +35,11 @@ export default function HomePage() {
           <div className="rail flex gap-[14px] px-4">
             {concerns.map((c) => (
               <Link key={c.slug} href={`/concern/${c.slug}`} className="w-[56px] flex-shrink-0 text-center">
-                <ImageSlot className="h-[56px] w-[56px] rounded" />
+                <ImageSlot
+                  className="h-[56px] w-[56px] rounded"
+                  src={concernImage(c.slug)}
+                  alt={c.name}
+                />
                 <p className="mt-[6px] whitespace-nowrap text-[12px] text-ink">{c.name}</p>
               </Link>
             ))}
@@ -44,7 +48,13 @@ export default function HomePage() {
 
         {/* 히어로 — 추천 제품 (풀블리드, 선으로만 구분) */}
         <section className="relative border-b border-hairline">
-          <ImageSlot className="h-[280px] w-full" tone="warm" label="추천 제품 · 풀블리드 이미지" />
+          <ImageSlot
+            className="h-[280px] w-full"
+            tone="warm"
+            src={heroImages[0]}
+            alt="가을, 무너진 탄력을 되돌리는 셀렉션"
+            position="center 30%"
+          />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(28,24,21,0.74)] to-transparent px-4 pb-4 pt-10">
             <p className="text-[22px] font-bold leading-[1.3] text-white">
               가을, 무너진 탄력을

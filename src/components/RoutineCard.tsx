@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { discountRate, routineListPrice, won, type Routine } from "@/data/catalog";
+import { discountRate, routineImage, routineListPrice, won, type Routine } from "@/data/catalog";
 import ImageSlot from "./ImageSlot";
 
 /**
@@ -15,7 +15,12 @@ export default function RoutineCard({ routine }: { routine: Routine }) {
       className="block w-[200px] flex-shrink-0 overflow-hidden rounded border border-hairline"
     >
       <div className="relative">
-        <ImageSlot className="h-[110px] w-full" tone="warm" />
+        <ImageSlot
+          className="h-[110px] w-full"
+          tone="warm"
+          src={routineImage(routine.id)}
+          alt={routine.title}
+        />
         <span className="absolute left-2 top-2 rounded-badge bg-ink px-[7px] py-[3px] text-[11px] font-medium text-on-ink">
           {routine.badge}
         </span>

@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import {
   brandOf,
   discountRate,
+  productImage,
   productOf,
+  routineImage,
   routineListPrice,
   routines,
   won,
@@ -31,7 +33,12 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
       <main className="flex-1">
         {/* 갤러리 */}
         <section className="relative border-b border-hairline">
-          <ImageSlot className="h-[280px] w-full" tone="warm" label="구성 세트 이미지" />
+          <ImageSlot
+            className="h-[280px] w-full"
+            tone="warm"
+            src={routineImage(routine.id)}
+            alt={routine.title}
+          />
           <span className="absolute bottom-[10px] right-3 rounded bg-[rgba(28,24,21,0.55)] px-[9px] py-[3px] text-[12px] text-white">
             1 / {routine.steps.length + 1}
           </span>
@@ -88,7 +95,11 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
                   i < routine.steps.length - 1 ? "mb-3 border-b border-subtle pb-3" : ""
                 }`}
               >
-                <ImageSlot className="h-[52px] w-[52px] flex-shrink-0 rounded" />
+                <ImageSlot
+                  className="h-[52px] w-[52px] flex-shrink-0 rounded"
+                  src={productImage(p.id)}
+                  alt={p.name}
+                />
                 <div className="flex-1">
                   <p className="text-[12px] text-meta">{brandOf(p.brand).name}</p>
                   <p className="text-[13px] text-ink">{p.name}</p>
