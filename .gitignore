@@ -5,3 +5,6 @@ out/
 .DS_Store
 .env*
 next-env.d.ts
+out/
+tsconfig.tsbuildinfo
+.firebase/

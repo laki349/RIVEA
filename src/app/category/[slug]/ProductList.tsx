@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   categories,
   concerns,
@@ -21,13 +22,10 @@ const sorts: { key: SortKey; label: string }[] = [
   { key: "priceDesc", label: "높은가격순" },
 ];
 
-export default function ProductList({
-  slug,
-  initialSub,
-}: {
-  slug: Category;
-  initialSub?: string;
-}) {
+export default function ProductList({ slug }: { slug: Category }) {
+  // 정적 export 호환: 서버에서 searchParams를 읽지 않고 클라이언트에서 읽는다.
+  const searchParams = useSearchParams();
+  const initialSub = searchParams.get("sub") ?? undefined;
   const category = categories.find((c) => c.slug === slug)!;
   const [sub, setSub] = useState(initialSub ?? "전체");
   const [concern, setConcern] = useState<string | null>(null);
