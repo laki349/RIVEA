@@ -2,6 +2,7 @@ import Link from "next/link";
 import Icon from "@/components/Icon";
 import TabBar from "@/components/TabBar";
 import WishQuickAction from "./WishQuickAction";
+import AccountBlock from "./AccountBlock";
 
 const quickActions = [
   { icon: "truck" as const, label: "주문·배송" },
@@ -32,16 +33,8 @@ export default function MyPage() {
       </header>
 
       <main className="flex-1">
-        {/* 인사 */}
-        <div className="flex items-center justify-between px-4 pb-[14px] pt-[18px]">
-          <div>
-            <p className="text-[19px] font-bold text-ink">김서연님 안녕하세요</p>
-            <p className="mt-[3px] text-[13px] text-meta">seo****@gmail.com</p>
-          </div>
-          <span className="text-disabled">
-            <Icon name="chevron-right" size={19} />
-          </span>
-        </div>
+        {/* 계정 — 게스트면 로그인 진입점으로 바뀐다 */}
+        <AccountBlock />
 
         {/* 피부 고민 설정 — concern-first 개인화 진입 */}
         <Link

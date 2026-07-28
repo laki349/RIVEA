@@ -13,6 +13,7 @@ import {
   won,
 } from "@/data/catalog";
 import ImageSlot from "./ImageSlot";
+import { displayNameOf, useAuth } from "@/lib/auth";
 
 /**
  * 연령대 인기 모듈 — "50대가 지금 많이 봐요"
@@ -25,9 +26,12 @@ const ages: { key: AgeKey; label: string; title: string }[] = [
   { key: "60s", label: "60대 이상", title: "60대가 지금 많이 봐요" },
 ];
 
-export default function CohortSection({ userName = "김서연" }: { userName?: string }) {
+export default function CohortSection({ userName }: { userName?: string }) {
   const [age, setAge] = useState<AgeKey>("50s");
   const [mode, setMode] = useState<"product" | "routine">("product");
+  const { user } = useAuth();
+  // 로그인한 회원이면 실제 이름으로 부른다. 게스트·비로그인은 "고객"으로.
+  const who = userName ?? (user && !user.isAnonymous ? displayNameOf(user) : "고객");
 
   const current = ages.find((a) => a.key === age)!;
 
@@ -48,7 +52,7 @@ export default function CohortSection({ userName = "김서연" }: { userName?: s
           </Link>
         </div>
         <p className="mt-[3px] text-[12px] text-meta">
-          {userName}님과 비슷한 연령대 · 이번 주 기준
+          {who}님과 비슷한 연령대 · 이번 주 기준
         </p>
       </div>
 

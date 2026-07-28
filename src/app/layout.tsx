@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Onboarding from "@/components/auth/Onboarding";
 
 export const metadata: Metadata = {
   title: "RIVEA — 리베아",
@@ -22,6 +23,8 @@ export default function RootLayout({
         <div className="mx-auto flex min-h-dvh w-full max-w-app flex-col bg-page shadow-[0_0_24px_rgba(28,24,21,0.06)]">
           {children}
         </div>
+        {/* 첫 진입 시퀀스 — 인증되면 스스로 사라진다 */}
+        <Onboarding />
       </body>
     </html>
   );
