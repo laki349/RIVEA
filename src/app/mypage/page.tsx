@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import TabBar from "@/components/TabBar";
+import WishQuickAction from "./WishQuickAction";
 
 const quickActions = [
   { icon: "truck" as const, label: "주문·배송" },
   { icon: "message" as const, label: "리뷰 0" },
   { icon: "ticket" as const, label: "쿠폰 2", dot: true },
   { icon: "coin" as const, label: "포인트" },
-  { icon: "heart" as const, label: "찜 18" },
 ];
 
 const menuGroups: { title: string; items: string[] }[] = [
@@ -91,6 +91,7 @@ export default function MyPage() {
               <p className="mt-[5px] text-[11px] text-body">{a.label}</p>
             </button>
           ))}
+          <WishQuickAction />
         </div>
 
         {/* 그룹 메뉴 */}

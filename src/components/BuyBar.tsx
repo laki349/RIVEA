@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { addToCart } from "@/lib/cart";
 import { won } from "@/data/catalog";
 import Icon from "./Icon";
+import WishButton from "./WishButton";
 
 /**
  * 하단 구매 바 — 담기 실동작 + 토스트.
@@ -53,10 +54,7 @@ export default function BuyBar({
       )}
 
       <div className="sticky bottom-0 z-40 flex items-center gap-3 border-t border-line bg-surface px-4 pb-[max(11px,env(safe-area-inset-bottom))] pt-[11px]">
-        <button className="flex flex-col items-center text-rose" aria-label="찜">
-          <Icon name="heart" size={23} />
-          <span className="mt-[2px] text-[11px] font-medium">{won(likes)}</span>
-        </button>
+        <WishButton kind={kind} id={id} variant="bar" baseLikes={likes} />
 
         {kind === "product" ? (
           <>

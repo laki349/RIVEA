@@ -2,6 +2,7 @@ import Link from "next/link";
 import { brandOf, discountRate, productImage, won, type Product } from "@/data/catalog";
 import ImageSlot from "./ImageSlot";
 import Icon from "./Icon";
+import WishButton from "./WishButton";
 
 /**
  * 상품 카드 — 직사각 그리드용 (각진 이미지, 뱃지·하트 오버레이)
@@ -38,9 +39,7 @@ export default function ProductCard({
             {badge}
           </span>
         )}
-        <span className="absolute bottom-2 right-2 flex h-11 w-11 items-end justify-end text-white">
-          <Icon name="heart" size={19} />
-        </span>
+        <WishButton kind="product" id={product.id} variant="overlay" />
       </div>
       <div className="px-1 pb-[14px] pt-2">
         <p className="text-[13px] font-bold text-ink">{brandOf(product.brand).name}</p>
