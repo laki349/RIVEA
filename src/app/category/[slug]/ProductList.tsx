@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   categories,
   concerns,
@@ -26,11 +26,38 @@ const sorts: { key: SortKey; label: string }[] = [
 export default function ProductList({ slug }: { slug: Category }) {
   // 정적 export 호환: 서버에서 searchParams를 읽지 않고 클라이언트에서 읽는다.
   const searchParams = useSearchParams();
-  const initialSub = searchParams.get("sub") ?? undefined;
+  const pathname = usePathname();
+  const router = useRouter();
   const category = categories.find((c) => c.slug === slug)!;
-  const [sub, setSub] = useState(initialSub ?? "전체");
-  const [concern, setConcern] = useState<string | null>(null);
-  const [sort, setSort] = useState<SortKey>("popular");
+
+  /**
+   * 필터·정렬을 컴포넌트 state가 아니라 **URL**에 둔다.
+   *
+   * 예전엔 useState라, 「낮은가격순 + 기미」로 걸러 상품을 보고 뒤로 오면
+   * 전부 처음으로 돌아갔다. 커머스에서 가장 짜증나는 지점이다.
+   * URL에 있으면 뒤로가기가 그대로 복원하고, **그 목록을 그대로 공유**할 수도 있다.
+   *
+   * `replace`를 쓰는 이유: `push`면 필터를 만질 때마다 히스토리가 쌓여
+   * 뒤로가기를 그 횟수만큼 눌러야 목록을 빠져나간다.
+   * `scroll: false`가 없으면 필터를 바꿀 때마다 맨 위로 튄다.
+   */
+  const sub = searchParams.get("sub") ?? "전체";
+  const concern = searchParams.get("concern");
+  const sort = (searchParams.get("sort") as SortKey | null) ?? "popular";
+
+  const setParam = (key: string, value: string | null, isDefault: boolean) => {
+    const next = new URLSearchParams(searchParams.toString());
+    // 기본값은 URL에서 뺀다 — 주소가 길어지면 공유할 때 부담스럽다
+    if (value === null || isDefault) next.delete(key);
+    else next.set(key, value);
+    const qs = next.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
+
+  const setSub = (v: string) => setParam("sub", v, v === "전체");
+  const setConcern = (v: string | null) => setParam("concern", v, false);
+  const setSort = (v: SortKey) => setParam("sort", v, v === "popular");
+
   const [sheet, setSheet] = useState<"concern" | "sort" | null>(null);
 
   /**

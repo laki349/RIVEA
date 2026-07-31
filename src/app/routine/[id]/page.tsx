@@ -14,6 +14,7 @@ import {
 import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import BuyBar from "@/components/BuyBar";
+import TrackRecent from "@/components/TrackRecent";
 import ArticleLink from "@/components/ArticleLink";
 import { articlesForConcern } from "@/data/magazine";
 
@@ -58,6 +59,8 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
 
   return (
     <>
+      {/* 최근 본 상품으로 기록 (렌더 없음) */}
+      <TrackRecent kind="routine" id={routine.id} />
       <AppBar
         title={`${routine.label} 루틴`}
         share={{ title: routine.title, text: `${routine.badge} · ${won(routine.price)}원` }}

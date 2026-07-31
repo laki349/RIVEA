@@ -17,6 +17,7 @@ import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import RoutineCard from "@/components/RoutineCard";
 import BuyBar from "@/components/BuyBar";
+import TrackRecent from "@/components/TrackRecent";
 import ArticleLink from "@/components/ArticleLink";
 import { articlesForProduct } from "@/data/magazine";
 
@@ -129,6 +130,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   return (
     <>
+      {/* 최근 본 상품으로 기록 (렌더 없음) */}
+      <TrackRecent kind="product" id={product.id} />
       <AppBar
         title={brand.name}
         share={{ title: `${brand.name} ${modelLabel(product)}`, text: `${won(product.price)}원` }}
