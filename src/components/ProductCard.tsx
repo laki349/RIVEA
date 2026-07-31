@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { brandOf, discountRate, productImage, won, type Product } from "@/data/catalog";
+import { brandOf, discountRate, modelLabel, productImage, won, type Product } from "@/data/catalog";
 import ImageSlot from "./ImageSlot";
 import Icon from "./Icon";
 import WishButton from "./WishButton";
@@ -44,7 +44,7 @@ export default function ProductCard({
       <div className="px-1 pb-[14px] pt-2">
         <p className="text-[13px] font-bold text-ink">{brandOf(product.brand).name}</p>
         <p className="mb-[5px] mt-[2px] truncate text-[13px] leading-[1.35] text-soft">
-          {product.name}
+          {modelLabel(product)}
         </p>
         <div className="mb-[6px] flex items-baseline gap-[5px]">
           {rate !== null && (

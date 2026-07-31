@@ -8,3 +8,5 @@ next-env.d.ts
 out/
 tsconfig.tsbuildinfo
 .firebase/
+.gstack/
+cards/

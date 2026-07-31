@@ -73,7 +73,7 @@ export default function WishButton({
       className="flex flex-col items-center text-rose"
     >
       <Icon name={wished ? "heart-fill" : "heart"} size={23} />
-      <span className="mt-[2px] text-[11px] font-medium">
+      <span className="mt-[2px] text-[12px] font-medium">
         {won(baseLikes + (wished ? 1 : 0))}
       </span>
     </button>

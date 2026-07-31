@@ -37,21 +37,21 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
         <section className="flex border-b border-hairline">
           <div className="flex-1 border-r border-hairline py-[14px] text-center">
             <p className="text-[17px] font-bold text-ink">{brand.rating}</p>
-            <p className="mt-[3px] text-[11px] text-meta">브랜드 평점</p>
+            <p className="mt-[3px] text-[12px] text-meta">브랜드 평점</p>
           </div>
           <div className="flex-1 border-r border-hairline py-[14px] text-center">
             <p className="text-[17px] font-bold text-ink">{brand.since}년</p>
-            <p className="mt-[3px] text-[11px] text-meta">입점</p>
+            <p className="mt-[3px] text-[12px] text-meta">입점</p>
           </div>
           <div className="flex-1 border-r border-hairline py-[14px] text-center">
             <p className="text-[17px] font-bold text-ink">{won(reviewTotal)}</p>
-            <p className="mt-[3px] text-[11px] text-meta">누적 리뷰</p>
+            <p className="mt-[3px] text-[12px] text-meta">누적 리뷰</p>
           </div>
           <div className="flex-1 py-[14px] text-center">
             <p className="text-[17px] font-bold text-ink">
               {brand.freeShippingOver ? `${Math.round(brand.freeShippingOver / 10000)}만원↑` : "유료"}
             </p>
-            <p className="mt-[3px] text-[11px] text-meta">무료배송</p>
+            <p className="mt-[3px] text-[12px] text-meta">무료배송</p>
           </div>
         </section>
 
