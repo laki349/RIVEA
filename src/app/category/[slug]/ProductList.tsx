@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/data/catalog";
 import Icon from "@/components/Icon";
 import ProductCard from "@/components/ProductCard";
+import TabBar from "@/components/TabBar";
 import AppBar from "@/components/AppBar";
 
 type SortKey = "popular" | "reviews" | "priceAsc" | "priceDesc";
@@ -31,6 +32,25 @@ export default function ProductList({ slug }: { slug: Category }) {
   const [concern, setConcern] = useState<string | null>(null);
   const [sort, setSort] = useState<SortKey>("popular");
   const [sheet, setSheet] = useState<"concern" | "sort" | null>(null);
+
+  /**
+   * 카테고리를 바꾸면 새 페이지가 로드되면서 레일 스크롤이 0으로 돌아간다.
+   * 앞쪽 카테고리는 원래 왼쪽이라 티가 안 나지만, 두피·이너뷰티처럼 끝쪽을 고르면
+   * **고른 항목이 화면 밖으로 밀려나** 상단바가 앞으로 당겨진 것처럼 보인다.
+   * 활성 항목을 가운데로 맞추되, 앞쪽 항목은 clamp에 걸려 예전 그대로 왼쪽에 남는다.
+   *
+   * 부드러운 스크롤을 쓰지 않는 이유: 페이지가 막 뜬 시점의 자동 이동은
+   * 사용자가 하지 않은 동작이라 "왜 움직이지?"가 된다. 즉시 맞춘다.
+   */
+  const railRef = useRef<HTMLElement>(null);
+  const activeRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const rail = railRef.current;
+    const active = activeRef.current;
+    if (!rail || !active) return;
+    const centered = active.offsetLeft - (rail.clientWidth - active.clientWidth) / 2;
+    rail.scrollLeft = Math.max(0, centered);
+  }, [slug]);
   /**
    * 시트는 화면 절반을 덮는데 하드 컷으로 튀어나왔다 — 어디서 왔는지 알 수 없으면
    * 사용자는 그게 "새 화면"인지 "겹친 것"인지 모른다. 아래에서 올라오면 그 자체가 설명이다.
@@ -71,18 +91,32 @@ export default function ProductList({ slug }: { slug: Category }) {
     <>
       <AppBar title={category.name} bold />
 
-      {/* 1단 — 대분류 (가로 스크롤, 선택만 세로바+굵게) */}
-      <nav className="rail flex items-center gap-[18px] whitespace-nowrap border-b border-hairline py-3 pl-[14px] pr-4">
+      {/*
+        1단 — 대분류 (가로 스크롤, 선택만 세로바+굵게)
+
+        모든 항목이 같은 `border-l-2 pl-3` 상자를 갖는다. 예전엔 선택된 것만
+        이 상자를 얻어서 **고를 때마다 폭이 14px씩 밀렸다** — 왼쪽 항목을 고르면
+        오른쪽 전체가 따라 움직였다. 비활성은 테두리만 투명하게 둔다.
+      */}
+      <nav
+        ref={railRef}
+        className="rail flex items-center gap-[5px] whitespace-nowrap border-b border-hairline py-3 pl-0 pr-4"
+      >
         {categories.map((c) =>
           c.slug === slug ? (
             <span
               key={c.slug}
+              ref={activeRef}
               className="border-l-2 border-ink pl-3 text-[14px] font-bold text-ink"
             >
               {c.name}
             </span>
           ) : (
-            <Link key={c.slug} href={`/category/${c.slug}`} className="text-[14px] text-meta">
+            <Link
+              key={c.slug}
+              href={`/category/${c.slug}`}
+              className="border-l-2 border-transparent pl-3 text-[14px] text-meta"
+            >
               {c.name}
             </Link>
           )
@@ -156,6 +190,12 @@ export default function ProductList({ slug }: { slug: Category }) {
           </div>
         )}
       </main>
+
+      {/*
+        상품 목록에만 탭바가 없어서, 한참 둘러본 뒤 홈으로 가려면
+        뒤로가기를 여러 번 눌러야 했다. 다른 13개 화면에는 이미 있다.
+      */}
+      <TabBar />
 
       {/* 바텀시트 */}
       {sheet && (
