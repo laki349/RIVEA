@@ -1,3 +1,5 @@
+import FadeImg from "./FadeImg";
+
 /**
  * 이미지 슬롯 — src가 있으면 실제 이미지, 없으면 플레이스홀더.
  * 정적 export 환경이라 next/image 최적화 대신 순수 <img> 사용.
@@ -23,14 +25,8 @@ export default function ImageSlot({
   if (src) {
     return (
       <div className={`overflow-hidden ${bg} ${className}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          className="h-full w-full object-cover"
-          style={{ objectPosition: position }}
-        />
+        {/* 로드되면 플레이스홀더 위로 떠오른다 (FadeImg 주석 참고) */}
+        <FadeImg src={src} alt={alt} position={position} />
       </div>
     );
   }

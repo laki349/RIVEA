@@ -63,6 +63,69 @@ const config: Config = {
       maxWidth: {
         app: "430px", // 모바일 프레임 폭
       },
+
+      /**
+       * ── 모션 토큰 ────────────────────────────────
+       * 이 앱에서 모션은 세 가지 일만 한다.
+       *  ① 탭이 먹었다는 확인 (모바일엔 hover가 없다)
+       *  ② 상태가 바뀐 곳 가리키기 (찜·장바구니 수)
+       *  ③ 어디서 왔는지 알려주기 (시트·토스트의 공간 관계)
+       * 장식은 넣지 않는다. transform·opacity만 애니메이션한다.
+       */
+      transitionDuration: {
+        tap: "120ms", // 눌림 피드백 — 즉각적이어야 한다
+        state: "200ms", // 상태 변화
+        sheet: "260ms", // 화면 절반을 덮는 전환
+      },
+      transitionTimingFunction: {
+        // 들어올 때 감속, 나갈 때 가속 — 물리적으로 자연스러운 방향
+        enter: "cubic-bezier(0.16, 1, 0.3, 1)",
+        exit: "cubic-bezier(0.4, 0, 1, 1)",
+      },
+      keyframes: {
+        // 찜 하트 — 눌렀다는 확인. 한 프레임에 바뀌면 놓친다
+        pop: {
+          "0%": { transform: "scale(1)" },
+          "40%": { transform: "scale(1.28)" },
+          "100%": { transform: "scale(1)" },
+        },
+        // 장바구니 배지 — 담은 것과 장바구니를 잇는다
+        bump: {
+          "0%": { transform: "scale(1)" },
+          "35%": { transform: "scale(1.35)" },
+          "100%": { transform: "scale(1)" },
+        },
+        // 토스트·새로 열린 단계 — 아래에서 살짝 올라오며 나타난다
+        rise: {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        fall: {
+          from: { opacity: "1", transform: "translateY(0)" },
+          to: { opacity: "0", transform: "translateY(6px)" },
+        },
+        // 바텀 시트 — 어디서 왔는지 보여준다
+        "sheet-up": {
+          from: { transform: "translateY(100%)" },
+          to: { transform: "translateY(0)" },
+        },
+        "sheet-down": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(100%)" },
+        },
+        "fade-in": { from: { opacity: "0" }, to: { opacity: "1" } },
+        "fade-out": { from: { opacity: "1" }, to: { opacity: "0" } },
+      },
+      animation: {
+        pop: "pop 260ms cubic-bezier(0.16, 1, 0.3, 1)",
+        bump: "bump 240ms cubic-bezier(0.16, 1, 0.3, 1)",
+        rise: "rise 200ms cubic-bezier(0.16, 1, 0.3, 1)",
+        fall: "fall 150ms cubic-bezier(0.4, 0, 1, 1) forwards",
+        "sheet-up": "sheet-up 260ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "sheet-down": "sheet-down 200ms cubic-bezier(0.4, 0, 1, 1) forwards",
+        "fade-in": "fade-in 200ms ease-out",
+        "fade-out": "fade-out 200ms ease-in forwards",
+      },
     },
   },
   plugins: [],

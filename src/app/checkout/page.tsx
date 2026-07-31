@@ -200,7 +200,7 @@ export default function CheckoutPage() {
         <button
           onClick={pay}
           disabled={!agreed || lines.length === 0}
-          className="h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink disabled:opacity-40"
+          className="press h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink disabled:opacity-40"
         >
           {won(total)}원 결제하기
         </button>

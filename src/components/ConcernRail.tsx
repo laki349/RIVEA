@@ -35,7 +35,7 @@ export default function ConcernRail() {
           <Link
             key={c.slug}
             href={`/concern/${c.slug}`}
-            className="w-[56px] flex-shrink-0 text-center"
+            className="press w-[56px] flex-shrink-0 text-center"
           >
             <ImageSlot
               className="h-[56px] w-[56px] rounded"
@@ -52,7 +52,7 @@ export default function ConcernRail() {
           </Link>
         ))}
         {!personalized && (
-          <Link href="/profile" className="w-[56px] flex-shrink-0 text-center">
+          <Link href="/profile" className="press w-[56px] flex-shrink-0 text-center">
             <span className="flex h-[56px] w-[56px] items-center justify-center rounded border border-dashed border-line-strong text-rose">
               <Icon name="sparkle" size={22} />
             </span>

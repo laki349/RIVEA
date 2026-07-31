@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Icon from "./Icon";
+import Toast from "./Toast";
 
 /**
  * 공유 버튼 — 상품·루틴 상세에서 링크를 보낸다.
@@ -42,25 +43,15 @@ export default function ShareButton({
     }
   };
 
-  const flash = (message: string) => {
-    setToast(message);
-    setTimeout(() => setToast(""), 2000);
-  };
+  const flash = (message: string) => setToast(message);
 
   return (
     <>
-      {toast && (
-        <div className="pointer-events-none fixed bottom-[92px] left-1/2 z-50 -translate-x-1/2">
-          <div className="flex items-center gap-2 whitespace-nowrap rounded bg-ink px-4 py-[11px] text-[14px] text-on-ink shadow-[0_4px_16px_rgba(28,24,21,0.25)]">
-            <Icon name="check" size={15} />
-            {toast}
-          </div>
-        </div>
-      )}
+      {toast && <Toast message={toast} onDone={() => setToast("")} />}
       <button
         onClick={share}
         aria-label={label}
-        className="flex h-11 w-9 items-center justify-center text-ink"
+        className="press flex h-11 w-9 items-center justify-center text-ink"
       >
         <Icon name="share" size={20} />
       </button>

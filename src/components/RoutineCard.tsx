@@ -12,7 +12,7 @@ export default function RoutineCard({ routine }: { routine: Routine }) {
   return (
     <Link
       href={`/routine/${routine.id}`}
-      className="block w-[200px] flex-shrink-0 overflow-hidden rounded border border-hairline"
+      className="press-card block w-[200px] flex-shrink-0 overflow-hidden rounded border border-hairline"
     >
       <div className="relative">
         <ImageSlot

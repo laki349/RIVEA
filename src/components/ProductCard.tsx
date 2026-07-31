@@ -22,7 +22,7 @@ export default function ProductCard({
   const badge = product.badges.find((b) => b === "빠른배송" || b === "단독");
 
   return (
-    <Link href={`/product/${product.id}`} className="block">
+    <Link href={`/product/${product.id}`} className="press-card block">
       <div className="relative">
         <ImageSlot
           className={`w-full ${imageClassName}`}

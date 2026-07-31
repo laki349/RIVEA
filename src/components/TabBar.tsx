@@ -24,7 +24,7 @@ export default function TabBar() {
           <Link
             key={t.href}
             href={t.href}
-            className={`flex min-h-[44px] flex-1 flex-col items-center gap-[2px] ${
+            className={`press flex min-h-[44px] flex-1 flex-col items-center gap-[2px] ${
               active ? "text-ink" : "text-disabled"
             }`}
           >

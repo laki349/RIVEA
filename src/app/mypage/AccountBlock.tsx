@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import { displayNameOf, maskEmail, signOut, useAuth } from "@/lib/auth";
@@ -10,6 +11,7 @@ import { displayNameOf, maskEmail, signOut, useAuth } from "@/lib/auth";
  */
 export default function AccountBlock() {
   const { user, ready, isGuest } = useAuth();
+  const [signingOut, setSigningOut] = useState(false);
 
   // 상태 확인 전엔 높이만 잡아둔다 (레이아웃 흔들림 방지)
   if (!ready) {
@@ -43,11 +45,25 @@ export default function AccountBlock() {
         </p>
         <p className="mt-[3px] text-[13px] text-meta">{maskEmail(user.email)}</p>
       </div>
+      {/*
+        로그아웃은 Firebase 응답을 기다린다. 예전엔 await 없이 호출해서
+        회선이 느리면 아무 일도 안 일어난 것처럼 보였고, 사용자는 다시 눌렀다.
+        스피너 대신 문구를 바꾸고 비활성화한다 — 회전하는 물체는
+        모션 최소화 사용자에게 남는 유일한 움직임이 되기 쉽다.
+      */}
       <button
-        onClick={() => signOut()}
-        className="ml-3 min-h-[44px] flex-shrink-0 rounded border border-line px-[11px] text-[13px] font-medium text-soft"
+        onClick={async () => {
+          setSigningOut(true);
+          try {
+            await signOut();
+          } finally {
+            setSigningOut(false);
+          }
+        }}
+        disabled={signingOut}
+        className="press ml-3 min-h-[44px] flex-shrink-0 rounded border border-line px-[11px] text-[13px] font-medium text-soft transition-opacity duration-tap disabled:opacity-55"
       >
-        로그아웃
+        {signingOut ? "로그아웃 중…" : "로그아웃"}
       </button>
     </div>
   );

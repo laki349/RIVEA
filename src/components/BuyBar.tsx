@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addToCart } from "@/lib/cart";
 import { won } from "@/data/catalog";
-import Icon from "./Icon";
+import Toast from "./Toast";
 import WishButton from "./WishButton";
 
 /**
@@ -28,7 +28,6 @@ export default function BuyBar({
   const add = () => {
     addToCart(kind, id);
     setToast(true);
-    setTimeout(() => setToast(false), 2200);
   };
 
   const buyNow = () => {
@@ -39,18 +38,11 @@ export default function BuyBar({
   return (
     <>
       {toast && (
-        <div className="pointer-events-none fixed bottom-[92px] left-1/2 z-50 -translate-x-1/2">
-          <div className="flex items-center gap-2 rounded bg-ink px-4 py-[11px] text-[13px] text-on-ink shadow-[0_4px_16px_rgba(28,24,21,0.25)]">
-            <Icon name="check" size={15} />
-            장바구니에 담았어요
-            <button
-              onClick={() => router.push("/cart")}
-              className="pointer-events-auto ml-1 font-bold underline underline-offset-2"
-            >
-              보러가기
-            </button>
-          </div>
-        </div>
+        <Toast
+          message="장바구니에 담았어요"
+          onDone={() => setToast(false)}
+          action={{ label: "보러가기", onClick: () => router.push("/cart") }}
+        />
       )}
 
       <div className="sticky bottom-0 z-40 flex items-center gap-3 border-t border-line bg-surface px-4 pb-[max(11px,env(safe-area-inset-bottom))] pt-[11px]">
@@ -60,13 +52,13 @@ export default function BuyBar({
           <>
             <button
               onClick={add}
-              className="h-[50px] flex-1 rounded-cta border border-ink text-[15px] font-medium text-ink"
+              className="press h-[50px] flex-1 rounded-cta border border-ink text-[15px] font-medium text-ink"
             >
               장바구니
             </button>
             <button
               onClick={buyNow}
-              className="h-[50px] flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
+              className="press h-[50px] flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
             >
               바로구매
             </button>
@@ -79,7 +71,7 @@ export default function BuyBar({
             </div>
             <button
               onClick={add}
-              className="h-[52px] flex-1 rounded-cta bg-ink text-[16px] font-medium text-on-ink"
+              className="press h-[52px] flex-1 rounded-cta bg-ink text-[16px] font-medium text-on-ink"
             >
               세트 담기
             </button>

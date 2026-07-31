@@ -115,12 +115,21 @@ export default function Onboarding() {
       {/* 진행 표시 — 3점 */}
       <div className="pointer-events-none absolute inset-x-0 bottom-[18px] flex justify-center gap-[6px]">
         {[0, 1, 2].map((i) => (
+          /**
+           * 폭이 아니라 scaleX를 애니메이션한다. `transition-all`로 width를 늘이면
+           * 매 프레임 레이아웃을 다시 계산해서 저사양 기기에서 끊긴다 —
+           * 앱 전체에서 transform·opacity 외를 전환하던 유일한 자리였다.
+           */
           <span
             key={i}
-            className={`h-[5px] rounded transition-all duration-300 ${
-              i === step ? "w-[18px] bg-ink" : "w-[5px] bg-line-strong"
-            }`}
-          />
+            className="flex h-[5px] w-[18px] items-center justify-center"
+          >
+            <span
+              className={`h-[5px] w-[18px] origin-center rounded transition-transform duration-state ease-enter ${
+                i === step ? "scale-x-100 bg-ink" : "scale-x-[0.28] bg-line-strong"
+              }`}
+            />
+          </span>
         ))}
       </div>
     </div>

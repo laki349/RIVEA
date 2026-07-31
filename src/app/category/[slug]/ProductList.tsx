@@ -31,6 +31,19 @@ export default function ProductList({ slug }: { slug: Category }) {
   const [concern, setConcern] = useState<string | null>(null);
   const [sort, setSort] = useState<SortKey>("popular");
   const [sheet, setSheet] = useState<"concern" | "sort" | null>(null);
+  /**
+   * 시트는 화면 절반을 덮는데 하드 컷으로 튀어나왔다 — 어디서 왔는지 알 수 없으면
+   * 사용자는 그게 "새 화면"인지 "겹친 것"인지 모른다. 아래에서 올라오면 그 자체가 설명이다.
+   * 닫힐 때도 애니메이션을 보여주려면 언마운트를 200ms 늦춰야 한다.
+   */
+  const [closing, setClosing] = useState(false);
+  const closeSheet = () => {
+    setClosing(true);
+    setTimeout(() => {
+      setSheet(null);
+      setClosing(false);
+    }, 200);
+  };
 
   const list = useMemo(() => {
     let l = products.filter((p) => p.category === slug);
@@ -149,10 +162,16 @@ export default function ProductList({ slug }: { slug: Category }) {
         <div className="fixed inset-0 z-50 mx-auto flex w-full max-w-app flex-col justify-end">
           <button
             aria-label="닫기"
-            onClick={() => setSheet(null)}
-            className="flex-1 bg-[rgba(28,24,21,0.45)]"
+            onClick={closeSheet}
+            className={`flex-1 bg-[rgba(28,24,21,0.45)] ${
+              closing ? "animate-fade-out" : "animate-fade-in"
+            }`}
           />
-          <div className="rounded-t-[8px] bg-surface px-4 pb-[max(16px,env(safe-area-inset-bottom))] pt-4">
+          <div
+            className={`rounded-t-[8px] bg-surface px-4 pb-[max(16px,env(safe-area-inset-bottom))] pt-4 ${
+              closing ? "animate-sheet-down" : "animate-sheet-up"
+            }`}
+          >
             <p className="pb-3 text-[15px] font-bold text-ink">
               {sheet === "concern" ? "고민 선택" : "정렬"}
             </p>
@@ -161,7 +180,7 @@ export default function ProductList({ slug }: { slug: Category }) {
                 <button
                   onClick={() => {
                     setConcern(null);
-                    setSheet(null);
+                    closeSheet();
                   }}
                   className={`min-h-[40px] rounded border px-[14px] text-[13px] ${
                     concern === null ? "border-ink bg-ink text-on-ink" : "border-line text-body"
@@ -174,7 +193,7 @@ export default function ProductList({ slug }: { slug: Category }) {
                     key={c.slug}
                     onClick={() => {
                       setConcern(c.slug);
-                      setSheet(null);
+                      closeSheet();
                     }}
                     className={`min-h-[40px] rounded border px-[14px] text-[13px] ${
                       concern === c.slug ? "border-ink bg-ink text-on-ink" : "border-line text-body"
@@ -191,7 +210,7 @@ export default function ProductList({ slug }: { slug: Category }) {
                     key={s.key}
                     onClick={() => {
                       setSort(s.key);
-                      setSheet(null);
+                      closeSheet();
                     }}
                     className={`flex min-h-[46px] w-full items-center justify-between text-[14px] ${
                       sort === s.key ? "font-bold text-ink" : "text-body"

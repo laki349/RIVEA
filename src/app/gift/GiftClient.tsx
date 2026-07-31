@@ -122,7 +122,7 @@ export default function GiftClient() {
 
       {/* 2. 고민을 아는지 */}
       {age && (
-        <section className="border-b border-hairline px-4 py-4">
+        <section className="animate-rise border-b border-hairline px-4 py-4">
           <p className="mb-[10px] text-[15px] font-bold text-ink">
             <span className="text-rose">2</span> 어머니 피부 고민을 아시나요?
           </p>
@@ -154,7 +154,7 @@ export default function GiftClient() {
           </div>
 
           {knows === true && (
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="animate-rise mt-3 flex flex-wrap gap-2">
               {concerns.map((c) => (
                 <button
                   key={c.slug}
@@ -171,7 +171,7 @@ export default function GiftClient() {
 
           {/* 모를 때 — 막다른 길 대신 조사 데이터로 답한다 */}
           {knows === false && (
-            <div className="mt-3 border border-hairline px-3 py-[13px]">
+            <div className="animate-rise mt-3 border border-hairline px-3 py-[13px]">
               <p className="text-[14px] font-bold leading-[1.45] text-ink">
                 {ageLabel[age]} 여성이 가장 많이 답한 고민이에요
               </p>
@@ -226,7 +226,7 @@ export default function GiftClient() {
 
       {/* 3. 예산 */}
       {effectiveConcern && (
-        <section className="border-b border-hairline px-4 py-4">
+        <section className="animate-rise border-b border-hairline px-4 py-4">
           <p className="mb-[10px] text-[15px] font-bold text-ink">
             <span className="text-rose">3</span> 예산은 어느 정도 생각하세요?
           </p>
@@ -250,7 +250,7 @@ export default function GiftClient() {
 
       {/* 결과 */}
       {done && (
-        <section className="px-4 py-4">
+        <section className="animate-rise px-4 py-4">
           <h3 className="mb-1 text-[16px] font-bold text-ink">
             {ageLabel[age!]} · {concernOf(effectiveConcern).name}
           </h3>

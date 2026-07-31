@@ -51,7 +51,7 @@ export default function ProfileForm() {
                 key={c.slug}
                 onClick={() => toggleConcern(c.slug)}
                 aria-pressed={on}
-                className={`flex flex-col items-center rounded border px-1 pb-[10px] pt-[10px] ${
+                className={`press flex flex-col items-center rounded border px-1 pb-[10px] pt-[10px] ${
                   on ? "border-ink bg-bg-tint" : "border-line bg-surface"
                 }`}
               >
@@ -62,7 +62,7 @@ export default function ProfileForm() {
                     alt={c.name}
                   />
                   {on && (
-                    <span className="absolute -right-[5px] -top-[5px] flex h-[20px] w-[20px] items-center justify-center rounded-full bg-ink text-[12px] font-bold text-on-ink">
+                    <span className="animate-pop absolute -right-[5px] -top-[5px] flex h-[20px] w-[20px] items-center justify-center rounded-full bg-ink text-[12px] font-bold text-on-ink">
                       {order}
                     </span>
                   )}
@@ -93,7 +93,7 @@ export default function ProfileForm() {
                 key={a.key}
                 onClick={() => setCohort(on ? null : a.key)}
                 aria-pressed={on}
-                className={`h-12 flex-1 rounded border text-[15px] ${
+                className={`press h-12 flex-1 rounded border text-[15px] ${
                   on
                     ? "border-ink bg-ink font-medium text-on-ink"
                     : "border-line bg-surface text-body"

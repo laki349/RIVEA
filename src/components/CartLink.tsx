@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/cart";
 import Icon from "./Icon";
 
@@ -13,11 +13,37 @@ export default function CartLink({ size = 21 }: { size?: number }) {
 
   const count = cart.reduce((s, i) => s + i.qty, 0);
 
+  /**
+   * 담으면 화면 아래에 토스트가 뜨는데 배지는 조용히 숫자만 바뀌었다 —
+   * **방금 담은 것과 장바구니가 이어지지 않았다.** 눈이 아래에 가 있는 동안
+   * 위에서 일어난 변화는 못 본다. 늘어날 때만 튀어서 그 자리를 가리킨다.
+   * 줄어들 때(삭제·주문)는 조용히 — 사라진 것을 강조할 이유가 없다.
+   */
+  const [bumping, setBumping] = useState(false);
+  const prev = useRef(count);
+  useEffect(() => {
+    if (count > prev.current) {
+      setBumping(true);
+      const t = setTimeout(() => setBumping(false), 240);
+      prev.current = count;
+      return () => clearTimeout(t);
+    }
+    prev.current = count;
+  }, [count]);
+
   return (
-    <Link href="/cart" aria-label="장바구니" className="relative flex h-11 w-8 items-center justify-center text-ink">
+    <Link
+      href="/cart"
+      aria-label="장바구니"
+      className="press relative flex h-11 w-8 items-center justify-center text-ink"
+    >
       <Icon name="bag" size={size} />
       {mounted && count > 0 && (
-        <span className="absolute right-[-2px] top-[3px] flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-on-ink">
+        <span
+          className={`absolute right-[-2px] top-[3px] flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-on-ink ${
+            bumping ? "animate-bump" : ""
+          }`}
+        >
           {count}
         </span>
       )}

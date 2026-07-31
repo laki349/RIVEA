@@ -198,7 +198,7 @@ export default function OrderDetail() {
         {isCancellable(order) && (
           <div className="px-4 py-4">
             {asking ? (
-              <div className="rounded border border-line p-[14px]">
+              <div className="animate-rise rounded border border-line p-[14px]">
                 <p className="text-[15px] font-medium text-ink">이 주문을 취소할까요?</p>
                 <p className="mt-1 text-[14px] leading-[1.5] text-body">
                   브랜드가 상품을 넘기기 전까지만 바로 취소할 수 있어요.
@@ -206,7 +206,7 @@ export default function OrderDetail() {
                 <div className="mt-3 flex gap-2">
                   <button
                     onClick={() => setAsking(false)}
-                    className="h-12 flex-1 rounded-cta border border-line text-[15px] font-medium text-body"
+                    className="press h-12 flex-1 rounded-cta border border-line text-[15px] font-medium text-body"
                   >
                     유지하기
                   </button>
@@ -221,7 +221,7 @@ export default function OrderDetail() {
                       });
                       setAsking(false);
                     }}
-                    className="h-12 flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
+                    className="press h-12 flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
                   >
                     주문 취소
                   </button>
@@ -230,7 +230,7 @@ export default function OrderDetail() {
             ) : (
               <button
                 onClick={() => setAsking(true)}
-                className="h-12 w-full rounded-cta border border-line text-[15px] font-medium text-body"
+                className="press h-12 w-full rounded-cta border border-line text-[15px] font-medium text-body"
               >
                 주문 취소
               </button>
