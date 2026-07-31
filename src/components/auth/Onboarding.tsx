@@ -1,8 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { isLocalBrowse, useAuth } from "@/lib/auth";
 import LoginPanel from "./LoginPanel";
+
+/**
+ * 공유 링크로 들어오는 경로 — 여기서는 온보딩을 띄우지 않는다.
+ *
+ * 이유: 카톡으로 상품 링크를 받은 사람이 열면 **상품이 아니라 스플래시·로그인을 본다.**
+ * 공유의 목적이 그 자리에서 깨지고, 정적 HTML에는 내용이 있어서
+ * 크롤러는 읽는데 사람은 못 읽는 상태가 된다.
+ *
+ * 표준 패턴은 **콘텐츠는 공개, 커머스는 로그인**이다. 담기·결제 지점에서 인증을 요구하면
+ * 되고(장바구니·결제 화면), 첫 화면부터 막을 필요가 없다.
+ */
+const OPEN_PREFIXES = ["/product/", "/routine/", "/magazine/", "/concern/", "/brand/"];
 
 /**
  * 앱 첫 진입 시퀀스 — 스플래시 → 매거진 커머스 소개 → 로그인.
@@ -20,6 +33,7 @@ const INTRO_MS = 2800;
 
 export default function Onboarding() {
   const { user, ready } = useAuth();
+  const pathname = usePathname();
   const [step, setStep] = useState(0);
   const [dismissed, setDismissed] = useState(false);
 
@@ -28,7 +42,9 @@ export default function Onboarding() {
     if (isLocalBrowse()) setDismissed(true);
   }, []);
 
-  const active = !user && !dismissed; // 인증되면(게스트 포함) 오버레이 제거
+  const isOpenPath = OPEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  // 인증되면(게스트 포함) 오버레이 제거. 공유로 들어온 상세 페이지는 애초에 띄우지 않는다
+  const active = !user && !dismissed && !isOpenPath;
   const sequenceStarted = ready && active;
 
   // 스플래시 → 소개 → 로그인 자동 전환. 로그인 패널에선 멈춘다.
@@ -39,7 +55,9 @@ export default function Onboarding() {
     return () => clearTimeout(t);
   }, [sequenceStarted, step]);
 
-  if (ready && !active) return null;
+  // 공유 경로는 인증 확인이 끝나기 전에도 스플래시를 깜빡이지 않는다 — 그 한 순간이
+  // 링크를 받은 사람에게는 "잘못 열렸나" 싶은 화면이 된다
+  if (isOpenPath || (ready && !active)) return null;
 
   // 탭하면 기다리지 않고 다음으로 (자동 전환이 답답한 사용자용)
   const skipAhead = () => {

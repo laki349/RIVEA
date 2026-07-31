@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -20,6 +21,31 @@ export function generateStaticParams() {
   return routines.map((r) => ({ id: r.id }));
 }
 
+/**
+ * 공유용 메타데이터. 루틴은 이 앱의 차별화 상품이라 **절감액을 제목에 넣는다** —
+ * 카드만 보고도 단품 합계보다 싸다는 게 읽혀야 공유가 눌린다.
+ */
+export function generateMetadata({ params }: { params: { id: string } }): Metadata {
+  const r = routines.find((x) => x.id === params.id);
+  if (!r) return {};
+  const rate = discountRate({ price: r.price, listPrice: routineListPrice(r) });
+
+  const title = `[${r.badge}] ${r.title}`;
+  const description = `${r.description} ${rate ? `${rate}% 절감 ` : ""}${won(r.price)}원 · 리베아`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: `/routine/${r.id}`,
+      images: [{ url: `/images/routine/${r.image}`, alt: r.title }],
+    },
+  };
+}
+
 export default function RoutineDetailPage({ params }: { params: { id: string } }) {
   const routine = routines.find((r) => r.id === params.id);
   if (!routine) notFound();
@@ -32,7 +58,10 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
 
   return (
     <>
-      <AppBar title={`${routine.label} 루틴`} />
+      <AppBar
+        title={`${routine.label} 루틴`}
+        share={{ title: routine.title, text: `${routine.badge} · ${won(routine.price)}원` }}
+      />
 
       <main className="flex-1">
         {/* 갤러리 */}

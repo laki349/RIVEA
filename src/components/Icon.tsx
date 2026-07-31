@@ -22,7 +22,8 @@ type IconName =
   | "truck"
   | "message"
   | "ticket"
-  | "coin";
+  | "coin"
+  | "share";
 
 const paths: Record<IconName, React.ReactNode> = {
   search: (
@@ -117,6 +118,13 @@ const paths: Record<IconName, React.ReactNode> = {
     <>
       <circle cx="12" cy="12" r="8" />
       <path d="M12 8v8M9.5 10h3.7a1.7 1.7 0 0 1 0 3.4H9.5" />
+    </>
+  ),
+  share: (
+    <>
+      <path d="M12 4v11" />
+      <path d="m8 8 4-4 4 4" />
+      <path d="M6 12.5V20h12v-7.5" />
     </>
   ),
 };

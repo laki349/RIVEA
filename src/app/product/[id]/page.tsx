@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   brandOf,
+  comparableDevices,
   concernOf,
   discountRate,
+  modelLabel,
   productImage,
   products,
   routines,
@@ -19,6 +22,40 @@ import { articlesForProduct } from "@/data/magazine";
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
+}
+
+/**
+ * 공유용 메타데이터. 카톡·문자로 링크를 보냈을 때 뜨는 미리보기 카드가 여기서 나온다.
+ * 정적 export라도 빌드 시점에 각 상품 HTML의 <head>에 그대로 구워진다.
+ *
+ * 가격을 설명에 넣는 건 판단이 필요했다 — 커머스 공유에서 가장 궁금한 값이라 넣되,
+ * **카톡이 카드를 캐시하므로 가격을 바꾸면 옛 카드가 한동안 남는다.**
+ * 실서비스에서는 가격 변경 시 캐시 갱신이 필요하다.
+ */
+export function generateMetadata({ params }: { params: { id: string } }): Metadata {
+  const p = products.find((x) => x.id === params.id);
+  if (!p) return {};
+  const brand = brandOf(p.brand);
+  const rate = discountRate(p);
+  const concern = p.concerns[0] ? concernOf(p.concerns[0]).name : null;
+
+  const title = `${brand.name} ${modelLabel(p)}`;
+  const price = rate ? `${rate}% 할인 ${won(p.price)}원` : `${won(p.price)}원`;
+  const description = concern
+    ? `${concern} 고민에 ${p.keyIngredient}. ${price} · 리베아`
+    : `${p.keyIngredient}. ${price} · 리베아`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: `/product/${p.id}`,
+      images: [{ url: `/images/product/${p.image}`, alt: p.name }],
+    },
+  };
 }
 
 /** 고민별 대표 리뷰 (더미) */
@@ -63,11 +100,27 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const review = sampleReviews[mainConcern.slug];
   // 성분이 겹치는 기사 우선, 없으면 고민이 겹치는 기사
   const productArticle = articlesForProduct(product)[0];
+  const real = product.source;
 
-  // 같은 고민 대안 (비교표)
-  const rivals = products
-    .filter((p) => p.id !== product.id && p.concerns.includes(mainConcern.slug))
-    .slice(0, 2);
+  /**
+   * 비교표는 디바이스에만 (docs/07 수정안 5).
+   * 화장품은 저관여 소비재라 비교가 구매 판단을 돕지 않고, 디바이스는 내구재라 돕는다.
+   * 축은 2개로 줄인다 (수정안 6) — 스펙을 나열하면 인지 부담만 늘어난다.
+   */
+  const rivals =
+    real && product.category === "device"
+      ? comparableDevices
+          .filter((p) => p.id !== product.id)
+          // 다른 브랜드를 먼저 보여준다. 같은 브랜드 라인업만 비교하면
+          // 「브랜드 중립」이 화면에서 증명되지 않는다
+          .sort((a, b) => Number(a.brand === product.brand) - Number(b.brand === product.brand))
+          .slice(0, 2)
+      : [];
+
+  // 비교 축 2개: 작동 방식과 무게. 둘 다 측정 가능하고, 고르는 기준이 실제로 갈리는 항목
+  const compareAxes = ["작동 방식", "무게"];
+  const specValue = (p: typeof product, label: string) =>
+    p.specs?.find((s) => s.label === label)?.value ?? "—";
 
   // 함께 쓰면 좋은 루틴
   const relatedRoutines = routines.filter((r) =>
@@ -76,7 +129,10 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   return (
     <>
-      <AppBar title={brand.name} />
+      <AppBar
+        title={brand.name}
+        share={{ title: `${brand.name} ${modelLabel(product)}`, text: `${won(product.price)}원` }}
+      />
 
       <main className="flex-1">
         {/* 갤러리 */}
@@ -112,7 +168,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             </span>
             {product.rating} · 리뷰 {won(product.reviewCount)}건
           </p>
-          <p className="text-[13px] text-meta">{won(Math.round(product.likes / 22))}명이 보고 있어요</p>
+          <p className="text-[13px] text-meta">
+            {won(Math.round(product.likes / 22))}명이 보고 있어요
+          </p>
           <div className="mt-[11px] flex flex-wrap gap-[6px]">
             {product.tags.map((t) => (
               <span key={t} className="rounded border border-line px-[9px] py-1 text-[12px] text-body">
@@ -182,60 +240,98 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           ))}
         </section>
 
-        {/* 브랜드 비교표 — 중개형의 핵심 */}
+        {/* 제품 사양 — 실제 시판 제품. 공개된 물리량만 */}
+        {real && product.specs && (
+          <section className="border-b border-hairline px-4 py-4">
+            <h3 className="mb-[9px] text-[16px] font-bold text-ink">제품 사양</h3>
+            <dl className="text-[14px]">
+              {product.specs.map((s, i, arr) => (
+                <div
+                  key={s.label}
+                  className={`flex gap-3 py-[11px] ${
+                    i < arr.length - 1 ? "border-b border-subtle" : ""
+                  }`}
+                >
+                  <dt className="w-[92px] flex-shrink-0 text-meta">{s.label}</dt>
+                  <dd className="flex-1 leading-[1.5] text-ink">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-3 text-[13px] leading-[1.6] text-meta">
+              브랜드가 공개한 사양이에요. 효능·효과에 관한 내용은 담지 않았어요.
+            </p>
+          </section>
+        )}
+
+        {/*
+          디바이스 스펙 비교 — 중개형의 존재 이유.
+          공정위 비교표시·광고 심사지침: 비교 항목·기준·시점을 명시하고
+          객관적으로 확인 가능한 사항만 비교한다. 축은 2개 (docs/07 수정안 6).
+          우열 판단 문구는 넣지 않는다 — 사용자가 스스로 고르게 한다.
+        */}
         {rivals.length > 0 && (
           <section className="border-b border-hairline pb-4">
             <div className="px-4 pb-3 pt-4">
-              <h3 className="text-[16px] font-bold text-ink">같은 고민, 브랜드 비교</h3>
-              <p className="mt-[3px] text-[12px] text-meta">
-                {mainConcern.name} 제품 {rivals.length + 1}종을 나란히
+              <h3 className="text-[16px] font-bold text-ink">다른 기기와 나란히 보기</h3>
+              <p className="mt-[3px] text-[13px] leading-[1.6] text-meta">
+                작동 방식과 무게 기준 · 가격은 {real!.pricedAt} 확인
               </p>
             </div>
             <div className="px-4">
-              <table className="w-full table-fixed border-collapse text-[12px]">
+              <table className="w-full table-fixed border-collapse text-[13px]">
                 <thead>
                   <tr>
-                    <td className="w-[60px]" />
-                    <td className="rounded-t bg-ink px-1 py-[7px] text-center font-bold text-on-ink">
-                      {brand.name}
-                      <br />
-                      (이 상품)
+                    <td className="w-[68px]" />
+                    <td className="rounded-t bg-ink px-1 py-[7px] text-center font-bold leading-[1.3] text-on-ink">
+                      이 기기
                     </td>
                     {rivals.map((r) => (
-                      <td key={r.id} className="px-1 py-[7px] text-center text-body">
+                      <td key={r.id} className="px-1 py-[7px] text-center leading-[1.3] text-body">
                         {brandOf(r.brand).name}
+                        <br />
+                        <span className="text-meta">{modelLabel(r)}</span>
                       </td>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {(
-                    [
-                      ["가격", (p: typeof product) => won(p.price)],
-                      ["핵심성분", (p: typeof product) => p.keyIngredient],
-                      ["용량", (p: typeof product) => p.volume],
-                      ["평점", (p: typeof product) => String(p.rating)],
-                    ] as const
-                  ).map(([label, get]) => (
+                  {compareAxes.map((label) => (
                     <tr key={label} className="border-t border-hairline">
-                      <td className="py-2 pr-1 text-meta">{label}</td>
-                      <td className="bg-bg-tint px-1 py-2 text-center font-medium text-ink">
-                        {get(product)}
+                      <td className="py-2 pr-1 align-top text-meta">{label}</td>
+                      <td className="bg-bg-tint px-1 py-2 text-center font-medium leading-[1.4] text-ink">
+                        {specValue(product, label)}
                       </td>
                       {rivals.map((r) => (
-                        <td key={r.id} className="px-1 py-2 text-center text-body">
-                          {get(r)}
+                        <td key={r.id} className="px-1 py-2 text-center leading-[1.4] text-body">
+                          {specValue(r, label)}
                         </td>
                       ))}
                     </tr>
                   ))}
+                  <tr className="border-t border-hairline">
+                    <td className="py-2 pr-1 text-meta">가격</td>
+                    <td className="bg-bg-tint px-1 py-2 text-center font-medium text-ink">
+                      {won(product.price)}
+                    </td>
+                    {rivals.map((r) => (
+                      <td key={r.id} className="px-1 py-2 text-center text-body">
+                        {won(r.price)}
+                      </td>
+                    ))}
+                  </tr>
                 </tbody>
               </table>
+              <p className="mt-3 text-[13px] leading-[1.6] text-meta">
+                공개된 사양과 판매가만 비교했어요. 어느 쪽이 더 낫다는 판단은 담지 않았고,
+                효능·효과는 비교 대상이 아니에요.
+              </p>
             </div>
           </section>
         )}
 
-        {/* 성분·용법 — 접지 않고 펼침 */}
+        {/* 성분·용법 — 접지 않고 펼침.
+            실제 시판 제품의 사용법은 만들지 않는다. 기기 오사용은 안전 문제라
+            브랜드 공식 안내로 넘긴다. */}
         <section className="border-b border-hairline px-4 py-4">
           <h3 className="mb-[9px] text-[16px] font-bold text-ink">성분·용법</h3>
           <p className="text-[14px] leading-[1.6] text-body">{product.usage}</p>
