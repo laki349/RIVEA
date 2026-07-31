@@ -25,7 +25,7 @@ export default function AccountBlock() {
         <div>
           <p className="text-[19px] font-bold text-ink">로그인하기</p>
           <p className="mt-[3px] text-[13px] leading-[1.5] text-meta">
-            지금은 게스트예요 · 로그인하면 주문내역과 찜이 저장돼요
+            지금은 게스트예요 · 담아둔 장바구니·찜·주문은 그대로 옮겨져요
           </p>
         </div>
         <span className="flex-shrink-0 text-disabled">

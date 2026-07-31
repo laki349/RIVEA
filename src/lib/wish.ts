@@ -1,9 +1,10 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { clearScoped, currentScope, readScoped, registerScoped, writeScoped } from "./scope";
 
 /**
- * 찜 스토어 — localStorage 영속 + 구독. (cart.ts와 같은 패턴)
+ * 찜 스토어 — localStorage 영속 + 구독. 저장은 **계정(uid)별**이다(`scope.ts`).
  * 수량 개념이 없으므로 토글만 지원한다. 최근에 찜한 것이 앞에 온다.
  */
 export type WishItem = { kind: "product" | "routine"; id: string };
@@ -13,23 +14,25 @@ let items: WishItem[] = [];
 let loaded = false;
 const listeners = new Set<() => void>();
 
+function readFor(uid: string | null): WishItem[] {
+  return readScoped<WishItem[]>(KEY, uid, []);
+}
+
 function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
-  try {
-    const raw = window.localStorage.getItem(KEY);
-    if (raw) items = JSON.parse(raw);
-  } catch {
-    items = [];
-  }
+  items = readFor(currentScope());
 }
 
+registerScoped((uid) => {
+  if (typeof window === "undefined") return;
+  loaded = true;
+  items = readFor(uid);
+  listeners.forEach((l) => l());
+});
+
 function persist() {
-  try {
-    window.localStorage.setItem(KEY, JSON.stringify(items));
-  } catch {
-    /* 저장 불가 환경 무시 */
-  }
+  writeScoped(KEY, currentScope(), items);
 }
 
 function emit() {
@@ -76,4 +79,16 @@ export function removeFromWish(kind: WishItem["kind"], id: string) {
   load();
   items = items.filter((i) => !(i.kind === kind && i.id === id));
   emit();
+}
+
+/** 다른 계정으로 로그인했을 때 게스트가 찜한 것을 합친다 (합집합, 게스트 쪽이 더 최근이라 앞) */
+export function mergeWishInto(fromUid: string, toUid: string) {
+  const from = readFor(fromUid);
+  if (from.length === 0) return;
+  const to = readFor(toUid);
+  const merged = [...from, ...to].filter(
+    (item, i, all) => all.findIndex((x) => x.kind === item.kind && x.id === item.id) === i
+  );
+  writeScoped(KEY, toUid, merged);
+  clearScoped(KEY, fromUid);
 }

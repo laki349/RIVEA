@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import {
+  EmailAuthProvider,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  linkWithCredential,
+  linkWithPopup,
   onAuthStateChanged,
   signInAnonymously,
   signInWithEmailAndPassword,
@@ -13,6 +16,10 @@ import {
   type User,
 } from "firebase/auth";
 import { auth } from "./firebase";
+import { mergeCartInto } from "./cart";
+import { mergeOrdersInto } from "./orders";
+import { refreshScoped } from "./scope";
+import { mergeWishInto } from "./wish";
 
 /**
  * 인증 상태 + 동작.
@@ -65,19 +72,86 @@ export function maskEmail(email: string | null | undefined): string {
   return `${head}${"*".repeat(Math.max(1, id.length - 3))}@${domain}`;
 }
 
+/**
+ * 게스트가 담아둔 것을 계정으로 넘긴다.
+ *
+ * 두 경로가 있고 비용이 다르다.
+ * - **승계(link)**: 익명 uid를 그대로 정식 계정으로 바꾼다. uid가 유지되므로
+ *   저장 스코프도 그대로고 옮길 게 없다. 새 계정을 만들 때는 항상 이 경로다.
+ * - **병합(merge)**: 이미 있는 계정으로 로그인하면 uid가 바뀐다. 그때만 게스트 스코프의
+ *   장바구니·찜·주문을 새 uid로 합친다.
+ */
+function guestUid(): string | null {
+  const u = auth.currentUser;
+  return u?.isAnonymous ? u.uid : null;
+}
+
+function mergeGuestData(fromUid: string, toUid: string) {
+  if (fromUid === toUid) return; // 승계된 경우 — 옮길 필요 없음
+  mergeCartInto(fromUid, toUid);
+  mergeWishInto(fromUid, toUid);
+  mergeOrdersInto(fromUid, toUid);
+  // 스코프는 이미 새 uid로 옮겨졌으므로, 합친 결과를 화면이 다시 읽게 한다
+  refreshScoped();
+}
+
 export async function signUpWithEmail(email: string, password: string, name?: string) {
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
-  if (name) await updateProfile(cred.user, { displayName: name });
-  return cred.user;
+  const guest = guestUid();
+  // 게스트 상태면 새 계정을 만들지 않고 익명 계정을 승격시킨다 (uid·데이터 유지)
+  let user: User;
+  if (guest) {
+    try {
+      const cred = await linkWithCredential(
+        auth.currentUser!,
+        EmailAuthProvider.credential(email, password)
+      );
+      user = cred.user;
+    } catch (e) {
+      // 이미 그 이메일로 가입돼 있으면 승계가 불가능하다 → 로그인으로 안내
+      const code = (e as { code?: string })?.code ?? "";
+      if (code === "auth/email-already-in-use" || code === "auth/credential-already-in-use") {
+        throw e;
+      }
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      user = cred.user;
+      mergeGuestData(guest, user.uid);
+    }
+  } else {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    user = cred.user;
+  }
+  if (name) await updateProfile(user, { displayName: name });
+  return user;
 }
 
 export async function signInWithEmail(email: string, password: string) {
+  const guest = guestUid();
   const cred = await signInWithEmailAndPassword(auth, email, password);
+  if (guest) mergeGuestData(guest, cred.user.uid);
   return cred.user;
 }
 
 export async function signInWithGoogle() {
+  const guest = guestUid();
   const provider = new GoogleAuthProvider();
+
+  if (guest) {
+    try {
+      // 처음 쓰는 구글 계정이면 승계로 끝난다 (uid 유지)
+      const cred = await linkWithPopup(auth.currentUser!, provider);
+      return cred.user;
+    } catch (e) {
+      const code = (e as { code?: string })?.code ?? "";
+      // 이미 그 구글 계정으로 가입돼 있으면 승계가 안 된다 → 그 계정으로 로그인하고 데이터를 합친다
+      if (code !== "auth/credential-already-in-use" && code !== "auth/email-already-in-use") {
+        throw e;
+      }
+      const cred = await signInWithPopup(auth, provider);
+      mergeGuestData(guest, cred.user.uid);
+      return cred.user;
+    }
+  }
+
   const cred = await signInWithPopup(auth, provider);
   return cred.user;
 }
