@@ -11,6 +11,7 @@ import {
   won,
 } from "@/data/catalog";
 import Icon from "@/components/Icon";
+import CartLink from "@/components/CartLink";
 import ImageSlot from "@/components/ImageSlot";
 import TabBar from "@/components/TabBar";
 
@@ -37,9 +38,7 @@ export default function PickPage() {
           <Link href="/search" aria-label="검색" className="flex h-11 w-8 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
-          <Link href="/cart" aria-label="장바구니" className="flex h-11 w-8 items-center justify-center">
-            <Icon name="bag" size={21} />
-          </Link>
+          <CartLink />
         </div>
       </header>
 

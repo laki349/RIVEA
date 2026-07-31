@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Icon from "@/components/Icon";
+import CartLink from "@/components/CartLink";
 import TabBar from "@/components/TabBar";
 import WishQuickAction from "./WishQuickAction";
 import OrderQuickAction from "./OrderQuickAction";
@@ -38,9 +39,7 @@ export default function MyPage() {
           <button aria-label="알림" className="flex h-11 w-8 items-center justify-center">
             <Icon name="bell" size={21} />
           </button>
-          <Link href="/cart" aria-label="장바구니" className="flex h-11 w-8 items-center justify-center">
-            <Icon name="bag" size={21} />
-          </Link>
+          <CartLink />
         </div>
       </header>
 
