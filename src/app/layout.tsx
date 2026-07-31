@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import AuthScope from "@/components/auth/AuthScope";
+import ServiceWorker from "@/components/ServiceWorker";
 import Onboarding from "@/components/auth/Onboarding";
 
 /**
@@ -24,11 +25,34 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     type: "website",
   },
+  /* 홈 화면에 추가했을 때 아이콘·전체화면으로 뜨게 하는 부분 (app/manifest.ts) */
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    // iOS는 매니페스트 아이콘을 안 보고 이 링크만 본다
+    apple: [{ url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" }],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "리베아",
+    // 흰 배경 앱이라 상태바 글자는 어둡게
+    statusBarStyle: "default",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  /**
+   * `viewportFit: "cover"`가 있어야 `env(safe-area-inset-*)`에 실제 값이 들어온다.
+   * 없으면 전부 0이라, 탭바·구매바에 걸어둔 하단 여백이 홈 인디케이터에 먹힌다.
+   * 브라우저에서는 티가 안 나고 **설치해서 전체화면으로 띄웠을 때 드러난다.**
+   */
+  viewportFit: "cover",
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
@@ -39,6 +63,8 @@ export default function RootLayout({
       <body className="font-sans text-ink">
         {/* 장바구니·찜·주문의 저장 위치를 로그인 계정에 맞춘다 (렌더 없음) */}
         <AuthScope />
+        {/* 오프라인에서도 앱 껍데기가 열리게 (프로덕션에서만 등록) */}
+        <ServiceWorker />
         {/* 모바일 프레임 — 데스크탑에서도 중앙 고정 (에이블리·지그재그 식) */}
         <div className="mx-auto flex min-h-dvh w-full max-w-app flex-col bg-page shadow-[0_0_24px_rgba(28,24,21,0.06)]">
           {children}
