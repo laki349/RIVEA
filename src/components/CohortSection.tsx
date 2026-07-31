@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   brandOf,
@@ -14,6 +14,7 @@ import {
 } from "@/data/catalog";
 import ImageSlot from "./ImageSlot";
 import { displayNameOf, useAuth } from "@/lib/auth";
+import { useProfile } from "@/lib/profile";
 
 /**
  * 연령대 인기 모듈 — "50대가 지금 많이 봐요"
@@ -30,6 +31,18 @@ export default function CohortSection({ userName }: { userName?: string }) {
   const [age, setAge] = useState<AgeKey>("50s");
   const [mode, setMode] = useState<"product" | "routine">("product");
   const { user } = useAuth();
+  const profile = useProfile();
+
+  /**
+   * 프로필에 연령대가 있으면 그 탭으로 연다.
+   * `useState` 초기값으로 못 쓰는 이유: 정적 렌더 시점엔 프로필이 빈 값이라
+   * 초기값으로 넣으면 서버·클라이언트 렌더가 어긋난다(하이드레이션 불일치).
+   * 사용자가 탭을 직접 만지면 그 선택이 이긴다 — `touched`로 구분한다.
+   */
+  const [touched, setTouched] = useState(false);
+  useEffect(() => {
+    if (!touched && profile.cohort) setAge(profile.cohort);
+  }, [profile.cohort, touched]);
   // 로그인한 회원이면 실제 이름으로 부른다. 게스트·비로그인은 "고객"으로.
   const who = userName ?? (user && !user.isAnonymous ? displayNameOf(user) : "고객");
 
@@ -61,7 +74,10 @@ export default function CohortSection({ userName }: { userName?: string }) {
         {ages.map((a) => (
           <button
             key={a.key}
-            onClick={() => setAge(a.key)}
+            onClick={() => {
+              setTouched(true);
+              setAge(a.key);
+            }}
             className={`min-h-[34px] rounded px-[14px] text-[13px] ${
               age === a.key
                 ? "bg-ink font-medium text-on-ink"

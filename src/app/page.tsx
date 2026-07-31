@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { brands, concernImage, concerns, heroImages, products, routines } from "@/data/catalog";
+import { brands, heroImages, products } from "@/data/catalog";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import TabBar from "@/components/TabBar";
 import SectionHeader from "@/components/SectionHeader";
 import ProductCard from "@/components/ProductCard";
-import RoutineCard from "@/components/RoutineCard";
+import ConcernRail from "@/components/ConcernRail";
+import PickRail from "@/components/PickRail";
 import CohortSection from "@/components/CohortSection";
 import CartLink from "@/components/CartLink";
 
@@ -20,13 +21,20 @@ export default function HomePage() {
         <Link href="/" className="text-[20px] font-bold tracking-[0.05em] text-rose">
           RIVEA
         </Link>
-        <div className="flex items-center gap-4 text-ink">
+        <div className="flex items-center gap-[14px] text-ink">
           {/* 텍스트 라벨 — 아이콘 단독은 40대+ 판별이 어렵고, 유틸리티(검색·장바구니)와 종류가 다름을 드러낸다 */}
           <Link
             href="/magazine"
             className="flex h-11 items-center text-[14px] font-medium text-ink"
           >
             매거진
+          </Link>
+          {/* 순서 검사 — 홈 섹션으로 끼우면 상품 흐름을 끊는다. 상시 도구라 상단 바가 맞다 */}
+          <Link
+            href="/check"
+            className="flex h-11 items-center whitespace-nowrap text-[14px] font-medium text-ink"
+          >
+            루틴 확인
           </Link>
           <Link href="/search" aria-label="검색" className="flex h-11 w-8 items-center justify-center">
             <Icon name="search" size={21} />
@@ -36,22 +44,8 @@ export default function HomePage() {
       </header>
 
       <main className="flex-1">
-        {/* 고민으로 찾기 — 차별화 진입 */}
-        <section className="border-b border-hairline pb-[14px] pt-[13px]">
-          <h2 className="px-4 pb-[11px] text-[13px] font-bold text-ink">고민으로 찾기</h2>
-          <div className="rail flex gap-[14px] px-4">
-            {concerns.map((c) => (
-              <Link key={c.slug} href={`/concern/${c.slug}`} className="w-[56px] flex-shrink-0 text-center">
-                <ImageSlot
-                  className="h-[56px] w-[56px] rounded"
-                  src={concernImage(c.slug)}
-                  alt={c.name}
-                />
-                <p className="mt-[6px] whitespace-nowrap text-[12px] text-ink">{c.name}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
+        {/* 고민으로 찾기 — 차별화 진입. 내 고민이 앞으로 온다 (lib/profile.ts) */}
+        <ConcernRail />
 
         {/* 히어로 — 추천 제품 (풀블리드, 선으로만 구분) */}
         <section className="relative border-b border-hairline">
@@ -85,11 +79,7 @@ export default function HomePage() {
             }
             href="/pick"
           />
-          <div className="rail flex gap-[11px] pb-4 pl-4 pr-4">
-            {routines.map((r) => (
-              <RoutineCard key={r.id} routine={r} />
-            ))}
-          </div>
+          <PickRail />
         </section>
 
         {/* 연령대 인기 — 사회적 증거 모듈 */}
@@ -132,6 +122,14 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        {/* 데모 고지 — 실제 판매로 오인하지 않도록 */}
+        <section className="border-t border-hairline px-4 py-4">
+          <p className="text-[13px] leading-[1.6] text-meta">
+            리베아는 준비 중인 서비스예요. 이 화면은 발표용 데모이고 실제 판매·결제는 이뤄지지
+            않아요. 리뷰·평점·조회수는 예시 수치입니다.
+          </p>
         </section>
       </main>
 
