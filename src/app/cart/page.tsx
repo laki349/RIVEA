@@ -3,124 +3,45 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  brandOf,
-  brands,
-  productOf,
-  routines,
-  won,
-} from "@/data/catalog";
+import { won } from "@/data/catalog";
 import {
   removeFromCart,
   removeMany,
+  setAllChecked,
   setQty,
+  toggleChecked,
   useCart,
-  type CartItem,
 } from "@/lib/cart";
+import {
+  groupLabel,
+  groupLines,
+  lineAmount,
+  toLine,
+  totalsOf,
+} from "@/lib/lines";
 import Icon from "@/components/Icon";
+import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
-
-type Line = {
-  key: string;
-  kind: CartItem["kind"];
-  id: string;
-  qty: number;
-  name: string;
-  option: string;
-  price: number;
-  group: string; // 배송 그룹 라벨
-};
-
-function toLine(i: CartItem): Line {
-  if (i.kind === "product") {
-    const p = productOf(i.id);
-    return {
-      key: `p-${i.id}`,
-      kind: i.kind,
-      id: i.id,
-      qty: i.qty,
-      name: p.name,
-      option: p.tags[0] ?? p.volume,
-      price: p.price,
-      group: p.brand,
-    };
-  }
-  const r = routines.find((x) => x.id === i.id)!;
-  return {
-    key: `r-${i.id}`,
-    kind: i.kind,
-    id: i.id,
-    qty: i.qty,
-    name: `[세트] ${r.title}`,
-    option: `${r.badge} · ${r.label}`,
-    price: r.price,
-    group: "rivea-set",
-  };
-}
-
-function groupLabel(group: string) {
-  if (group === "rivea-set") return { name: "리베아 루틴 세트", ship: "무료배송" };
-  const b = brandOf(group);
-  return {
-    name: b.name,
-    ship: b.freeShippingOver
-      ? `${won(b.freeShippingOver)}원↑ 무료배송`
-      : `배송비 ${won(b.shippingFee)}원`,
-  };
-}
-
-function groupShippingFee(group: string, subtotal: number) {
-  if (group === "rivea-set") return 0;
-  const b = brandOf(group);
-  if (b.freeShippingOver && subtotal >= b.freeShippingOver) return 0;
-  return b.shippingFee;
-}
 
 export default function CartPage() {
   const cart = useCart();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
-  const [unchecked, setUnchecked] = useState<Set<string>>(new Set());
   useEffect(() => setMounted(true), []);
 
-  const lines = useMemo(() => cart.map(toLine), [cart]);
-  const groups = useMemo(() => {
-    const order: string[] = [];
-    const map = new Map<string, Line[]>();
-    for (const l of lines) {
-      if (!map.has(l.group)) {
-        map.set(l.group, []);
-        order.push(l.group);
-      }
-      map.get(l.group)!.push(l);
-    }
-    return order.map((g) => ({ group: g, lines: map.get(g)! }));
-  }, [lines]);
+  // 선택은 스토어에 있다 — 결제 화면이 같은 선택을 읽고, 새로고침해도 유지된다
+  const lines = useMemo(
+    () => cart.map((i) => ({ ...toLine(i), checked: i.checked })),
+    [cart]
+  );
+  const groups = useMemo(() => groupLines(lines), [lines]);
+  const selectedLines = lines.filter((l) => l.checked);
 
-  const checked = (key: string) => !unchecked.has(key);
-  const selectedLines = lines.filter((l) => checked(l.key));
-
-  const itemTotal = selectedLines.reduce((s, l) => s + l.price * l.qty, 0);
-  const shipTotal = groups.reduce((s, g) => {
-    const sel = g.lines.filter((l) => checked(l.key));
-    if (sel.length === 0) return s;
-    return s + groupShippingFee(g.group, sel.reduce((x, l) => x + l.price * l.qty, 0));
-  }, 0);
+  const { itemTotal, shipping: shipTotal } = totalsOf(selectedLines);
   const total = itemTotal + shipTotal;
 
-  const toggle = (key: string) => {
-    setUnchecked((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
-  };
-
-  const allChecked = lines.length > 0 && lines.every((l) => checked(l.key));
-  const toggleAll = () => {
-    setUnchecked(allChecked ? new Set(lines.map((l) => l.key)) : new Set());
-  };
+  const allChecked = lines.length > 0 && lines.every((l) => l.checked);
+  const toggleAll = () => setAllChecked(!allChecked);
 
   const removeSelected = () => {
     removeMany(selectedLines.map((l) => ({ kind: l.kind, id: l.id })));
@@ -187,10 +108,19 @@ export default function CartPage() {
               </div>
               {gl.map((l) => (
                 <div key={l.key} className="flex gap-[11px] px-4 pt-3">
-                  <button onClick={() => toggle(l.key)} className="mt-1 flex-shrink-0">
-                    <Check on={checked(l.key)} />
+                  <button
+                    onClick={() => toggleChecked(l.kind, l.id)}
+                    aria-label={l.checked ? "선택 해제" : "선택"}
+                    className="mt-1 flex-shrink-0"
+                  >
+                    <Check on={l.checked} />
                   </button>
-                  <div className="h-16 w-16 flex-shrink-0 rounded bg-subtle" />
+                  <ImageSlot
+                    className="h-16 w-16 flex-shrink-0 rounded"
+                    tone={l.kind === "routine" ? "warm" : "light"}
+                    src={l.image}
+                    alt={l.name}
+                  />
                   <div className="flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <p className="text-[13px] leading-[1.4] text-ink">{l.name}</p>
@@ -224,7 +154,7 @@ export default function CartPage() {
                         </button>
                       </div>
                       <span className="text-[15px] font-bold text-ink">
-                        {won(l.price * l.qty)}
+                        {won(lineAmount(l))}
                       </span>
                     </div>
                   </div>

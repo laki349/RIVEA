@@ -2,15 +2,30 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { brandOf, productOf, routines, won } from "@/data/catalog";
-import { clearCart, useCart } from "@/lib/cart";
+import { won } from "@/data/catalog";
+import { removeMany, useCart } from "@/lib/cart";
+import { groupLabel, groupLines, lineAmount, toLine, totalsOf } from "@/lib/lines";
+import { placeOrder, useOrders } from "@/lib/orders";
+import { COUPON_AMOUNT, applyOrder, earnRate, gradeOf, useWallet } from "@/lib/wallet";
 import Icon from "@/components/Icon";
+import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 
 const payments = ["신용·체크카드", "간편결제 (카카오·네이버·토스)", "무통장 입금"];
 
+/** 배송지 — 서버가 없어 데모 고정값. 주문에는 스냅샷으로 복사해 저장한다 */
+const receiver = {
+  name: "김서연",
+  phone: "010-1234-5678",
+  address: "서울시 마포구 월드컵북로 000, 101동 1001호",
+};
+
+
 export default function CheckoutPage() {
   const cart = useCart();
+  const wallet = useWallet();
+  const orders = useOrders();
+  const grade = gradeOf(orders);
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [payment, setPayment] = useState(0);
@@ -19,41 +34,35 @@ export default function CheckoutPage() {
   const [agreed, setAgreed] = useState(false); // 기본 해제 (다크패턴 금지)
   useEffect(() => setMounted(true), []);
 
-  const lines = useMemo(
-    () =>
-      cart.map((i) => {
-        if (i.kind === "product") {
-          const p = productOf(i.id);
-          return {
-            key: `p-${i.id}`,
-            brand: brandOf(p.brand).name,
-            name: p.name,
-            option: `${p.tags[0] ?? p.volume} · ${i.qty}개`,
-            amount: p.price * i.qty,
-          };
-        }
-        const r = routines.find((x) => x.id === i.id)!;
-        return {
-          key: `r-${i.id}`,
-          brand: "리베아 루틴 세트",
-          name: `[세트] ${r.title}`,
-          option: `${r.badge} · ${i.qty}개`,
-          amount: r.price * i.qty,
-        };
-      }),
-    [cart]
-  );
+  // 장바구니에서 **선택한 것만** 결제한다 (예전엔 장바구니 전체를 결제해버렸다)
+  const lines = useMemo(() => cart.filter((i) => i.checked).map(toLine), [cart]);
+  const groups = useMemo(() => groupLines(lines), [lines]);
 
-  const itemTotal = lines.reduce((s, l) => s + l.amount, 0);
-  const shipping = itemTotal >= 50000 || itemTotal === 0 ? 0 : 3000;
-  const couponCut = useCoupon ? Math.min(10000, itemTotal) : 0;
-  const pointCut = usePoints ? Math.min(3200, itemTotal - couponCut) : 0;
+  // 배송비는 브랜드별 — 장바구니 화면과 같은 계산(lib/lines.ts)을 쓴다
+  const { itemTotal, shipping } = totalsOf(lines);
+  // 쿠폰·포인트는 실제 보유량 안에서만 쓴다 (lib/wallet.ts)
+  const couponCut = useCoupon && wallet.coupons > 0 ? Math.min(COUPON_AMOUNT, itemTotal) : 0;
+  const pointCut = usePoints ? Math.min(wallet.points, itemTotal - couponCut) : 0;
   const total = itemTotal + shipping - couponCut - pointCut;
 
   const pay = () => {
     if (!agreed || lines.length === 0) return;
-    clearCart();
-    router.push("/order/complete");
+    // 지갑을 먼저 반영해 적립액을 받고, 그 값을 주문에 박아 넣는다 (취소 시 회수 기준)
+    const earned = applyOrder({ pointCut, couponCut, total, grade });
+    const no = placeOrder({
+      lines,
+      itemTotal,
+      shipping,
+      couponCut,
+      pointCut,
+      total,
+      payment: payments[payment],
+      earned,
+      receiver,
+    });
+    // 주문한 줄만 장바구니에서 빼고, 선택 안 한 상품은 남겨둔다
+    removeMany(lines.map((l) => ({ kind: l.kind, id: l.id })));
+    router.push(`/order/complete?no=${no}`);
   };
 
   if (!mounted) {
@@ -76,10 +85,10 @@ export default function CheckoutPage() {
             <h2 className="text-[15px] font-bold text-ink">배송지</h2>
             <button className="text-[13px] text-meta">변경 ›</button>
           </div>
-          <p className="text-[14px] font-medium text-ink">김서연 · 010-1234-5678</p>
-          <p className="mt-[3px] text-[13px] leading-[1.5] text-body">
-            서울시 마포구 월드컵북로 000, 101동 1001호
+          <p className="text-[14px] font-medium text-ink">
+            {receiver.name} · {receiver.phone}
           </p>
+          <p className="mt-[3px] text-[13px] leading-[1.5] text-body">{receiver.address}</p>
           <button className="mt-[9px] rounded border border-line px-[10px] py-[5px] text-[12px] text-body">
             배송 요청사항 선택 ›
           </button>
@@ -91,17 +100,26 @@ export default function CheckoutPage() {
           {lines.length === 0 ? (
             <p className="text-[13px] text-meta">주문할 상품이 없어요. 장바구니에서 담아주세요.</p>
           ) : (
-            lines.map((l, i) => (
-              <div key={l.key} className={i < lines.length - 1 ? "mb-[14px]" : ""}>
-                <p className="mb-2 text-[13px] font-bold text-ink">{l.brand}</p>
-                <div className="flex gap-[11px]">
-                  <div className="h-[52px] w-[52px] flex-shrink-0 rounded bg-subtle" />
-                  <div className="flex-1">
-                    <p className="text-[13px] text-ink">{l.name}</p>
-                    <p className="mt-[2px] text-[12px] text-meta">{l.option}</p>
+            groups.map((g, gi) => (
+              <div key={g.group} className={gi < groups.length - 1 ? "mb-[14px]" : ""}>
+                <p className="mb-2 text-[13px] font-bold text-ink">{groupLabel(g.group).name}</p>
+                {g.lines.map((l) => (
+                  <div key={l.key} className="flex gap-[11px] pb-2">
+                    <ImageSlot
+                      className="h-[52px] w-[52px] flex-shrink-0 rounded"
+                      tone={l.kind === "routine" ? "warm" : "light"}
+                      src={l.image}
+                      alt={l.name}
+                    />
+                    <div className="flex-1">
+                      <p className="text-[13px] text-ink">{l.name}</p>
+                      <p className="mt-[2px] text-[12px] text-meta">
+                        {l.option} · {l.qty}개
+                      </p>
+                    </div>
+                    <span className="text-[13px] font-bold text-ink">{won(lineAmount(l))}</span>
                   </div>
-                  <span className="text-[13px] font-bold text-ink">{won(l.amount)}</span>
-                </div>
+                ))}
               </div>
             ))
           )}
@@ -111,21 +129,25 @@ export default function CheckoutPage() {
         <section className="border-b border-hairline px-4 py-1">
           <button
             onClick={() => setUseCoupon((v) => !v)}
-            className="flex w-full items-center justify-between border-b border-subtle py-[14px]"
+            disabled={wallet.coupons === 0}
+            className="flex w-full items-center justify-between border-b border-subtle py-[14px] disabled:opacity-45"
           >
             <span className="flex items-center gap-2 text-[14px] text-ink">
-              <Check on={useCoupon} /> 신규가입 쿠폰 10,000원
+              <Check on={couponCut > 0} /> 신규가입 쿠폰 {won(COUPON_AMOUNT)}원
             </span>
-            <span className="text-[13px] text-meta">보유 2장</span>
+            <span className="text-[13px] text-meta">
+              {wallet.coupons === 0 ? "보유한 쿠폰 없음" : `보유 ${wallet.coupons}장`}
+            </span>
           </button>
           <button
             onClick={() => setUsePoints((v) => !v)}
-            className="flex w-full items-center justify-between py-[14px]"
+            disabled={wallet.points === 0}
+            className="flex w-full items-center justify-between py-[14px] disabled:opacity-45"
           >
             <span className="flex items-center gap-2 text-[14px] text-ink">
-              <Check on={usePoints} /> 리베아 포인트 전액 사용
+              <Check on={pointCut > 0} /> 리베아 포인트 전액 사용
             </span>
-            <span className="text-[13px] text-meta">보유 3,200P</span>
+            <span className="text-[13px] text-meta">보유 {won(wallet.points)}P</span>
           </button>
         </section>
 
@@ -158,6 +180,11 @@ export default function CheckoutPage() {
             <span className="text-[15px] font-bold text-ink">최종 결제금액</span>
             <span className="text-[19px] font-bold text-ink">{won(total)}</span>
           </div>
+          <p className="mt-2 text-[13px] text-meta">
+            {grade} 적립 {(earnRate(grade) * 100).toFixed(1)}% ·{" "}
+            <b className="font-medium text-ink">{won(Math.floor(total * earnRate(grade)))}P</b> 적립
+            예정
+          </p>
         </section>
 
         {/* 동의 — 기본 해제 */}
