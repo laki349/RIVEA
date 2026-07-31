@@ -70,3 +70,21 @@ body {
 .rail::-webkit-scrollbar {
   display: none;
 }
+
+/**
+ * 스크롤은 되지만 막대는 안 보이는 영역 (온보딩 로그인 패널 등).
+ *
+ * `overflow-y: auto`만 지정하면 **가로축도 자동으로 `auto`가 된다** — CSS 규칙상
+ * 한 축이 visible이 아니면 나머지 visible 축은 auto로 계산된다. 그래서 가로로
+ * 넘칠 게 없는데도 하단에 막대가 그려졌다. `overflow-x`를 명시로 잠그고,
+ * 막대를 항상 표시하는 설정(맥 "스크롤 막대 항상 표시"·윈도우)에서도 안 보이게 한다.
+ */
+.no-scrollbar {
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

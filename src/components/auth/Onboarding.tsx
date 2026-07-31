@@ -106,7 +106,7 @@ export default function Onboarding() {
           </section>
 
           {/* 3 — 로그인 */}
-          <section className="h-full w-1/3 overflow-y-auto">
+          <section className="no-scrollbar h-full w-1/3 overflow-y-auto">
             <LoginPanel compact onAuthed={() => setDismissed(true)} />
           </section>
         </div>
