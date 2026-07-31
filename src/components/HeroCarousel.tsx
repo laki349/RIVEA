@@ -81,6 +81,18 @@ export default function HeroCarousel() {
   const [paused, setPaused] = useState(false);
   /** 손으로 넘긴 직후 — 자동 전환이 사용자를 밀어내지 않도록 잠깐 쉰다 */
   const touchedUntil = useRef(0);
+  /** 스크롤이 멈췄는지 판단하는 디바운스 */
+  const settle = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /**
+   * 마지막 장 뒤에 **첫 장의 복제본**을 하나 더 둔다.
+   *
+   * 예전엔 3장에서 1장으로 갈 때 왼쪽으로 되감겼다 — 오른쪽으로 계속 흐르다가
+   * 갑자기 왔던 길을 거슬러 가니 흐름이 끊겼다. 복제본이 있으면 3→복제본으로
+   * **계속 오른쪽으로** 넘어가고, 멈춘 뒤에 소리 없이 0으로 되돌린다.
+   * 복제본은 첫 장과 똑같이 생겨서 그 순간이 눈에 보이지 않는다.
+   */
+  const loop = [...slides, slides[0]];
 
   const go = useCallback((to: number, smooth = true) => {
     const rail = railRef.current;
@@ -95,7 +107,14 @@ export default function HeroCarousel() {
   const onScroll = () => {
     const rail = railRef.current;
     if (!rail || rail.clientWidth === 0) return;
-    setIndex(Math.round(rail.scrollLeft / rail.clientWidth));
+    const raw = Math.round(rail.scrollLeft / rail.clientWidth);
+    setIndex(raw % slides.length); // 복제본은 1장으로 센다
+
+    // 복제본 위에 멈췄으면 애니메이션 없이 진짜 첫 장으로 옮긴다
+    if (settle.current) clearTimeout(settle.current);
+    settle.current = setTimeout(() => {
+      if (raw === slides.length) go(0, false);
+    }, 140);
   };
 
   useEffect(() => {
@@ -113,7 +132,8 @@ export default function HeroCarousel() {
       const rail = railRef.current;
       if (!rail) return;
       const current = Math.round(rail.scrollLeft / rail.clientWidth);
-      go((current + 1) % slides.length);
+      // 항상 오른쪽으로. 복제본(마지막 칸)까지 간 뒤에는 onScroll이 조용히 되돌린다
+      go(current >= slides.length ? 0 : current + 1);
     }, AUTO_MS);
 
     return () => clearInterval(timer);
@@ -132,14 +152,15 @@ export default function HeroCarousel() {
         onTouchStart={hold}
         className="rail flex snap-x snap-mandatory"
       >
-        {slides.map((s, i) => (
+        {loop.map((s, i) => (
           <Link
-            key={s.href}
+            key={i}
             href={s.href}
             className="relative w-full flex-shrink-0 snap-center"
             aria-label={`${s.title.replace("\n", " ")} — ${s.sub}`}
-            aria-hidden={i !== index}
-            tabIndex={i === index ? undefined : -1}
+            /* 복제본(마지막 칸)은 스크린리더·탭 이동에서 항상 제외한다 */
+            aria-hidden={i !== index || i === slides.length}
+            tabIndex={i === index && i !== slides.length ? undefined : -1}
           >
             <ImageSlot
               className="h-[280px] w-full"
@@ -167,10 +188,16 @@ export default function HeroCarousel() {
       <button
         onClick={() => setPaused((v) => !v)}
         aria-label={paused ? "배너 자동 넘김 켜기" : "배너 자동 넘김 멈추기"}
-        className="press absolute right-3 top-3 flex min-h-[32px] items-center gap-[6px] rounded bg-[rgba(28,24,21,0.55)] px-[9px] text-[13px] text-white"
+        /*
+          보이는 막대는 작지만 **누르는 영역은 44px**로 남긴다.
+          투명한 여백이 타깃을 채우므로 위계는 낮아지고 손가락은 그대로 닿는다.
+        */
+        className="press absolute right-1 top-0 flex h-11 items-center px-2"
       >
-        <Icon name={paused ? "play" : "pause"} size={13} />
-        {index + 1} / {slides.length}
+        <span className="flex h-[20px] items-center gap-[3px] rounded bg-[rgba(28,24,21,0.42)] px-[6px] text-[11px] font-medium text-white/90">
+          <Icon name={paused ? "play" : "pause"} size={10} />
+          {index + 1} / {slides.length}
+        </span>
       </button>
     </section>
   );
