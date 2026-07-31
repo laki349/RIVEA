@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { brands, heroImages, products } from "@/data/catalog";
+import { brands, products } from "@/data/catalog";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import TabBar from "@/components/TabBar";
 import SectionHeader from "@/components/SectionHeader";
 import ProductCard from "@/components/ProductCard";
 import ConcernRail from "@/components/ConcernRail";
+import HeroCarousel from "@/components/HeroCarousel";
 import PickRail from "@/components/PickRail";
 import CohortSection from "@/components/CohortSection";
 import CartLink from "@/components/CartLink";
@@ -47,27 +48,8 @@ export default function HomePage() {
         {/* 고민으로 찾기 — 차별화 진입. 내 고민이 앞으로 온다 (lib/profile.ts) */}
         <ConcernRail />
 
-        {/* 히어로 — 추천 제품 (풀블리드, 선으로만 구분) */}
-        <section className="relative border-b border-hairline">
-          <ImageSlot
-            className="h-[280px] w-full"
-            tone="warm"
-            src={heroImages[0]}
-            alt="가을, 무너진 탄력을 되돌리는 셀렉션"
-            position="center 30%"
-          />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(28,24,21,0.74)] to-transparent px-4 pb-4 pt-10">
-            <p className="text-[22px] font-bold leading-[1.3] text-white">
-              가을, 무너진 탄력을
-              <br />
-              되돌리는 셀렉션
-            </p>
-            <p className="mt-[6px] text-[13px] text-[#EDE7DF]">에디터 추천 24 · 최대 30% 쿠폰</p>
-          </div>
-          <span className="absolute right-3 top-3 rounded bg-[rgba(28,24,21,0.55)] px-[9px] py-[3px] text-[12px] text-white">
-            3 / 12
-          </span>
-        </section>
+        {/* 히어로 배너 — 자동 전환·스와이프·일시정지 (components/HeroCarousel) */}
+        <HeroCarousel />
 
         {/* 리베아's Pick — 루틴 섹션 */}
         <section className="border-b border-hairline">
