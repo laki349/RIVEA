@@ -60,7 +60,10 @@ export default function CohortSection({ userName }: { userName?: string }) {
       <div className="px-4 pb-3 pt-4">
         <div className="flex items-baseline justify-between">
           <h2 className="text-[17px] font-bold text-ink">{current.title}</h2>
-          <Link href="/pick" className="py-1 pl-3 text-[13px] text-meta">
+          <Link
+            href="/pick"
+            className="press -my-[8px] flex min-h-[44px] items-center pl-3 text-[13px] text-meta"
+          >
             전체보기
           </Link>
         </div>
@@ -78,7 +81,7 @@ export default function CohortSection({ userName }: { userName?: string }) {
               setTouched(true);
               setAge(a.key);
             }}
-            className={`min-h-[34px] rounded px-[14px] text-[13px] ${
+            className={`press min-h-[44px] rounded px-[14px] text-[14px] ${
               age === a.key
                 ? "bg-ink font-medium text-on-ink"
                 : "border border-line bg-surface text-body"
@@ -95,7 +98,8 @@ export default function CohortSection({ userName }: { userName?: string }) {
           <button
             key={m}
             onClick={() => setMode(m)}
-            className={`pb-[6px] text-[14px] ${
+            /* 밑줄은 텍스트 바로 아래 유지하고, 위쪽 여백으로 44px를 채운다 */
+            className={`press flex min-h-[44px] items-end pb-[6px] text-[15px] ${
               mode === m
                 ? "border-b-2 border-ink font-bold text-ink"
                 : "text-meta"

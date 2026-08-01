@@ -35,7 +35,7 @@ export default function CartLink({ size = 21 }: { size?: number }) {
     <Link
       href="/cart"
       aria-label="장바구니"
-      className="press relative flex h-11 w-8 items-center justify-center text-ink"
+      className="press relative flex h-11 w-11 items-center justify-center text-ink"
     >
       <Icon name="bag" size={size} />
       {mounted && count > 0 && (

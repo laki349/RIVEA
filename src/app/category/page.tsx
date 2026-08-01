@@ -19,7 +19,7 @@ export default function CategoryPage() {
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-hairline bg-surface px-4 py-[13px]">
         <h1 className="text-[17px] font-bold text-ink">카테고리</h1>
         <div className="flex items-center gap-4 text-ink">
-          <Link href="/search" aria-label="검색" className="flex h-11 w-8 items-center justify-center">
+          <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
           <CartLink />

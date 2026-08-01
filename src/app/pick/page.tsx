@@ -35,7 +35,7 @@ export default function PickPage() {
           <p className="mt-[2px] text-[12px] text-meta">에디터가 고른 홈케어 루틴</p>
         </div>
         <div className="flex items-center gap-4 text-ink">
-          <Link href="/search" aria-label="검색" className="flex h-11 w-8 items-center justify-center">
+          <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
           <CartLink />

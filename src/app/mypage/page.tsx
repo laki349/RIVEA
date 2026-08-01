@@ -36,7 +36,7 @@ export default function MyPage() {
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-hairline bg-surface px-4 py-[13px]">
         <h1 className="text-[17px] font-bold text-ink">마이페이지</h1>
         <div className="flex items-center gap-4 text-ink">
-          <button aria-label="알림" className="flex h-11 w-8 items-center justify-center">
+          <button aria-label="알림" className="flex h-11 w-11 items-center justify-center">
             <Icon name="bell" size={21} />
           </button>
           <CartLink />

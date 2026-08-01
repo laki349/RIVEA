@@ -19,7 +19,10 @@ export default function HomePage() {
     <>
       {/* 앱바 */}
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-hairline bg-surface px-4 py-[13px]">
-        <Link href="/" className="text-[20px] font-bold tracking-[0.05em] text-rose">
+        <Link
+          href="/"
+          className="flex h-11 items-center text-[20px] font-bold tracking-[0.05em] text-rose"
+        >
           RIVEA
         </Link>
         <div className="flex items-center gap-[14px] text-ink">
@@ -37,7 +40,7 @@ export default function HomePage() {
           >
             루틴 확인
           </Link>
-          <Link href="/search" aria-label="검색" className="flex h-11 w-8 items-center justify-center">
+          <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
           <CartLink />
