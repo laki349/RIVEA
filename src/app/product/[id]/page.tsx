@@ -18,6 +18,7 @@ import AppBar from "@/components/AppBar";
 import RoutineCard from "@/components/RoutineCard";
 import BuyBar from "@/components/BuyBar";
 import TrackRecent from "@/components/TrackRecent";
+import ActiveBars from "@/components/ActiveBars";
 import ArticleLink from "@/components/ArticleLink";
 import { articlesForProduct } from "@/data/magazine";
 
@@ -331,6 +332,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             </div>
           </section>
         )}
+
+        {/* 성분이 하는 일 — 성분별 작용 지점 + 고민 태그 (디바이스는 표시하지 않음) */}
+        <ActiveBars product={product} />
 
         {/* 성분·용법 — 접지 않고 펼침.
             실제 시판 제품의 사용법은 만들지 않는다. 기기 오사용은 안전 문제라

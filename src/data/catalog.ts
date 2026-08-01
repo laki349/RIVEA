@@ -191,7 +191,8 @@ export type ActiveKey =
   | "peptide"
   | "ceramide"
   | "panthenol"
-  | "sunscreen";
+  | "sunscreen"
+  | "collagen";
 
 /** 함량은 브랜드가 공개한 값만. 미공개면 pct 없음 */
 export type Active = { key: ActiveKey; pct?: number };
@@ -387,6 +388,7 @@ export const products: Product[] = [
   },
   {
     id: "p8",
+    actives: [{ key: "collagen" }],
     image: "product-p8.jpg",
     brand: "vitalab",
     name: "저분자 콜라겐 젤리스틱 30포",
