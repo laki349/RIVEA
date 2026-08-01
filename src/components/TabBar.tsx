@@ -24,12 +24,20 @@ export default function TabBar() {
           <Link
             key={t.href}
             href={t.href}
+            /*
+              비활성 라벨이 text-disabled(#B0A89D)였다. 흰 배경에서 2.35:1로
+              앱 전체에서 가장 심한 대비 위반이었다. 탭바는 어느 화면에서나
+              보이는 유일한 내비게이션이라 여기가 안 읽히면 길을 잃는다.
+
+              라벨을 11 → 13px로 올린 이유도 같다. 아이콘만으로는 40대+ 사용자가
+              Pick·찜을 구분하기 어렵고, 그럴 때 읽는 게 이 글자다.
+            */
             className={`press flex min-h-[44px] flex-1 flex-col items-center gap-[2px] ${
-              active ? "text-ink" : "text-disabled"
+              active ? "text-ink" : "text-meta"
             }`}
           >
             <Icon name={t.icon} size={21} />
-            <span className={`text-[11px] ${active ? "font-medium" : ""}`}>
+            <span className={`text-[13px] ${active ? "font-medium" : ""}`}>
               {t.label}
             </span>
           </Link>
