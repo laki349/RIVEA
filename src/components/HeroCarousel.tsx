@@ -194,7 +194,7 @@ export default function HeroCarousel() {
         */
         className="press absolute right-1 top-0 flex h-11 items-center px-2"
       >
-        <span className="flex h-[20px] items-center gap-[3px] rounded bg-[rgba(28,24,21,0.42)] px-[6px] text-[11px] font-medium text-white/90">
+        <span className="flex h-[20px] items-center gap-[3px] rounded bg-[rgba(28,24,21,0.42)] px-[6px] text-[12px] font-medium text-white/90">
           <Icon name={paused ? "play" : "pause"} size={10} />
           {index + 1} / {slides.length}
         </span>

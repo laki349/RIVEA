@@ -66,7 +66,7 @@ export default function BuyBar({
         ) : (
           <>
             <div className="flex-shrink-0">
-              <p className="text-[11px] text-meta">세트가</p>
+              <p className="text-[12px] text-meta">세트가</p>
               <p className="text-[17px] font-bold leading-[1.1] text-ink">{won(price)}</p>
             </div>
             <button

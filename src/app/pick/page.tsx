@@ -70,7 +70,7 @@ export default function PickPage() {
                   src={routineImage(r.id)}
                   alt={r.title}
                 />
-                <span className="absolute left-3 top-[10px] rounded-badge bg-ink px-2 py-1 text-[11px] font-medium text-on-ink">
+                <span className="absolute left-3 top-[10px] rounded-badge bg-ink px-2 py-1 text-[12px] font-medium text-on-ink">
                   {r.badge}
                 </span>
               </div>

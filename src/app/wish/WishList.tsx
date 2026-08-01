@@ -80,7 +80,7 @@ export default function WishList() {
                     alt={r.title}
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="text-[11px] font-bold text-rose">{r.label}</p>
+                    <p className="text-[12px] font-bold text-rose">{r.label}</p>
                     <p className="mt-[2px] truncate text-[13px] font-bold text-ink">{r.title}</p>
                     <div className="mt-1 flex items-baseline gap-[5px]">
                       {rate !== null && (

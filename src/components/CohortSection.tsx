@@ -142,7 +142,7 @@ export default function CohortSection({ userName }: { userName?: string }) {
                         {won(p.price)}
                       </span>
                     </div>
-                    <p className="text-[11px] text-meta">
+                    <p className="text-[12px] text-meta">
                       이번 주 {won(p.cohortViews[age])}명이 봤어요
                     </p>
                   </div>
@@ -168,12 +168,12 @@ export default function CohortSection({ userName }: { userName?: string }) {
                     <span className="absolute bottom-0 left-0 rounded-tr bg-ink px-2 py-[2px] text-[14px] font-bold text-on-ink">
                       {i + 1}
                     </span>
-                    <span className="absolute left-2 top-2 rounded-badge bg-ink px-[6px] py-[2px] text-[10px] font-medium text-on-ink">
+                    <span className="absolute left-2 top-2 rounded-badge bg-ink px-[6px] py-[2px] text-[12px] font-medium text-on-ink">
                       {r.badge}
                     </span>
                   </div>
                   <div className="px-[2px] pt-2">
-                    <p className="text-[11px] font-bold text-rose">{r.label}</p>
+                    <p className="text-[12px] font-bold text-rose">{r.label}</p>
                     <p className="mb-1 mt-[2px] truncate text-[12px] font-bold text-ink">
                       {r.title}
                     </p>
@@ -185,7 +185,7 @@ export default function CohortSection({ userName }: { userName?: string }) {
                         {won(r.price)}
                       </span>
                     </div>
-                    <p className="text-[11px] text-meta">
+                    <p className="text-[12px] text-meta">
                       이번 주 {won(r.cohortAdds[age])}명이 담았어요
                     </p>
                   </div>

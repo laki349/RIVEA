@@ -40,7 +40,8 @@ export default function CartLink({ size = 21 }: { size?: number }) {
       <Icon name="bag" size={size} />
       {mounted && count > 0 && (
         <span
-          className={`absolute right-[-2px] top-[3px] flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-on-ink ${
+          /* 글자를 12px로 올리면서 원도 16 → 18px. 안 키우면 숫자가 원 밖으로 밀린다 */
+          className={`absolute right-[-3px] top-[2px] flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-ink px-1 text-[12px] font-bold text-on-ink ${
             bumping ? "animate-bump" : ""
           }`}
         >

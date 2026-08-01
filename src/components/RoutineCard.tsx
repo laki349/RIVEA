@@ -21,12 +21,12 @@ export default function RoutineCard({ routine }: { routine: Routine }) {
           src={routineImage(routine.id)}
           alt={routine.title}
         />
-        <span className="absolute left-2 top-2 rounded-badge bg-ink px-[7px] py-[3px] text-[11px] font-medium text-on-ink">
+        <span className="absolute left-2 top-2 rounded-badge bg-ink px-[7px] py-[3px] text-[12px] font-medium text-on-ink">
           {routine.badge}
         </span>
       </div>
       <div className="px-3 pb-[13px] pt-[11px]">
-        <p className="text-[11px] font-bold text-rose">{routine.label}</p>
+        <p className="text-[12px] font-bold text-rose">{routine.label}</p>
         <p className="mb-2 mt-1 h-[39px] overflow-hidden text-[14px] font-bold leading-[1.4] text-ink">
           {routine.title}
         </p>

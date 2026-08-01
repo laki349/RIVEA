@@ -14,7 +14,7 @@ import RoutineCard from "@/components/RoutineCard";
 function SectionHead({ kicker, title, sub }: { kicker: string; title: string; sub?: string }) {
   return (
     <div className="px-4 pt-6">
-      <p className="text-[11px] font-bold tracking-[0.16em] text-meta">{kicker}</p>
+      <p className="text-[12px] font-bold tracking-[0.16em] text-meta">{kicker}</p>
       <h2 className="mt-[3px] text-[19px] font-bold text-ink">{title}</h2>
       <div className="mt-[10px] border-t border-ink" />
       {sub && <p className="mt-[9px] text-[13px] text-meta">{sub}</p>}
@@ -65,7 +65,7 @@ function BlockCard({ article }: { article: Article }) {
             {article.block?.ko ?? article.kind}
           </p>
           {article.block?.en && (
-            <p className="mt-[4px] text-[11px] leading-[1.3] text-white/75">{article.block.en}</p>
+            <p className="mt-[4px] text-[12px] leading-[1.3] text-white/75">{article.block.en}</p>
           )}
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function MagazinePage() {
             position="center 30%"
           />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(28,24,21,0.78)] to-transparent px-4 pb-4 pt-12">
-            <p className="text-[11px] font-bold tracking-[0.18em] text-white/80">
+            <p className="text-[12px] font-bold tracking-[0.18em] text-white/80">
               RIVEA MAGAZINE
             </p>
             <p className="mt-[5px] text-[32px] font-bold leading-[1.1] text-white">

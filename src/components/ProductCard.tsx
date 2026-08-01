@@ -30,12 +30,12 @@ export default function ProductCard({
           alt={`${brandOf(product.brand).name} ${product.name}`}
         />
         {rank !== undefined && (
-          <span className="absolute left-0 top-0 flex h-[22px] min-w-[22px] items-center justify-center bg-ink px-[6px] text-[11px] font-medium text-on-ink">
+          <span className="absolute left-0 top-0 flex h-[22px] min-w-[22px] items-center justify-center bg-ink px-[6px] text-[12px] font-medium text-on-ink">
             {rank}
           </span>
         )}
         {badge && (
-          <span className="absolute bottom-2 left-2 rounded-badge bg-ink px-[6px] py-[3px] text-[11px] font-medium text-on-ink">
+          <span className="absolute bottom-2 left-2 rounded-badge bg-ink px-[6px] py-[3px] text-[12px] font-medium text-on-ink">
             {badge}
           </span>
         )}

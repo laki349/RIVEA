@@ -86,7 +86,7 @@ function RoutineTile({ id }: { id: string }) {
             src={routineImage(r.id)}
             alt={r.title}
           />
-          <span className="absolute left-2 top-2 rounded bg-ink px-[7px] py-[3px] text-[11px] font-medium text-on-ink">
+          <span className="absolute left-2 top-2 rounded bg-ink px-[7px] py-[3px] text-[12px] font-medium text-on-ink">
             {r.badge}
           </span>
         </div>

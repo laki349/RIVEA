@@ -61,7 +61,7 @@ export default function MyPage() {
               <span className="text-ink">
                 <Icon name={a.icon} size={20} className="mx-auto" />
               </span>
-              <p className="mt-[5px] text-[11px] text-body">{a.label}</p>
+              <p className="mt-[5px] text-[12px] text-body">{a.label}</p>
             </button>
           ))}
           <WalletQuickActions />
