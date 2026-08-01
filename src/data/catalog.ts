@@ -152,6 +152,8 @@ export const brands: Brand[] = [
   { slug: "laroche", name: "라로슈포제", tagline: "민감 피부 더마", since: "2024", rating: 4.7, freeShippingOver: 30000, shippingFee: 2500, isReal: true },
   { slug: "roundlab", name: "라운드랩", tagline: "자작나무 수분 라인", since: "2025", rating: 4.7, freeShippingOver: 30000, shippingFee: 3000, isReal: true, officialUrl: "https://roundlab.co.kr" },
   { slug: "drforhair", name: "닥터포헤어", tagline: "두피·탈모 케어 전문", since: "2025", rating: 4.6, freeShippingOver: 30000, shippingFee: 3000, isReal: true, officialUrl: "https://www.drforhair.co.kr" },
+  { slug: "mediheal", name: "메디힐", tagline: "데일리 시트 마스크", since: "2025", rating: 4.6, freeShippingOver: 20000, shippingFee: 3000, isReal: true, officialUrl: "https://medihealshop.com" },
+  { slug: "iope", name: "아이오페", tagline: "아모레퍼시픽 베이스 메이크업", since: "2025", rating: 4.5, freeShippingOver: 30000, shippingFee: 2500, isReal: true, officialUrl: "https://www.iope.com" },
 ];
 
 // ── 상품 ──────────────────────────────────────────
@@ -992,6 +994,62 @@ export const products: Product[] = [
       pricedAt: "2026-07-31",
       priceNote: "공식몰 판매가",
       officialUrl: "https://www.drforhair.co.kr",
+    },
+  },
+  {
+    id: "c-mediheal-madeca",
+    actives: [{ key: "panthenol" }],
+    image: "product-p9.jpg",
+    brand: "mediheal",
+    name: "마데카소사이드 에센셜 마스크 흔적 리페어 10매",
+    category: "mask",
+    concerns: ["dry", "pigment"],
+    tags: ["시트 마스크", "진정", "10매"],
+    price: 11900,
+    listPrice: 20000,
+    rating: 4.6,
+    reviewCount: 22800,
+    likes: 7400,
+    badges: ["베스트", "빠른배송"],
+    keyIngredient: "마데카소사이드 50ppm",
+    volume: "24ml x 10매",
+    usage:
+      "세안·토너 후 얼굴에 밀착시켜 15~20분 두었다가 뗍니다. 기기를 쓴 날 마무리로도 좋아요.",
+    cohortViews: { "40s": 2480, "50s": 1860, "60s": 720 },
+    source: {
+      sourceUrl:
+        "https://medihealshop.com/product/%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C-%EC%97%90%EC%84%BC%EC%85%9C-%EB%A7%88%EC%8A%A4%ED%81%AC-%ED%9D%94%EC%A0%81-%EB%A6%AC%ED%8E%98%EC%96%B4-10%EB%A7%A4/1035/",
+      pricedAt: "2026-07-31",
+      priceNote: "공식몰 판매가",
+      officialUrl: "https://medihealshop.com",
+    },
+  },
+  {
+    id: "c-iope-aircushion",
+    actives: [{ key: "sunscreen" }],
+    image: "product-p10.jpg",
+    brand: "iope",
+    name: "에어쿠션 5.5세대 커버 15g (리필) SPF50/PA+++",
+    category: "cover-makeup",
+    concerns: ["pigment", "sun"],
+    tags: ["기미커버", "쿠션", "자외선"],
+    price: 16500,
+    listPrice: 22000,
+    rating: 4.5,
+    reviewCount: 31200,
+    likes: 9800,
+    badges: ["베스트"],
+    keyIngredient: "제품 표시: SPF50/PA+++",
+    volume: "15g",
+    usage:
+      "선크림 다음에 퍼프로 두드려 올립니다. 잡티가 신경 쓰이는 부위만 한 번 더 얹으세요.",
+    cohortViews: { "40s": 3100, "50s": 2240, "60s": 860 },
+    source: {
+      sourceUrl:
+        "https://www.amoremall.com/kr/ko/product/detail?onlineProdSn=58764&onlineProdCode=111130001346",
+      pricedAt: "2026-07-31",
+      priceNote: "공식몰 판매가",
+      officialUrl: "https://www.iope.com",
     },
   },
 ];
