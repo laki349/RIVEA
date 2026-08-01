@@ -24,6 +24,11 @@ export default function ActiveBars({ product }: { product: Product }) {
   // 브랜드가 성분을 공개하지 않은 제품 — 없는 걸 지어내지 않고 그렇다고 말한다.
   // 이 앱은 함량 공개를 세일즈 포인트로 쓰는 브랜드(아누아·폴라초이스)를 다루므로,
   // 공개하지 않은 쪽을 공백으로 두면 오히려 차이가 안 보인다.
+  //
+  // 단, **스킨케어에서만** 이 말을 한다. 클렌저·샴푸·이너뷰티는 애초에 핵심 성분
+  // 함량으로 팔지 않는 제품군이라, 거기서 "공개하지 않았어요"는 없는 잘못을 지적하는 게 된다.
+  if (actives.length === 0 && product.category !== "skincare") return null;
+
   if (actives.length === 0) {
     return (
       <section className="border-b border-hairline px-4 py-4">
