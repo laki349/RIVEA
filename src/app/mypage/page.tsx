@@ -5,12 +5,10 @@ import TabBar from "@/components/TabBar";
 import WishQuickAction from "./WishQuickAction";
 import OrderQuickAction from "./OrderQuickAction";
 import WalletQuickActions from "./WalletQuickActions";
+import ReviewQuickAction from "./ReviewQuickAction";
 import GradeCard from "./GradeCard";
 import ProfileEntry from "./ProfileEntry";
 import AccountBlock from "./AccountBlock";
-
-/** 주문·배송·쿠폰·포인트·찜은 실제 값을 읽는 클라이언트 컴포넌트가 담당한다 */
-const quickActions = [{ icon: "message" as const, label: "리뷰 0" }];
 
 /** href가 있으면 실제로 동작하는 항목. 없으면 아직 미구현 (docs/05 §5 죽은 UI 참고) */
 const menuGroups: { title: string; items: { label: string; href?: string; note?: string }[] }[] = [
@@ -56,14 +54,7 @@ export default function MyPage() {
         {/* 퀵액션 */}
         <div className="flex border-b border-hairline border-t">
           <OrderQuickAction />
-          {quickActions.map((a) => (
-            <button key={a.label} className="relative flex-1 py-[15px] text-center">
-              <span className="text-ink">
-                <Icon name={a.icon} size={20} className="mx-auto" />
-              </span>
-              <p className="mt-[5px] text-[12px] text-body">{a.label}</p>
-            </button>
-          ))}
+          <ReviewQuickAction />
           <WalletQuickActions />
           <WishQuickAction />
         </div>

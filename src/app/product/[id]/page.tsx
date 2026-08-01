@@ -19,6 +19,7 @@ import RoutineCard from "@/components/RoutineCard";
 import BuyBar from "@/components/BuyBar";
 import TrackRecent from "@/components/TrackRecent";
 import ActiveBars from "@/components/ActiveBars";
+import MyReview from "@/components/MyReview";
 import ArticleLink from "@/components/ArticleLink";
 import { articlesForProduct } from "@/data/magazine";
 
@@ -368,6 +369,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               ))}
             </span>
           </div>
+          <MyReview productId={product.id} />
           <div className="rounded border border-hairline px-3 py-[11px]">
             <p className="flex items-center gap-1 text-[13px] text-ink">
               <Icon name="star" size={12} /> {review.meta}

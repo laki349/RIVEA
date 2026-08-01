@@ -16,6 +16,8 @@ import {
   type OrderStatus,
 } from "@/lib/orders";
 import { revertOrder } from "@/lib/wallet";
+import { canReview } from "@/lib/reviews";
+import ReviewForm from "@/components/ReviewForm";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
@@ -75,6 +77,7 @@ export default function OrderDetail() {
   const cancelled = status === "cancelled";
   const groups = groupLines(order.lines);
   const stepIndex = STEPS.indexOf(status);
+  const reviewable = canReview(order);
 
   return (
     <>
@@ -139,25 +142,35 @@ export default function OrderDetail() {
             <div key={g.group} className={gi < groups.length - 1 ? "mb-[14px]" : ""}>
               <p className="mb-2 text-[13px] font-bold text-ink">{groupLabel(g.group).name}</p>
               {g.lines.map((l) => (
-                <Link
-                  key={l.key}
-                  href={l.kind === "product" ? `/product/${l.id}` : `/routine/${l.id}`}
-                  className="flex gap-[11px] pb-2"
-                >
-                  <ImageSlot
-                    className="h-[56px] w-[56px] flex-shrink-0 rounded"
-                    tone={l.kind === "routine" ? "warm" : "light"}
-                    src={l.image}
-                    alt={l.name}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[14px] text-ink">{l.name}</p>
-                    <p className="mt-[2px] text-[13px] text-meta">
-                      {l.option} · {l.qty}개
-                    </p>
-                  </div>
-                  <span className="text-[14px] font-bold text-ink">{won(l.amount)}</span>
-                </Link>
+                <div key={l.key} className="pb-2">
+                  <Link
+                    href={l.kind === "product" ? `/product/${l.id}` : `/routine/${l.id}`}
+                    className="press-card flex gap-[11px]"
+                  >
+                    <ImageSlot
+                      className="h-[56px] w-[56px] flex-shrink-0 rounded"
+                      tone={l.kind === "routine" ? "warm" : "light"}
+                      src={l.image}
+                      alt={l.name}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[14px] text-ink">{l.name}</p>
+                      <p className="mt-[2px] text-[13px] text-meta">
+                        {l.option} · {l.qty}개
+                      </p>
+                    </div>
+                    <span className="text-[14px] font-bold text-ink">{won(l.amount)}</span>
+                  </Link>
+
+                  {/*
+                    리뷰는 배송이 끝난 뒤에만. 받아보지 않고 쓴 리뷰는 남에게 쓸모가 없다.
+                    루틴 세트는 제외한다 — 구성품마다 쓸 말이 다른데 세트 하나로 묶으면
+                    "이 중 뭐가 좋았다는 거지"가 되고, 그 리뷰는 아무도 못 쓴다.
+                  */}
+                  {reviewable && l.kind === "product" && (
+                    <ReviewForm productId={l.id} productName={l.name} orderNo={order.no} />
+                  )}
+                </div>
               ))}
             </div>
           ))}

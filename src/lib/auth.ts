@@ -18,6 +18,7 @@ import {
 import { auth } from "./firebase";
 import { mergeCartInto } from "./cart";
 import { mergeOrdersInto } from "./orders";
+import { mergeReviewsInto } from "./reviews";
 import { refreshScoped } from "./scope";
 import { mergeWishInto } from "./wish";
 
@@ -91,6 +92,7 @@ function mergeGuestData(fromUid: string, toUid: string) {
   mergeCartInto(fromUid, toUid);
   mergeWishInto(fromUid, toUid);
   mergeOrdersInto(fromUid, toUid);
+  mergeReviewsInto(fromUid, toUid);
   // 스코프는 이미 새 uid로 옮겨졌으므로, 합친 결과를 화면이 다시 읽게 한다
   refreshScoped();
 }

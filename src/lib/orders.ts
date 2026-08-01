@@ -152,15 +152,29 @@ export function cancelOrder(no: string) {
 
 export type OrderStatus = "paid" | "preparing" | "shipping" | "delivered" | "cancelled";
 
-const HOUR = 60 * 60 * 1000;
-const DAY = 24 * HOUR;
+const MIN = 60 * 1000;
+
+/**
+ * 데모용으로 압축한 배송 시계.
+ *
+ * 실제 배송은 결제 → 준비 → 출고 → 도착이 며칠에 걸치고, 원래 이 값도
+ * 1시간/1일/3일이었다. 그런데 그러면 **오늘 주문한 사람은 3일 뒤에야
+ * 「배송 완료」를 본다** — 리뷰는 배송 완료 후에만 쓸 수 있으므로,
+ * 시연 자리에서 리뷰 기능에 도달할 방법이 아예 없었다.
+ *
+ * 규칙(순서·조건)은 그대로 두고 시계만 빠르게 돌린다. 주문 → 배송 완료 → 리뷰까지
+ * 30분 안에 전부 관찰된다. 실서비스로 갈 때 이 상수만 되돌리면 된다.
+ */
+const PAID_UNTIL = 2 * MIN;
+const PREPARING_UNTIL = 10 * MIN;
+const SHIPPING_UNTIL = 30 * MIN;
 
 export function statusOf(o: Order, now = Date.now()): OrderStatus {
   if (o.cancelledAt) return "cancelled";
   const elapsed = now - o.placedAt;
-  if (elapsed < HOUR) return "paid";
-  if (elapsed < DAY) return "preparing";
-  if (elapsed < 3 * DAY) return "shipping";
+  if (elapsed < PAID_UNTIL) return "paid";
+  if (elapsed < PREPARING_UNTIL) return "preparing";
+  if (elapsed < SHIPPING_UNTIL) return "shipping";
   return "delivered";
 }
 
@@ -178,7 +192,15 @@ export function isCancellable(o: Order, now = Date.now()): boolean {
   return s === "paid" || s === "preparing";
 }
 
-/** 도착 예정일 — 입점 브랜드 평균 2~3일 */
+/**
+ * 도착 예정일 — 입점 브랜드 평균 2~3일.
+ *
+ * 여기는 **실제 날짜 그대로** 둔다. 배송 단계는 데모용으로 압축했지만,
+ * 화면에 "8/4~8/5 도착 예정"이라고 적어놓고 30분 만에 도착했다고 하면
+ * 날짜가 거짓말이 된다. 단계는 빨리 넘어가되 약속한 날짜는 진짜 날짜로.
+ */
+const DAY = 24 * 60 * 60 * 1000;
+
 export function arrivalRange(o: Order): string {
   const fmt = (ms: number) => {
     const d = new Date(ms);

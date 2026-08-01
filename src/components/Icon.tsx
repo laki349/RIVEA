@@ -14,6 +14,7 @@ type IconName =
   | "chevron-left"
   | "chevron-down"
   | "star"
+  | "star-fill"
   | "eye"
   | "check"
   | "bell"
@@ -78,6 +79,13 @@ const paths: Record<IconName, React.ReactNode> = {
   "chevron-down": <path d="m5 9 7 7 7-7" />,
   star: (
     <path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.7l5.9-.8L12 3.5Z" />
+  ),
+  "star-fill": (
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.7l5.9-.8L12 3.5Z"
+    />
   ),
   eye: (
     <>
