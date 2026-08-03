@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { won } from "@/data/catalog";
+import InteractionNotes from "@/components/InteractionNotes";
 import {
   removeFromCart,
   removeMany,
@@ -163,6 +164,9 @@ export default function CartPage() {
             </section>
           );
         })}
+
+        {/* 함께 쓸 때 — 고른 것들의 성분 조합을 본다 (선택 해제한 건 살 게 아니므로 뺀다) */}
+        <InteractionNotes ids={selectedLines.map((l) => ({ kind: l.kind, id: l.id }))} />
 
         {/* 금액 요약 */}
         <section className="border-b border-hairline px-4 py-4">

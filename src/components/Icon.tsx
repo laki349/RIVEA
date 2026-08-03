@@ -26,7 +26,8 @@ type IconName =
   | "coin"
   | "share"
   | "pause"
-  | "play";
+  | "play"
+  | "info";
 
 const paths: Record<IconName, React.ReactNode> = {
   search: (
@@ -94,6 +95,13 @@ const paths: Record<IconName, React.ReactNode> = {
     </>
   ),
   check: <path d="m4.5 12.5 5 5 10-11" />,
+  info: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5.5" />
+      <path d="M12 7.6v.6" />
+    </>
+  ),
   bell: (
     <>
       <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2.5h-15L6 16Z" />

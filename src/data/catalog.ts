@@ -1052,6 +1052,67 @@ export const products: Product[] = [
       officialUrl: "https://www.iope.com",
     },
   },
+
+  // ── 화장품: 턴오버 계열 (레티놀 · 산) ──
+  // 40대+ 주름·모공 관리의 중심 성분인데 카탈로그에 하나도 없었다. 성분 병용 규칙
+  // (src/data/interactions.ts)이 판정할 대상이기도 하다 — 레티놀과 산은 이 앱에서
+  // 유일하게 "같이 쓰면 주의"가 걸리는 조합이다.
+  {
+    id: "c-anua-retinol",
+    actives: [{ key: "retinol", pct: 0.3 }, { key: "niacinamide" }],
+    image: "product-p4.jpg",
+    brand: "anua",
+    name: "레티놀 0.3 나이아신 리뉴잉 세럼 30ml",
+    category: "skincare",
+    concerns: ["wrinkle", "pore"],
+    tags: ["주름·탄력", "레티놀", "저녁 전용"],
+    price: 27800,
+    listPrice: 39000,
+    rating: 4.7,
+    reviewCount: 9240,
+    likes: 4300,
+    badges: ["베스트"],
+    keyIngredient: "레티놀 0.3%·나이아신아마이드",
+    volume: "30ml",
+    usage:
+      "저녁에만, 세안 후 마른 얼굴에 소량. 처음엔 주 2회로 시작해 자극이 없으면 늘리세요. 쓰는 동안 아침 자외선 차단은 빠뜨리지 마세요.",
+    cohortViews: { "40s": 2260, "50s": 1540, "60s": 470 },
+    source: {
+      sourceUrl:
+        "https://anua.kr/product/%EB%A0%88%ED%8B%B0%EB%86%80-03-%EB%82%98%EC%9D%B4%EC%95%84%EC%8B%A0-%EB%A6%AC%EB%89%B4%EC%9E%89-%EC%84%B8%EB%9F%BC/313/",
+      pricedAt: "2026-08-02",
+      priceNote: "공식몰 판매가 (정가 39,000원)",
+      officialUrl: "https://anua.kr",
+    },
+  },
+  {
+    id: "c-paulas-bha",
+    actives: [{ key: "aha-bha", pct: 2 }],
+    image: "product-p3.jpg",
+    brand: "paulaschoice",
+    name: "스킨 퍼펙팅 2% BHA 리퀴드 118ml",
+    category: "cleansing",
+    concerns: ["pore"],
+    tags: ["모공·각질", "BHA", "각질 정리"],
+    price: 39000,
+    listPrice: null,
+    rating: 4.8,
+    reviewCount: 26400,
+    likes: 11200,
+    badges: ["베스트", "빠른배송"],
+    keyIngredient: "살리실산(BHA) 2%",
+    volume: "118ml",
+    usage:
+      "저녁 토너 후 화장솜이나 손에 덜어 얼굴에 얇게. 매일이 아니라 격일로 시작하세요. 각질을 정리한 날은 다음 날 자외선 차단을 더 신경 쓰세요.",
+    cohortViews: { "40s": 1980, "50s": 1210, "60s": 380 },
+    source: {
+      sourceUrl:
+        "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000144042",
+      pricedAt: "2026-08-02",
+      priceNote: "올리브영 판매가",
+      officialUrl: "https://www.paulaschoice.co.kr",
+    },
+  },
 ];
 
 // ── 루틴 세트 (차별화 상품) ─────────────────────────
