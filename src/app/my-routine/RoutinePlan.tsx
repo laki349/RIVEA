@@ -6,6 +6,7 @@ import { brandOf, concernOf, productImage, productOf, won, type Product } from "
 import { addToCart } from "@/lib/cart";
 import { prescribe, type Slotted } from "@/lib/prescribe";
 import { useProfile } from "@/lib/profile";
+import { useShelfEntries } from "@/lib/shelf";
 import { regimenOf } from "@/data/regimen";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
@@ -29,7 +30,8 @@ export default function RoutinePlan() {
   const [added, setAdded] = useState(0);
   useEffect(() => setMounted(true), []);
 
-  const plan = useMemo(() => prescribe(profile.concerns), [profile.concerns]);
+  const shelf = useShelfEntries();
+  const plan = useMemo(() => prescribe(profile.concerns, shelf), [profile.concerns, shelf]);
 
   if (!mounted) return <main className="flex-1" />;
 
@@ -107,9 +109,13 @@ export default function RoutinePlan() {
         >
           루틴 {buyable.length}개 전부 담기
         </button>
-        <p className="mt-2 text-center text-[13px] leading-[1.5] text-meta">
-          쓰던 게 있는 단계는 장바구니에서 빼셔도 순서는 그대로예요.
-        </p>
+        <Link
+          href="/shelf"
+          className="press mt-2 flex h-11 items-center justify-center text-[14px] text-body"
+        >
+          이미 쓰는 게 있으면 화장대에 등록하세요
+          <Icon name="chevron-right" size={15} />
+        </Link>
       </div>
 
       {added > 0 && (
@@ -145,7 +151,16 @@ function Day({ title, note, steps }: { title: string; note: string; steps: Slott
             </div>
 
             <div className="mt-2 pl-[30px]">
-              {s.product ? (
+              {s.owned ? (
+                // 갖고 계신 것 — 살 것에서 빠졌다는 걸 이 자리에서 말해준다
+                <div className="rounded border border-hairline px-3 py-[9px]">
+                  <p className="flex items-center gap-[5px] text-[13px] text-meta">
+                    <Icon name="check" size={13} />
+                    갖고 계신 것
+                  </p>
+                  <p className="mt-[3px] text-[14px] text-ink">{s.owned.name}</p>
+                </div>
+              ) : s.product ? (
                 <ProductRow id={s.product.id} />
               ) : (
                 <p className="text-[14px] leading-[1.55] text-meta">

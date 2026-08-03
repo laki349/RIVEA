@@ -20,6 +20,7 @@ import BuyBar from "@/components/BuyBar";
 import TrackRecent from "@/components/TrackRecent";
 import ActiveBars from "@/components/ActiveBars";
 import MyReview from "@/components/MyReview";
+import ShelfConflict from "@/components/ShelfConflict";
 import ArticleLink from "@/components/ArticleLink";
 import { articlesForProduct } from "@/data/magazine";
 
@@ -354,6 +355,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             </div>
           )}
         </section>
+
+        {/* 내 화장대와의 조합 — 성분을 본 직후가 "같이 써도 되나"를 묻는 자리다 */}
+        <ShelfConflict productId={product.id} />
 
         {/* 리뷰 */}
         <section className="border-b border-hairline px-4 py-4">

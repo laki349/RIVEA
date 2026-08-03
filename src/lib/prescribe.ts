@@ -13,6 +13,7 @@ import {
   stepRank,
   type Step,
 } from "@/data/regimen";
+import type { ShelfEntry } from "./shelf";
 
 /**
  * 고민 → **아침·저녁 루틴**.
@@ -46,6 +47,13 @@ export type Slotted = {
   product: Product | null;
   /** 왜 이 자리에 이걸 놓았는지 — 고민 이름 */
   reason: string | null;
+  /**
+   * 이미 갖고 계신 것으로 채운 자리.
+   *
+   * 이 값이 있으면 **살 목록에서 뺀다.** 파는 앱이 하지 않는 일이고,
+   * 여기서 신뢰가 붙는다 — 앱이 내 것을 알아보고 덜 팔았다는 사실이 남는다.
+   */
+  owned: { name: string } | null;
 };
 
 export type Prescription = {
@@ -122,7 +130,18 @@ function fillBasic(step: Step, slot: "am" | "pm", used: Set<string>): Product | 
 
 const BASIC: Step[] = ["cleanse", "toner"];
 
-export function prescribe(concerns: string[]): Prescription {
+/**
+ * 갖고 계신 것으로 **대체할 수 있는** 자리.
+ *
+ * 세럼이 빠져 있는 게 핵심이다. 세안·토너·크림·선크림은 하나면 충분한 자리라
+ * 이미 있으면 살 필요가 없다. 그런데 세럼은 **고민마다 다른 자리**다 —
+ * 화장대에 비타민C 앰플 하나가 있다고 주름·모공 세럼 추천을 지우면,
+ * 고민 3개를 받아놓고 세럼 하나로 다 된다고 말하는 셈이 된다.
+ * (실제로 그렇게 만들었더니 아침·저녁 세럼 추천이 통째로 사라졌다.)
+ */
+const REPLACEABLE: Step[] = ["cleanse", "toner", "cream", "sun", "exfoliate", "scalp"];
+
+export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescription {
   /**
    * 이미 자리를 잡은 제품. 아침·저녁을 통틀어 관리한다.
    *
@@ -134,19 +153,35 @@ export function prescribe(concerns: string[]): Prescription {
 
   const build = (steps: Step[], slot: "am" | "pm"): Slotted[] =>
     steps.map((step) => {
+      const base = { step, label: STEP_LABEL[step] };
+
+      // 갖고 계신 것이 이 자리에 맞으면 그것으로 채운다. 새로 살 것을 권하기 전에
+      // 이미 있는 걸 쓰게 하는 게 순서다.
+      const mine = REPLACEABLE.includes(step)
+        ? shelf.find((e) => e.step === step)
+        : undefined;
+      if (mine) {
+        return {
+          ...base,
+          product: mine.product,
+          reason: null,
+          owned: { name: mine.name },
+        };
+      }
+
       const hit = pick(step, slot, concerns, used);
       if (hit) {
         if (regimenOf(hit.product).slot !== "both") used.add(hit.product.id);
-        return { step, label: STEP_LABEL[step], product: hit.product, reason: hit.reason };
+        return { ...base, product: hit.product, reason: hit.reason, owned: null };
       }
       if (BASIC.includes(step)) {
         const basic = fillBasic(step, slot, used);
         if (basic) {
           if (regimenOf(basic).slot !== "both") used.add(basic.id);
-          return { step, label: STEP_LABEL[step], product: basic, reason: null };
+          return { ...base, product: basic, reason: null, owned: null };
         }
       }
-      return { step, label: STEP_LABEL[step], product: null, reason: null };
+      return { ...base, product: null, reason: null, owned: null };
     });
 
   // 저녁을 먼저 짠다. 색소·주름 성분은 대부분 저녁 자리라, 아침을 먼저 짜면
@@ -156,13 +191,22 @@ export function prescribe(concerns: string[]): Prescription {
 
   const weekly = weeklyFor(concerns, used);
 
+  // 갖고 계신 자리(owned)는 살 목록에서 뺀다 — 병용 판정에는 화장대가 따로 들어간다
   const daily = Array.from(
     new Set(
-      [...pm, ...am].map((s) => s.product).filter((p): p is Product => p !== null)
+      [...pm, ...am]
+        .filter((s) => !s.owned)
+        .map((s) => s.product)
+        .filter((p): p is Product => p !== null)
     )
   );
   const all = [...daily, ...weekly.map((w) => w.product)];
-  const keys = Array.from(new Set(all.flatMap((p) => (p.actives ?? []).map((a) => a.key))));
+  const keys = Array.from(
+    new Set([
+      ...all.flatMap((p) => (p.actives ?? []).map((a) => a.key)),
+      ...shelf.flatMap((e) => e.actives),
+    ])
+  );
 
   return {
     am,
