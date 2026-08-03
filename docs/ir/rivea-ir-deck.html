@@ -539,29 +539,41 @@
   <span class="num">11</span>
   <p class="eyebrow">Team</p>
   <h2>팀</h2>
-  <div class="grid g3" style="margin-top:32px">
+  <p class="lead" style="margin-top:12px">
+    현재 1인입니다. 숨기지 않고, <b>혼자 어디까지 왔는지와 누구를 뽑을지</b>를 같이 놓습니다.
+  </p>
+
+  <div style="display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin-top:26px">
     <div class="card">
-      <p class="k">Founder</p>
-      <h3 style="margin-top:10px"><span class="todo">이름 · 역할</span></h3>
-      <p class="body" style="margin-top:8px"><span class="todo">이 문제를 왜 당신이 푸는지 — 한 문장</span></p>
+      <p class="k">Founder · 1인</p>
+      <h3 style="margin-top:10px;font-size:24px"><span class="todo">이름</span></h3>
+      <p class="body" style="margin-top:10px">
+        기획 · 디자인 · 개발을 혼자 했습니다.<br>
+        <b>커밋 43개 · 12,560줄 · 배포된 웹앱.</b>
+      </p>
+      <p class="small" style="margin-top:12px">
+        <span class="todo">「이 문제를 왜 내가 푸는지」 한 문장</span><br>
+        1인 팀에서는 이 문장이 팀 슬라이드 전체를 대신합니다.
+      </p>
     </div>
-    <div class="card">
-      <p class="k">Member</p>
-      <h3 style="margin-top:10px"><span class="todo">이름 · 역할</span></h3>
-      <p class="body" style="margin-top:8px"><span class="todo">관련 경험</span></p>
+
+    <div>
+      <div class="card">
+        <h3>1인이 약점이 아닌 이유</h3>
+        <p class="body" style="margin-top:6px">
+          초기 팀의 가장 큰 위험은 사람이 적은 게 아니라 <b>만든 게 없는 것</b>입니다.
+          기획부터 배포까지 한 사람 안에서 돌았기 때문에 의사결정에 전달 손실이 없고,
+          지금 바로 열리는 링크가 그 증거입니다.
+        </p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>투자금으로 채울 자리 (18개월)</h3>
+        <p class="body" style="margin-top:6px">
+          <b>브랜드 입점 · MD</b> — 카탈로그를 늘리는 사람. 규칙 엔진은 상품이 늘수록 강해집니다.<br>
+          <b>프론트엔드 개발</b> — 제가 제품 방향에 시간을 쓸 수 있게 되는 자리.
+        </p>
+      </div>
     </div>
-    <div class="card">
-      <p class="k">Member</p>
-      <h3 style="margin-top:10px"><span class="todo">이름 · 역할</span></h3>
-      <p class="body" style="margin-top:8px"><span class="todo">관련 경험</span></p>
-    </div>
-  </div>
-  <div class="card" style="margin-top:22px">
-    <h3>이미 증명한 것</h3>
-    <p class="body" style="margin-top:8px">
-      기획·디자인·개발을 <b>커밋 43개 · 12,560줄</b>로 배포 가능한 상태까지 만들었습니다.
-      IR에서 팀 슬라이드가 약할 때 이 항목이 가장 잘 먹힙니다 — 말이 아니라 돌아가는 링크가 근거입니다.
-    </p>
   </div>
 </section>
 
@@ -569,32 +581,46 @@
 <section class="slide">
   <span class="num">12</span>
   <p class="eyebrow">The Ask</p>
-  <h2>요청</h2>
-  <div class="grid g2" style="margin-top:30px">
+  <h2>3.5억원 · 18개월</h2>
+  <p class="lead" style="margin-top:12px">
+    18개월은 「만들 시간」이 아니라 <b>재구매율이 나오는 데 걸리는 시간</b>입니다 —
+    화장품 한 통이 두 달이라 최소 2~3회전이 필요합니다.
+  </p>
+
+  <div class="grid g2" style="margin-top:26px">
     <div class="card">
-      <p class="k">투자 규모</p>
-      <p class="stat" style="margin-top:10px"><span class="todo">금액</span></p>
-      <p class="body" style="margin-top:12px"><span class="todo">런웨이 개월 수 · 사용처 비중(개발/입점/마케팅)</span></p>
+      <p class="k">사용처</p>
+      <table style="margin-top:10px">
+        <tr><td>인건비 2인 · 18개월</td><td style="text-align:right"><b>2.0억</b></td><td style="text-align:right;color:var(--ink-mute)">58%</td></tr>
+        <tr><td>브랜드 입점 · 상품 데이터 구축</td><td style="text-align:right"><b>0.4억</b></td><td style="text-align:right;color:var(--ink-mute)">11%</td></tr>
+        <tr><td>초기 유저 확보</td><td style="text-align:right"><b>0.5억</b></td><td style="text-align:right;color:var(--ink-mute)">14%</td></tr>
+        <tr><td>서버 · 법률 · 회계 · 툴</td><td style="text-align:right"><b>0.2억</b></td><td style="text-align:right;color:var(--ink-mute)">6%</td></tr>
+        <tr><td>예비비</td><td style="text-align:right"><b>0.4억</b></td><td style="text-align:right;color:var(--ink-mute)">11%</td></tr>
+        <tr><td><b>합계</b></td><td style="text-align:right;color:var(--accent)"><b>3.5억</b></td><td></td></tr>
+      </table>
     </div>
+
     <div class="card">
-      <p class="k">이 돈으로 증명할 것</p>
-      <p class="body" style="margin-top:10px">
-        <span class="todo">마일스톤 1 — 입점 브랜드 N개</span><br>
-        <span class="todo">마일스톤 2 — 첫 거래액 / 재구매율</span><br>
-        <span class="todo">마일스톤 3 — 루틴 → 구매 전환율</span>
-      </p>
-      <p class="small" style="margin-top:14px">
-        마일스톤은 "무엇을 만들겠다"가 아니라 <b>"어떤 가설을 검증하겠다"</b>로 쓰는 게 좋습니다.
-      </p>
+      <p class="k">이 돈으로 검증할 가설</p>
+      <div style="margin-top:12px">
+        <p class="body" style="margin:0"><b style="color:var(--ink-mute);font-size:13px">6개월</b> &nbsp;
+          <b style="font-size:16px">브랜드가 들어오는가</b><br>
+          <span class="small">입점 20개 · 상품 300개. 통합 비교가 성립할 최소 밀도.</span></p>
+        <p class="body" style="margin:14px 0 0"><b style="color:var(--ink-mute);font-size:13px">12개월</b> &nbsp;
+          <b style="font-size:16px">루틴이 구매로 이어지는가</b><br>
+          <span class="small">루틴 → 담기 전환율. 이 앱의 존재 이유가 여기서 증명됩니다.</span></p>
+        <p class="body" style="margin:14px 0 0"><b style="color:var(--ink-mute);font-size:13px">18개월</b> &nbsp;
+          <b style="font-size:16px">다시 사는가</b><br>
+          <span class="small">재구매율. 리텐션이 광고가 아니라 사용 주기에서 나오는지.</span></p>
+      </div>
     </div>
   </div>
-  <div class="card" style="margin-top:22px">
-    <h3>지금 바로 확인하실 수 있습니다</h3>
-    <p class="lead" style="margin-top:10px">
-      <a href="https://rivea-app.web.app" style="color:var(--accent);font-weight:700">rivea-app.web.app</a>
-      — 회원가입 없이 둘러보기, 고민 설정 후 「내 루틴」까지 바로 보실 수 있습니다.
-    </p>
-  </div>
+
+  <p class="src" style="padding-top:18px">
+    산출 근거: 개발 1인 4,500만 + MD 1인 4,000만 + 대표 최소급여 3,000만 · 18개월 · 4대보험·퇴직 포함(×1.2).
+    정부지원(예비창업패키지 · TIPS)을 병행하면 같은 지분으로 런웨이를 늘릴 수 있습니다.<br>
+    <b>지금 바로 확인하실 수 있습니다 — <a href="https://rivea-app.web.app">rivea-app.web.app</a></b>
+  </p>
 </section>
 
 <p class="small" style="text-align:center;color:rgba(255,255,255,.75);padding-bottom:20px">
