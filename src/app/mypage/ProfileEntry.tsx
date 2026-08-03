@@ -21,9 +21,11 @@ export default function ProfileEntry() {
     .filter(Boolean)
     .join(" · ");
 
+  // 고민이 설정돼 있으면 「내 루틴」으로 보낸다. 홈 정렬은 이미 적용돼 있고,
+  // 사용자가 다음에 얻을 게 더 큰 쪽은 아침·저녁 순서다.
   return (
     <Link
-      href="/profile"
+      href={set ? "/my-routine" : "/profile"}
       className="mx-4 mb-[14px] flex items-center gap-[9px] rounded border border-line px-[14px] py-[13px]"
     >
       <span className="text-rose">
@@ -31,10 +33,10 @@ export default function ProfileEntry() {
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-[15px] font-medium text-ink">
-          {set ? "내 피부 고민" : "내 피부 고민 설정하기"}
+          {set ? "내 루틴 보기" : "내 피부 고민 설정하기"}
         </span>
         <span className="mt-[2px] block truncate text-[14px] text-meta">
-          {set ? summary : "고른 고민을 홈 맨 앞에 보여드려요"}
+          {set ? `${summary} · 아침·저녁 순서` : "고민을 고르면 아침·저녁 순서를 짜드려요"}
         </span>
       </span>
       <span className="text-disabled">

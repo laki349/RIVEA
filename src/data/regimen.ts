@@ -100,6 +100,10 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   p8: { lifespanDays: 30 },
   // 리필 15g 쿠션
   "c-iope-aircushion": { lifespanDays: 75 },
+  // 200ml 토너 · 50ml 크림 — 아침·저녁 둘 다 쓰는 자리
+  "c-roundlab-dokdo-toner": { slot: "both", lifespanDays: 70 },
+  "c-roundlab-dokdo-cream": { slot: "both", lifespanDays: 60 },
+  "c-roundlab-birch-cleanser": { slot: "both" },
 };
 
 export function regimenOf(p: Product): Regimen {

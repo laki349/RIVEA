@@ -134,12 +134,20 @@ export default function ProfileForm() {
               )}
             </p>
             <div className="mt-5 flex flex-col gap-[10px]">
+              {/* 루틴을 먼저 준다. 홈 정렬은 이미 적용돼 있어 확인할 게 없고,
+                  고민을 고른 직후에 가장 궁금한 건 "그래서 어떻게 쓰냐"다 */}
               <button
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/my-routine")}
                 className="flex h-12 items-center justify-center gap-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
               >
-                홈에서 확인하기
+                내 루틴 보기
                 <Icon name="chevron-right" size={17} />
+              </button>
+              <button
+                onClick={() => router.push("/")}
+                className="h-12 rounded-cta border border-line text-[15px] font-medium text-body"
+              >
+                홈에서 확인하기
               </button>
               <button
                 onClick={clearProfile}

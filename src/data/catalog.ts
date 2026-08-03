@@ -1113,6 +1113,65 @@ export const products: Product[] = [
       officialUrl: "https://www.paulaschoice.co.kr",
     },
   },
+
+  // ── 화장품: 기본 단계 (토너 · 크림) ──
+  // 「내 루틴」이 단계별로 자리를 채우는데 토너가 카탈로그에 하나도 없어서
+  // 아침·저녁 2번 자리가 통째로 비었다. 세럼·기기만 파는 카탈로그는
+  // "무엇을 살까"엔 답하지만 "어떤 순서로 쓸까"엔 답할 수 없다.
+  {
+    id: "c-roundlab-dokdo-toner",
+    image: "product-p1.jpg",
+    brand: "roundlab",
+    name: "1025 독도 토너 200ml",
+    category: "skincare",
+    concerns: ["dry", "pore"],
+    tags: ["건조", "저자극", "토너"],
+    price: 11900,
+    listPrice: 15000,
+    rating: 4.8,
+    reviewCount: 41200,
+    likes: 19800,
+    badges: ["베스트", "빠른배송"],
+    keyIngredient: "해양심층수·판테놀",
+    volume: "200ml",
+    usage:
+      "아침·저녁 세안 후 첫 단계에. 화장솜에 적셔 닦아내도 되고 손으로 두드려 흡수시켜도 됩니다.",
+    cohortViews: { "40s": 3120, "50s": 2240, "60s": 810 },
+    actives: [{ key: "panthenol" }],
+    source: {
+      sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
+      pricedAt: "2026-08-02",
+      priceNote: "공식몰 판매가 (정가 15,000원)",
+      officialUrl: "https://roundlab.co.kr",
+    },
+  },
+  {
+    id: "c-roundlab-dokdo-cream",
+    image: "product-p4.jpg",
+    brand: "roundlab",
+    name: "1025 독도 수분 크림 50ml",
+    category: "skincare",
+    concerns: ["dry", "wrinkle"],
+    tags: ["건조", "저자극", "크림"],
+    price: 18000,
+    listPrice: 25000,
+    rating: 4.7,
+    reviewCount: 15600,
+    likes: 7100,
+    badges: ["베스트"],
+    keyIngredient: "해양심층수·세라마이드",
+    volume: "50ml",
+    usage:
+      "아침·저녁 마지막 단계에. 레티놀이나 산을 쓴 날엔 이 단계를 넉넉히 올려 마무리하세요.",
+    cohortViews: { "40s": 2280, "50s": 1970, "60s": 890 },
+    actives: [{ key: "ceramide" }, { key: "panthenol" }],
+    source: {
+      sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
+      pricedAt: "2026-08-02",
+      priceNote: "공식몰 판매가 (정가 25,000원)",
+      officialUrl: "https://roundlab.co.kr",
+    },
+  },
 ];
 
 // ── 루틴 세트 (차별화 상품) ─────────────────────────
