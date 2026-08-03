@@ -1,0 +1,7 @@
+{
+  "name": "cardnews-tooling",
+  "private": true,
+  "type": "module",
+  "description": "카드뉴스 HTML을 PNG로 캡처하는 격리된 도구. 앱 의존성과 무관.",
+  "devDependencies": { "playwright": "^1.62.1" }
+}

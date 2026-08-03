@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>백세시대, 젊게 사는 법 — v2 (사진 배경형)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#1C1815; --body:#4A443E; --muted:#8B8279;
+  --line:rgba(28,24,21,.16); --accent:#C13B54;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#9c968c;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.card{position:relative;width:1080px;height:1350px;overflow:hidden;margin:0 auto 40px}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* 아이보리 베일 — 사진이 배경으로 살아야 하므로 최소한만. 잉크 텍스트는 밝은 사진 위에서
+   이 정도로도 대비가 충분하다(약 8:1 이상). 어두운 사진에만 .deep을 덧댄다. */
+.veil{position:absolute;left:0;right:0;height:58%}
+.veil.top{top:0;background:linear-gradient(to bottom,
+  rgba(250,247,242,.68) 0%,rgba(250,247,242,.46) 46%,rgba(250,247,242,0) 100%)}
+.veil.bot{bottom:0;background:linear-gradient(to top,
+  rgba(250,247,242,.72) 0%,rgba(250,247,242,.48) 46%,rgba(250,247,242,0) 100%)}
+.veil.deep.top{background:linear-gradient(to bottom,
+  rgba(250,247,242,.90) 0%,rgba(250,247,242,.70) 46%,rgba(250,247,242,0) 100%)}
+/* 밝은 사진에서 페이지번호가 묻히지 않게 아주 옅은 상단 베일 */
+.veil.thin.top{height:16%;background:linear-gradient(to bottom,
+  rgba(250,247,242,.62) 0%,rgba(250,247,242,0) 100%)}
+/* 정리 카드: 내용이 길어 전체를 덮어야 한다. 대신 농도를 낮춰 질감은 남긴다. */
+.veil.full{top:0;height:100%;background:linear-gradient(to bottom,
+  rgba(250,247,242,.80) 0%,rgba(250,247,242,.66) 58%,rgba(250,247,242,.50) 100%)}
+
+.txt{position:absolute;left:80px;right:80px}
+.txt.top{top:88px}
+.txt.bot{bottom:88px}
+
+.label{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--accent);
+  margin-bottom:26px}
+h2{font-size:76px;font-weight:700;line-height:1.22;letter-spacing:-.035em;color:var(--ink)}
+/* 큰 제목 ↔ 작은 본문 대비는 유지하되, 본문이 실제로 내용을 말한다 (2~3문장) */
+.lead{margin-top:30px;font-size:33px;font-weight:400;line-height:1.62;
+  letter-spacing:-.012em;color:var(--body)}
+.info{margin-top:28px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:30px;font-weight:600;line-height:1.4;letter-spacing:-.01em;color:var(--ink)}
+.info b{font-weight:700;font-size:22px;letter-spacing:.16em;color:var(--accent);
+  margin-right:16px;vertical-align:2px}
+/* 어떤 사진(질감 있는 배경 포함) 위에서도 읽히도록 옅은 아이보리 받침 */
+.pg{position:absolute;right:74px;bottom:68px;font-size:23px;font-weight:600;
+  letter-spacing:.16em;color:rgba(28,24,21,.58);line-height:1;
+  background:rgba(250,247,242,.62);border-radius:4px;padding:9px 13px}
+
+/* 커버 */
+.eyebrow{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--ink);opacity:.66;
+  margin-bottom:34px}
+h1{font-size:98px;font-weight:700;line-height:1.18;letter-spacing:-.04em;color:var(--ink)}
+.cover-line{margin-top:36px;padding-top:26px;border-top:1px solid var(--line);
+  font-size:31px;font-weight:500;color:var(--body);letter-spacing:-.01em}
+
+/* 정리 카드 */
+.steps{list-style:none;margin-top:28px;border-top:1px solid var(--line)}
+.steps li{display:flex;align-items:baseline;gap:22px;padding:16px 0;
+  border-bottom:1px solid var(--line);font-size:36px;font-weight:700;color:var(--ink);
+  letter-spacing:-.02em}
+.steps li i{font-style:normal;font-size:24px;font-weight:700;color:var(--accent);
+  letter-spacing:.1em}
+.more{margin-top:30px;font-size:31px;font-weight:600;color:var(--body);letter-spacing:-.01em}
+
+/* ---------- 8 · 브랜드 마무리 (웜화이트, 사진 없음) ---------- */
+.outro{background:#FAF7F2}
+/* 위에서 내려오는 아주 옅은 온기 — 평평해 보이지 않게만 */
+.outro::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 78% at 50% 8%,rgba(255,255,255,.85) 0%,
+    rgba(250,247,242,0) 62%)}
+/* 정중앙보다 살짝 위 — 아래 여백이 더 넓어야 시각적으로 안정된다(광학 중심) */
+.outro-in{position:absolute;left:80px;right:80px;top:45%;transform:translateY(-50%);
+  text-align:center}
+.pre{font-size:38px;font-weight:500;line-height:1.5;letter-spacing:-.015em;
+  color:var(--body)}
+.rebeauty{margin-top:44px;font-size:144px;font-weight:700;line-height:1;
+  letter-spacing:.005em;color:var(--ink)}
+.rebeauty span{color:var(--accent)}
+.rule-c{width:92px;height:1px;background:rgba(28,24,21,.26);margin:52px auto 0}
+.wordmark{margin-top:44px;font-size:46px;font-weight:700;letter-spacing:.44em;
+  color:var(--accent);text-indent:.44em}
+</style>
+</head>
+<body>
+
+<!-- 1 · 커버 -->
+<section class="card" id="c1">
+  <img src="img/01-cover.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="txt top">
+    <div class="eyebrow"><span>RIVEA MAG</span><span>ISSUE 01</span></div>
+    <h1>백세시대,<br>젊게 사는 법</h1>
+    <p class="lead">오래 사는 건 이미 정해졌어요.<br>어떻게 나이 들지가 남았습니다.</p>
+    <p class="cover-line">성분으로 읽는 다섯 가지 기준</p>
+  </div>
+</section>
+
+<!-- 2 · 자외선 -->
+<section class="card" id="c2">
+  <img src="img/02-uv.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="txt top">
+    <div class="label">01 자외선</div>
+    <h2>노화의 절반은<br>나이가 아니라 빛이다</h2>
+    <p class="lead">겉으로 보이는 피부 노화의 큰 몫은<br>나이보다 누적된 자외선 탓으로 알려져 있어요.<br>흐린 날과 실내 창가, 5분 외출도 전부 더해집니다.</p>
+    <p class="info"><b>성분</b>징크옥사이드 · 티타늄디옥사이드</p>
+  </div>
+  <div class="pg">02 / 08</div>
+</section>
+
+<!-- 3 · 장벽 -->
+<section class="card" id="c3">
+  <img src="img/03-barrier.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="txt top">
+    <div class="label">02 장벽</div>
+    <h2>건조는 결과가 아니라<br>원인이다</h2>
+    <p class="lead">나이가 들면 피부가 얇아지고<br>유분이 줄어 수분이 새어 나갑니다.<br>장벽이 무너지면 주름도 색소도 다 빨라져요.</p>
+    <p class="info"><b>성분</b>세라마이드 · 판테놀 · 히알루론산</p>
+  </div>
+  <div class="pg">03 / 08</div>
+</section>
+
+<!-- 4 · 색소 -->
+<section class="card" id="c4">
+  <img src="img/04-pigment.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="txt top">
+    <div class="label">03 색소</div>
+    <h2>기미는 지우기보다<br>덜 만드는 쪽이 빠르다</h2>
+    <p class="lead">한 번 자리 잡은 색소는<br>바르는 것만으로 잘 빠지지 않아요.<br>목표는 새로 만들어지는 속도를 늦추는 것입니다.</p>
+    <p class="info"><b>성분</b>나이아신아마이드 · 트라넥사믹애시드</p>
+  </div>
+  <div class="pg">04 / 08</div>
+</section>
+
+<!-- 5 · 탄력 -->
+<section class="card" id="c5">
+  <img src="img/05-firm.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="txt top">
+    <div class="label">04 탄력</div>
+    <h2>콜라겐은 매년<br>조용히 줄어든다</h2>
+    <p class="lead">진피 콜라겐은 20대 후반부터 해마다 약 1%씩<br>줄어든다고 알려져 있어요.<br>목표는 되돌리기가 아니라 감속이에요.</p>
+    <p class="info"><b>성분</b>레티놀 · 펩타이드 · 비타민C</p>
+  </div>
+  <div class="pg">05 / 08</div>
+</section>
+
+<!-- 6 · 근육 (피사체가 위쪽이라 텍스트는 아래로) -->
+<section class="card" id="c6">
+  <img src="img/06-muscle.jpg" alt="">
+  <div class="veil thin top"></div>
+  <div class="veil bot"></div>
+  <div class="txt bot">
+    <div class="label">05 근육</div>
+    <h2>피부보다 되돌리기<br>쉬운 건 근육이다</h2>
+    <p class="lead">근육은 30대 이후 10년마다 3~8%씩 줄어듭니다.<br>그런데 피부와 달리 근육은<br>지금 시작해도 다시 늘어나요.</p>
+    <p class="info"><b>영양</b>단백질 · 비타민D · 오메가3</p>
+  </div>
+  <div class="pg" style="bottom:auto;top:74px">06 / 08</div>
+</section>
+
+<!-- 7 · 정리 -->
+<section class="card" id="c7">
+  <img src="img/07-sum.jpg" alt="">
+  <div class="veil full"></div>
+  <div class="txt top">
+    <div class="label">정리</div>
+    <h2>순서가 먼저다</h2>
+    <p class="lead">비싼 기능성보다 자외선 차단과 장벽이 먼저예요.<br>이 순서만 지켜도 절반은 됩니다.</p>
+    <ul class="steps">
+      <li><i>01</i>자외선</li>
+      <li><i>02</i>장벽</li>
+      <li><i>03</i>색소</li>
+      <li><i>04</i>탄력</li>
+      <li><i>05</i>근육</li>
+    </ul>
+    <p class="more">성분과 이유는 캡션에 정리해 뒀어요 ↓</p>
+  </div>
+  <div class="pg">07 / 08</div>
+</section>
+
+<!-- 8 · 브랜드 마무리 -->
+<section class="card outro" id="c8">
+  <div class="outro-in">
+    <p class="pre">당신이 푸르렀던 그 시절로</p>
+    <p class="rebeauty">RE<span>:</span>BEAUTY</p>
+    <div class="rule-c"></div>
+    <p class="wordmark">RIVEA</p>
+  </div>
+</section>
+
+</body>
+</html>

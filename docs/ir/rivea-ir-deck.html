@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIVEA — IR Deck (초안)</title>
+<style>
+  /*
+    디자인 언어: macOS 27 UI 킷 (docs/ir/assets/apple-macos27).
+    배경 이미지의 팔레트를 그대로 토큰화했다 — tan/slate/blue.
+    유리(vibrancy) 카드 + SF Pro + 20px radius가 애플 쪽 문법이다.
+
+    에어비앤비 2008 시드덱 구조(11장)를 따른다:
+    Cover · Problem · Solution · Market Validation · Market Size · Product ·
+    Business Model · Market Adoption · Competition · Advantages · Team
+    (+ The Ask)
+
+    ⚠️ `.todo`로 표시된 칸은 **내가 확인할 수 없는 값**이다. 지어내지 않고 비웠다.
+       IR에서 틀린 숫자 하나가 나머지 전부의 신뢰를 깎는다.
+
+    문제 정의는 사용자가 직접 잡은 세 가지를 그대로 쓴다:
+    ① 화장이 아니라 노화 ② 기기와 화장품을 성분·가격으로 묶어 비교하는 곳이 없다
+    ③ 그걸 하나의 루틴으로 만들어 주는 곳이 없다
+  */
+  :root{
+    --tan:#e7dcc9; --slate:#5c5b78; --blue:#9aa8bd;
+    --ink:#26242e; --ink-soft:#565463; --ink-mute:#6f6d7d;
+    --line:rgba(40,38,50,.10);
+    --card:rgba(255,255,255,.72); --card-strong:rgba(255,255,255,.86);
+    --accent:#4a5a86; --gold:#b8873a; --good:#3a7d55; --bad:#b5543f;
+    --radius:20px;
+    --sf:-apple-system,BlinkMacSystemFont,"SF Pro Display","Pretendard","Segoe UI","Helvetica Neue","맑은 고딕","Malgun Gothic",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sf); color:var(--ink);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    background:
+      radial-gradient(120% 90% at 8% 0%, #efe7d6 0%, rgba(239,231,214,0) 45%),
+      radial-gradient(130% 120% at 100% 20%, #b9c1cf 0%, rgba(185,193,207,0) 50%),
+      linear-gradient(155deg,#e9dfcd 0%,#cdc2b1 24%,#7d7a95 58%,#6a6d88 74%,#9aa6b9 100%);
+    background-attachment:fixed;
+  }
+
+  /* ── 슬라이드 ─────────────────────────────── */
+  .deck{max-width:1180px;margin:0 auto;padding:48px 24px 120px;}
+  .slide{
+    position:relative;
+    background:var(--card); backdrop-filter:blur(30px) saturate(160%);
+    -webkit-backdrop-filter:blur(30px) saturate(160%);
+    border:1px solid rgba(255,255,255,.55); border-radius:var(--radius);
+    box-shadow:0 32px 80px -20px rgba(30,28,45,.5), 0 2px 0 rgba(255,255,255,.4) inset;
+    padding:56px 56px 52px; margin-bottom:34px;
+    min-height:560px; display:flex; flex-direction:column;
+  }
+  .num{
+    position:absolute; top:22px; right:26px;
+    font-size:12px; font-weight:600; letter-spacing:.08em;
+    color:var(--ink-mute); font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:14px;
+  }
+  h1{font-size:clamp(38px,5vw,60px); line-height:1.1; letter-spacing:-.02em; font-weight:700;}
+  h2{font-size:clamp(28px,3.4vw,40px); line-height:1.18; letter-spacing:-.02em; font-weight:700;}
+  h3{font-size:19px; line-height:1.3; font-weight:700; letter-spacing:-.01em;}
+  .lead{font-size:clamp(17px,1.6vw,20px); line-height:1.62; color:var(--ink-soft); max-width:62ch;}
+  .body{font-size:16px; line-height:1.66; color:var(--ink-soft);}
+  .small{font-size:13.5px; line-height:1.6; color:var(--ink-mute);}
+  b{font-weight:700; color:var(--ink);}
+
+  .grid{display:grid; gap:16px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  @media (max-width:820px){ .g2,.g3,.g4{grid-template-columns:1fr;} .slide{padding:38px 26px;} }
+
+  .card{
+    background:var(--card-strong); border:1px solid var(--line);
+    border-radius:14px; padding:22px 20px;
+  }
+  .card .k{font-size:12px; font-weight:700; letter-spacing:.1em; color:var(--accent); text-transform:uppercase;}
+  .card h3{margin:8px 0 7px;}
+  .stat{font-size:clamp(30px,3.6vw,44px); font-weight:700; letter-spacing:-.03em; line-height:1;
+        font-variant-numeric:tabular-nums;}
+  .stat-u{font-size:16px; font-weight:600; color:var(--ink-mute); margin-left:4px;}
+
+  ol.steps{list-style:none; counter-reset:s;}
+  ol.steps li{counter-increment:s; padding-left:44px; position:relative; margin-bottom:20px;}
+  ol.steps li::before{
+    content:counter(s); position:absolute; left:0; top:-1px;
+    width:28px; height:28px; border-radius:999px; background:var(--ink); color:#fff;
+    font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+
+  table{width:100%; border-collapse:collapse; font-size:14.5px;}
+  th,td{text-align:left; padding:12px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-mute);}
+  td.us{background:rgba(74,90,134,.07);}
+
+  .todo{
+    display:inline-block; background:rgba(184,135,58,.14); border:1px dashed var(--gold);
+    border-radius:8px; padding:2px 9px; font-size:13px; font-weight:600; color:#8a6526;
+  }
+  .src{font-size:12px; color:var(--ink-mute); margin-top:auto; padding-top:24px;}
+  .src a{color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(74,90,134,.3);}
+
+  /* 표지 */
+  .cover{
+    min-height:640px; padding:0; overflow:hidden; border:none;
+    display:grid; grid-template-columns:1.05fr .95fr; align-items:stretch;
+  }
+  .cover .art{
+    background:url("assets/apple-macos27/Library%20Preview.png") center/cover no-repeat;
+  }
+  .cover .txt{padding:56px 48px; display:flex; flex-direction:column; justify-content:center;
+              background:var(--card-strong);}
+  .wordmark{font-size:15px; font-weight:700; letter-spacing:.34em; color:var(--bad);}
+  @media (max-width:820px){ .cover{grid-template-columns:1fr;} .cover .art{min-height:220px;} }
+
+  @media print{
+    body{background:#fff;}
+    .deck{max-width:none; padding:0;}
+    .slide{break-after:page; box-shadow:none; backdrop-filter:none; background:#fff;
+           border:1px solid #ddd; margin:0; min-height:0; padding:40px;}
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 1 ─────────────────────────── COVER -->
+<section class="slide cover">
+  <div class="art" role="img" aria-label="macOS 27 배경"></div>
+  <div class="txt">
+    <p class="wordmark">RIVEA</p>
+    <h1 style="margin-top:18px">화장이 아니라<br>노화를 다룹니다</h1>
+    <p class="lead" style="margin-top:20px">
+      40대 이상 여성을 위한 홈케어 중개 마켓플레이스.<br>
+      <b>기기와 화장품을 성분·가격으로 함께 놓고, 하나의 루틴으로 묶습니다.</b>
+    </p>
+    <p class="small" style="margin-top:26px">
+      <span class="todo">발표자 · 소속</span> · 2026.08<br>
+      작동 데모 · <a href="https://rivea-app.web.app" style="color:var(--accent)">rivea-app.web.app</a>
+    </p>
+  </div>
+</section>
+
+<!-- 2 ─────────────────────────── PROBLEM -->
+<section class="slide">
+  <span class="num">02</span>
+  <p class="eyebrow">Problem</p>
+  <h2>기존 뷰티 커머스는<br>「화장」을 팔도록 만들어져 있습니다</h2>
+  <p class="lead" style="margin-top:16px">
+    40대가 넘으면 지출의 이유가 바뀝니다. 예뻐 보이려고가 아니라 <b>노화를 관리하려고</b> 씁니다.
+    그런데 플랫폼의 구조는 그대로입니다.
+  </p>
+  <div class="grid g3" style="margin-top:34px">
+    <div class="card">
+      <p class="k">01 대상</p>
+      <h3>고민이 화장이 아니라 노화다</h3>
+      <p class="body">
+        기미·주름·탄력·건조·모공·두피·이너뷰티. 40대+가 검색하는 건 색상이나 트렌드가 아니라
+        <b>증상</b>입니다. 그런데 커머스는 여전히 「세럼」·「쿠션」 같은 <b>상품 분류</b>로 진열돼 있습니다.
+      </p>
+    </div>
+    <div class="card">
+      <p class="k">02 비교</p>
+      <h3>기기와 화장품을 함께 비교할 수 없다</h3>
+      <p class="body">
+        노화 관리는 기기와 화장품을 <b>같이</b> 씁니다. 그런데 둘은 늘 다른 카테고리에 있어
+        성분과 가격을 한 화면에서 견줄 수 없습니다. 100만원짜리 기기와 3만원짜리 세럼 중
+        <b>내 고민에 무엇이 먼저인지</b> 판단할 근거가 없습니다.
+      </p>
+    </div>
+    <div class="card">
+      <p class="k">03 실행</p>
+      <h3>하나의 루틴으로 묶어주지 않는다</h3>
+      <p class="body">
+        따로 산 기기와 화장품을 <b>어떤 순서로, 며칠에 한 번</b> 쓰는지는 아무도 알려주지 않습니다.
+        LED는 바르기 전, 갈바닉은 바른 후라는 것조차요. 순서를 모르면 산 것이 제 몫을 못 합니다.
+      </p>
+    </div>
+  </div>
+  <p class="body" style="margin-top:30px">
+    세 문제의 뿌리는 하나입니다. <b>상품 단위로 파는 구조는 조합을 말할 수 없습니다.</b>
+    브랜드몰은 자기 제품 한 통만 설명하고, 종합몰은 카테고리별로 더 많이 파는 게 유리합니다.
+  </p>
+</section>
+
+<!-- 3 ─────────────────────────── SOLUTION -->
+<section class="slide">
+  <span class="num">03</span>
+  <p class="eyebrow">Solution</p>
+  <h2>노화 고민에서 출발해<br>기기와 화장품을 한 루틴으로 묶습니다</h2>
+  <div class="grid g3" style="margin-top:30px">
+    <div class="card">
+      <p class="k">문제 01 → 해결</p>
+      <h3>고민이 곧 진입점</h3>
+      <p class="body" style="margin-top:6px">
+        카테고리가 아니라 <b>고민 7개</b>로 들어옵니다 — 기미·잡티, 주름·탄력, 건조, 모공,
+        자외선, 두피·헤어, 이너뷰티. <b>메이크업 카테고리는 없습니다.</b>
+        진열 구조 자체가 노화 관리에 맞춰져 있습니다.
+      </p>
+    </div>
+    <div class="card">
+      <p class="k">문제 02 → 해결</p>
+      <h3>성분과 가격을 같은 축에</h3>
+      <p class="body" style="margin-top:6px">
+        기기는 <b>작동 방식</b>(LED·갈바닉·고주파·초음파)으로, 화장품은 <b>성분</b>으로 구조화해
+        같은 고민 아래 놓습니다. 기기 비교표는 지금 돌아가고,
+        <b>기기↔화장품 교차 비교표가 다음 단계</b>입니다.
+      </p>
+    </div>
+    <div class="card">
+      <p class="k">문제 03 → 해결</p>
+      <h3>순서까지 짜서 준다</h3>
+      <p class="body" style="margin-top:6px">
+        고민 3개를 고르면 아침 5단계·저녁 4단계가 나오고, 기기는
+        <b>작동 방식에 따라 자기 자리</b>에 들어갑니다 — LED는 바르기 전, 갈바닉은 바른 후.
+        루틴 세트 10개 중 <b>7개가 기기+화장품 조합</b>입니다.
+      </p>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:20px">
+    <div class="card">
+      <h3>여기서 더 나온 것 — 성분 병용 안내</h3>
+      <p class="body" style="margin-top:6px">
+        여러 브랜드가 한 바구니에 섞이니 조합이 보입니다. 레티놀과 산은 나눠 쓰라고,
+        레티놀을 쓰면 아침 자외선 차단을 챙기라고 짚어줍니다. <b>규칙 9개</b>가 돕니다.
+      </p>
+    </div>
+    <div class="card">
+      <h3>여기서 더 나온 것 — 다 쓸 때쯤 · 내 화장대</h3>
+      <p class="body" style="margin-top:6px">
+        받은 날과 용량으로 재구매 시점을 묻고, 이미 쓰는 걸 등록하면
+        그 자리를 갖고 있는 것으로 채워 <b>살 것이 줄어듭니다.</b>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 ─────────────────────────── MARKET VALIDATION -->
+<section class="slide">
+  <span class="num">04</span>
+  <p class="eyebrow">Market Validation</p>
+  <h2>시장은 커졌는데<br>정보는 규제 대상이 될 만큼 부실했습니다</h2>
+  <div class="grid g3" style="margin-top:34px">
+    <div class="card">
+      <p class="stat">48<span class="stat-u">개</span></p>
+      <h3 style="margin-top:12px">식약처 시정명령</h3>
+      <p class="body">2019년, 비의료용 LED 마스크 48개 제품이 <b>효능을 표시했다는 이유로</b> 시정명령을 받았습니다. 정보 비대칭이 실재한다는 규제 당국의 확인입니다.</p>
+    </div>
+    <div class="card">
+      <p class="stat">1.6<span class="stat-u">조원</span></p>
+      <h3 style="margin-top:12px">뷰티 디바이스 시장</h3>
+      <p class="body">2018년 5,000억에서 2022년 <b>1.6조</b>로 3배. 기기가 팔리는 만큼 "어떻게 쓰나"의 수요도 커졌습니다.</p>
+    </div>
+    <div class="card">
+      <p class="stat">900<span class="stat-u">만</span></p>
+      <h3 style="margin-top:12px">화해 누적 리뷰</h3>
+      <p class="body">성분 정보 수요는 이미 증명됐습니다. 다만 화해는 <b>정보만</b> 주고 커머스와 끊겨 있습니다.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:22px">
+    <p class="k">직접 검증 — 채워야 하는 칸</p>
+    <p class="body" style="margin-top:8px">
+      <span class="todo">40대+ 여성 N명 인터뷰 결과</span>
+      <span class="todo">"성분 조합을 몰라 실수한 경험" 비율</span>
+      <span class="todo">데모 사용자 테스트 결과</span><br>
+      위 3개는 2차 자료로 대체할 수 없습니다. 심사에서 가장 먼저 물어보는 칸이기도 합니다.
+    </p>
+  </div>
+  <p class="src">
+    출처: <a href="https://www.businessplus.kr/news/articleView.html?idxno=100093">비즈니스플러스 — 뷰티디바이스 시장성</a> ·
+    <a href="https://www.hwahae.co.kr/">화해</a> · 식약처 2019 보도자료(원문 링크 확인 필요)
+  </p>
+</section>
+
+<!-- 5 ─────────────────────────── MARKET SIZE -->
+<section class="slide">
+  <span class="num">05</span>
+  <p class="eyebrow">Market Size</p>
+  <h2>시장 규모</h2>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;margin-top:26px">
+
+    <!-- 동심원 — 면적이 아니라 지름으로만 위계를 준다. 면적 비례로 그리면
+         SAM이 확정되기 전엔 비율을 지어내는 셈이 된다 -->
+    <svg viewBox="0 0 360 360" width="330" height="330" role="img"
+         aria-label="TAM SAM SOM 동심원">
+      <defs>
+        <radialGradient id="gT" cx="30%" cy="20%">
+          <stop offset="0%" stop-color="#eae1d1"/><stop offset="100%" stop-color="#c9c0b2"/>
+        </radialGradient>
+        <radialGradient id="gS" cx="30%" cy="20%">
+          <stop offset="0%" stop-color="#a9b1c4"/><stop offset="100%" stop-color="#8d94ad"/>
+        </radialGradient>
+        <radialGradient id="gO" cx="30%" cy="20%">
+          <stop offset="0%" stop-color="#5f5e7c"/><stop offset="100%" stop-color="#494764"/>
+        </radialGradient>
+      </defs>
+      <circle cx="180" cy="180" r="172" fill="url(#gT)" stroke="rgba(255,255,255,.7)"/>
+      <circle cx="180" cy="212" r="118" fill="url(#gS)" stroke="rgba(255,255,255,.55)"/>
+      <circle cx="180" cy="256" r="66"  fill="url(#gO)" stroke="rgba(255,255,255,.4)"/>
+
+      <text x="180" y="46" text-anchor="middle" font-size="15" font-weight="700"
+            fill="#3f3d4c" letter-spacing="1.6">TAM</text>
+      <text x="180" y="70" text-anchor="middle" font-size="19" font-weight="700" fill="#26242e">1.1조원</text>
+
+      <text x="180" y="128" text-anchor="middle" font-size="15" font-weight="700"
+            fill="#ffffff" letter-spacing="1.6">SAM</text>
+      <text x="180" y="152" text-anchor="middle" font-size="16" font-weight="700"
+            fill="#ffffff" opacity=".9">확인 필요</text>
+
+      <text x="180" y="248" text-anchor="middle" font-size="14" font-weight="700"
+            fill="#ffffff" letter-spacing="1.6">SOM</text>
+      <text x="180" y="270" text-anchor="middle" font-size="14" font-weight="700"
+            fill="#ffffff" opacity=".85">확인 필요</text>
+    </svg>
+
+    <div>
+      <div class="card">
+        <p class="k">TAM — 국내 홈케어 뷰티 기기 + 안티에이징 화장품</p>
+        <p class="stat" style="margin-top:8px">1.1<span class="stat-u">조원</span></p>
+        <p class="body" style="margin-top:8px">
+          미용·에스테틱 디바이스 2030년 전망 (2025년 7,210억 → CAGR 9.71%).
+          여기에 <span class="todo">안티에이징 화장품 시장</span>을 더해야 합니다 —
+          우리는 <b>기기와 화장품을 함께 파는 구조</b>라 둘을 합친 것이 진짜 TAM입니다.
+        </p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <p class="k">SAM — 40~50대 여성 홈케어 지출</p>
+        <p class="body" style="margin-top:8px">
+          <span class="todo">40~50대 여성 인구</span> × <span class="todo">연간 홈케어 지출</span><br>
+          인구는 <a href="https://kosis.kr/visual/populationKorea/PopulationDashBoardMain.do" style="color:var(--accent)">KOSIS 인구상황판</a>,
+          지출은 가계동향조사 화장품 항목에서 확정합니다.
+        </p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <p class="k">SOM — 3년 목표</p>
+        <p class="body" style="margin-top:8px">
+          <span class="todo">침투율 가정 × SAM</span> — 가정치에는 근거를 함께 적습니다.
+          "온라인 뷰티 커머스 신규 진입자의 3년 점유율"처럼 <b>비교 사례</b>가 있어야 방어됩니다.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h3>왜 40대 이상인가</h3>
+    <p class="body" style="margin-top:6px">
+      기존 뷰티 커머스(지그재그·에이블리)는 20~30대에 최적화돼 있습니다. 40대 이상은
+      <b>구매력은 더 크고 정보 접근은 더 어려운</b> 구간입니다. 그리고 이 구간에서만
+      기기와 화장품을 함께 쓰기 때문에, <b>둘을 묶는 플랫폼의 값이 여기서 가장 큽니다.</b>
+    </p>
+  </div>
+  <p class="src">
+    출처: <a href="https://www.expertmarketresearch.com/reports/south-korea-beauty-devices-market">Expert Market Research — 한국 뷰티 디바이스 시장</a> ·
+    <a href="https://www.viva100.com/article/20250119500504">브릿지경제</a> ·
+    동심원은 지름으로만 위계를 표시했습니다(SAM 확정 전 면적 비례는 숫자를 지어내는 것과 같습니다)
+  </p>
+</section>
+
+<!-- 6 ─────────────────────────── PRODUCT -->
+<section class="slide">
+  <span class="num">06</span>
+  <p class="eyebrow">Product</p>
+  <h2>지금 작동하는 앱입니다</h2>
+  <p class="lead" style="margin-top:14px">
+    목업이 아니라 배포된 웹앱입니다. 아래 숫자는 이 저장소에서 센 값입니다.
+  </p>
+  <div class="grid g4" style="margin-top:30px">
+    <div class="card"><p class="stat">10<span class="stat-u">+23</span></p><p class="small" style="margin-top:8px">기기 + 화장품<br>(실존 25 / 브랜드 18)</p></div>
+    <div class="card"><p class="stat">7<span class="stat-u">/10</span></p><p class="small" style="margin-top:8px">기기+화장품을 섞은<br>루틴 세트</p></div>
+    <div class="card"><p class="stat">9</p><p class="small" style="margin-top:8px">성분 병용 규칙<br>(+ 기기 배치 규칙)</p></div>
+    <div class="card"><p class="stat">28</p><p class="small" style="margin-top:8px">화면<br>(커밋 43 · 12,560줄)</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:22px">
+    <div class="card">
+      <h3>닫힌 여정</h3>
+      <p class="body" style="margin-top:8px">
+        노화 고민 → 루틴 처방(기기 자리 포함) → 담기 → 결제 → 배송 추적 → 리뷰 → 재구매까지
+        <b>끊기는 곳 없이</b> 이어집니다. 회원가입·게스트 승계·포인트·등급·쿠폰도 실제 값으로 돕니다.
+      </p>
+    </div>
+    <div class="card">
+      <h3>규제선을 지킨 카피 체계</h3>
+      <p class="body" style="margin-top:8px">
+        미백·주름개선·자외선차단은 기능성화장품 표시라 심사받은 품목만 쓸 수 있습니다.
+        성분 설명은 <b>"무엇에 좋다"가 아니라 "어디서 작용한다"</b>로만 적고, 기기에는 효능 표시를 붙이지 않습니다.
+        중개형은 이 선을 넘으면 입점 브랜드까지 위험해집니다.
+      </p>
+    </div>
+  </div>
+  <p class="src">데모: <a href="https://rivea-app.web.app">rivea-app.web.app</a> — PWA로 홈 화면 설치 가능</p>
+</section>
+
+<!-- 7 ─────────────────────────── BUSINESS MODEL -->
+<section class="slide">
+  <span class="num">07</span>
+  <p class="eyebrow">Business Model</p>
+  <h2>중개 수수료</h2>
+  <div class="grid g2" style="margin-top:28px">
+    <div class="card">
+      <h3>수익 구조</h3>
+      <table style="margin-top:12px">
+        <tr><th>항목</th><th>내용</th></tr>
+        <tr><td>판매 수수료</td><td><span class="todo">%</span> — 브랜드별 협의</td></tr>
+        <tr><td>루틴 세트</td><td>여러 브랜드 묶음 판매 · 객단가 상승</td></tr>
+        <tr><td>브랜드 노출</td><td>고민별 큐레이션 슬롯</td></tr>
+      </table>
+      <p class="small" style="margin-top:12px">배송비는 브랜드가 각자 정합니다(입점사 정책). 앱은 브랜드별로 계산합니다.</p>
+    </div>
+    <div class="card">
+      <h3>우리가 <u>하지 않는</u> 것</h3>
+      <p class="body" style="margin-top:8px">
+        루틴의 <b>월 비용 환산</b>과 <b>효과 기록</b>은 사용자에게 유용하지만 넣지 않았습니다.
+        입점 브랜드에게는 위험한 지표이고, <b>브랜드가 들어오지 않으면 중개형 자체가 성립하지 않습니다.</b>
+      </p>
+      <p class="body" style="margin-top:12px">
+        대신 「내 화장대」는 넣었습니다. 결과적으로 살 것이 줄지만, 브랜드에게는
+        "안 팔았다"가 아니라 <b>"중복 구매를 막아줬다"</b>로 읽힙니다. 양쪽이 다 이기는 칸에만 손을 댑니다.
+      </p>
+    </div>
+  </div>
+  <p class="body" style="margin-top:24px">
+    <span class="todo">단가·수수료율·CAC·LTV 가정표</span> — 여기 실제 숫자가 들어가야 합니다.
+  </p>
+</section>
+
+<!-- 8 ─────────────────────────── MARKET ADOPTION -->
+<section class="slide">
+  <span class="num">08</span>
+  <p class="eyebrow">Market Adoption</p>
+  <h2>어떻게 쓰게 만드나</h2>
+  <ol class="steps" style="margin-top:30px;max-width:78ch">
+    <li>
+      <h3>노화 고민으로 들어온다</h3>
+      <p class="body">"세럼"이 아니라 <b>"기미·잡티"</b>로 찾게 합니다. 검색어가 상품 분류가 아니라 증상인 세대입니다. 그 화면에 기기와 화장품이 <b>함께</b> 놓입니다.</p>
+    </li>
+    <li>
+      <h3>루틴을 받는다</h3>
+      <p class="body">고민 3개를 고르면 아침·저녁 순서가 나옵니다. <b>여기서 처음으로 "이 앱이 나를 안다"가 생깁니다.</b></p>
+    </li>
+    <li>
+      <h3>화장대를 등록한다</h3>
+      <p class="body">등록하면 살 것이 줄어듭니다. <b>덜 팔린 첫 경험이 재방문의 이유가 됩니다.</b></p>
+    </li>
+    <li>
+      <h3>다 쓸 때쯤 돌아온다</h3>
+      <p class="body">받은 날 + 용량으로 계산해 묻습니다. 리텐션이 광고가 아니라 <b>제품 사용 주기</b>에서 나옵니다.</p>
+    </li>
+  </ol>
+  <p class="body" style="margin-top:22px">
+    <span class="todo">초기 확보 채널 · 예산 · 목표 지표</span>
+  </p>
+</section>
+
+<!-- 9 ─────────────────────────── COMPETITION -->
+<section class="slide">
+  <span class="num">09</span>
+  <p class="eyebrow">Competition</p>
+  <h2>경쟁 구도</h2>
+  <p class="lead" style="margin-top:12px">
+    비교 축은 우리가 정의한 세 문제 그대로입니다 — <b>노화 중심 / 기기·화장품 통합 비교 / 루틴 제공.</b>
+  </p>
+  <table style="margin-top:24px">
+    <tr>
+      <th style="width:19%">구분</th>
+      <th>노화 중심 진열</th>
+      <th>기기 취급</th>
+      <th>기기·화장품<br>통합 비교</th>
+      <th>루틴으로 묶기</th>
+      <th>40대+ 접근성</th>
+    </tr>
+    <tr class="us">
+      <td class="us"><b>RIVEA</b></td>
+      <td class="us"><b>●</b></td><td class="us"><b>●</b></td>
+      <td class="us">◐</td><td class="us"><b>●</b></td><td class="us"><b>●</b></td>
+    </tr>
+    <tr><td>올리브영</td><td>○</td><td>●</td><td>○</td><td>○</td><td>△</td></tr>
+    <tr><td>화해</td><td>△</td><td>○</td><td>○</td><td>○</td><td>△</td></tr>
+    <tr><td>브랜드 공식몰</td><td>△</td><td>△</td><td>○</td><td>○</td><td>△</td></tr>
+    <tr><td>지그재그 · 에이블리</td><td>○</td><td>△</td><td>○</td><td>○</td><td>○</td></tr>
+    <tr><td>기기 전문몰</td><td>△</td><td>●</td><td>○</td><td>○</td><td>△</td></tr>
+  </table>
+  <p class="small" style="margin-top:12px">
+    ● 있음 · ◐ 부분 구현 · △ 부분적 · ○ 없음 —
+    <b>◐</b>: 기기끼리 비교표는 돌아가고, 기기↔화장품 교차 비교가 다음 단계입니다.
+    <span class="todo">각 칸의 근거(화면 캡처·확인일)를 부록에</span>
+  </p>
+  <div class="card" style="margin-top:20px">
+    <h3>「통합 비교」와 「루틴」 열이 전부 비어 있는 이유</h3>
+    <p class="body" style="margin-top:6px">
+      능력의 문제가 아니라 <b>구조의 문제</b>입니다.
+      브랜드몰은 남의 제품과의 조합을 말할 수 없고, 종합몰은 카테고리별로 더 많이 파는 게 유리해
+      "기기 하나로 되니 화장품은 줄이세요"를 말할 이유가 없습니다.
+      화해는 커머스가 아니라 비교를 실행으로 이을 수 없고, 기기 전문몰은 화장품을 취급하지 않습니다.
+    </p>
+  </div>
+</section>
+
+<!-- 10 ─────────────────────────── ADVANTAGES -->
+<section class="slide">
+  <span class="num">10</span>
+  <p class="eyebrow">Competitive Advantages</p>
+  <h2>왜 우리가 할 수 있나</h2>
+  <div class="grid g3" style="margin-top:32px">
+    <div class="card">
+      <p class="k">01 구조</p>
+      <h3>기기와 화장품을 다 파니 묶을 수 있다</h3>
+      <p class="body">중개형이라 한 바구니에 여러 브랜드의 <b>기기와 화장품이 함께</b> 담깁니다. 둘을 같은 축에 놓고 비교하고 하나의 순서로 묶을 수 있는 <b>유일한 위치</b>이고, 이건 흉내가 아니라 사업 모델에서 나옵니다.</p>
+    </div>
+    <div class="card">
+      <p class="k">02 정렬</p>
+      <h3>이기는 브랜드가 없어도 된다</h3>
+      <p class="body">특정 브랜드를 밀 이유가 없어 <b>중립적인 안내가 곧 우리 이익</b>입니다. 브랜드몰은 구조적으로 이 말을 할 수 없습니다.</p>
+    </div>
+    <div class="card">
+      <p class="k">03 규율</p>
+      <h3>표현의 선을 지킨 체계</h3>
+      <p class="body">기능성화장품 표시와 기기 효능 표시를 피하는 카피 규칙이 코드에 박혀 있습니다. 이 선을 모르고 만든 서비스는 <b>규모가 커질 때 한 번에 걸립니다.</b></p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:22px">
+    <h3>규칙 엔진이 자산이 되는 구조</h3>
+    <p class="body" style="margin-top:8px">
+      성분·단계·시간대·사용기간을 구조화된 데이터로 갖고 있어(<b>병용 규칙 9개</b>가 여기서 돕니다),
+      상품이 늘어날수록 규칙이 잡아내는 조합이 늘어납니다.
+      카탈로그 확장이 곧 <b>안내 품질의 확장</b>이 되는 형태입니다.
+    </p>
+  </div>
+</section>
+
+<!-- 11 ─────────────────────────── TEAM -->
+<section class="slide">
+  <span class="num">11</span>
+  <p class="eyebrow">Team</p>
+  <h2>팀</h2>
+  <div class="grid g3" style="margin-top:32px">
+    <div class="card">
+      <p class="k">Founder</p>
+      <h3 style="margin-top:10px"><span class="todo">이름 · 역할</span></h3>
+      <p class="body" style="margin-top:8px"><span class="todo">이 문제를 왜 당신이 푸는지 — 한 문장</span></p>
+    </div>
+    <div class="card">
+      <p class="k">Member</p>
+      <h3 style="margin-top:10px"><span class="todo">이름 · 역할</span></h3>
+      <p class="body" style="margin-top:8px"><span class="todo">관련 경험</span></p>
+    </div>
+    <div class="card">
+      <p class="k">Member</p>
+      <h3 style="margin-top:10px"><span class="todo">이름 · 역할</span></h3>
+      <p class="body" style="margin-top:8px"><span class="todo">관련 경험</span></p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:22px">
+    <h3>이미 증명한 것</h3>
+    <p class="body" style="margin-top:8px">
+      기획·디자인·개발을 <b>커밋 43개 · 12,560줄</b>로 배포 가능한 상태까지 만들었습니다.
+      IR에서 팀 슬라이드가 약할 때 이 항목이 가장 잘 먹힙니다 — 말이 아니라 돌아가는 링크가 근거입니다.
+    </p>
+  </div>
+</section>
+
+<!-- 12 ─────────────────────────── ASK -->
+<section class="slide">
+  <span class="num">12</span>
+  <p class="eyebrow">The Ask</p>
+  <h2>요청</h2>
+  <div class="grid g2" style="margin-top:30px">
+    <div class="card">
+      <p class="k">투자 규모</p>
+      <p class="stat" style="margin-top:10px"><span class="todo">금액</span></p>
+      <p class="body" style="margin-top:12px"><span class="todo">런웨이 개월 수 · 사용처 비중(개발/입점/마케팅)</span></p>
+    </div>
+    <div class="card">
+      <p class="k">이 돈으로 증명할 것</p>
+      <p class="body" style="margin-top:10px">
+        <span class="todo">마일스톤 1 — 입점 브랜드 N개</span><br>
+        <span class="todo">마일스톤 2 — 첫 거래액 / 재구매율</span><br>
+        <span class="todo">마일스톤 3 — 루틴 → 구매 전환율</span>
+      </p>
+      <p class="small" style="margin-top:14px">
+        마일스톤은 "무엇을 만들겠다"가 아니라 <b>"어떤 가설을 검증하겠다"</b>로 쓰는 게 좋습니다.
+      </p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:22px">
+    <h3>지금 바로 확인하실 수 있습니다</h3>
+    <p class="lead" style="margin-top:10px">
+      <a href="https://rivea-app.web.app" style="color:var(--accent);font-weight:700">rivea-app.web.app</a>
+      — 회원가입 없이 둘러보기, 고민 설정 후 「내 루틴」까지 바로 보실 수 있습니다.
+    </p>
+  </div>
+</section>
+
+<p class="small" style="text-align:center;color:rgba(255,255,255,.75);padding-bottom:20px">
+  초안 · 2026.08 · 구조는 Airbnb 2008 시드덱(11장) · 디자인은 macOS 27 UI 킷<br>
+  금색 점선 칸은 확인되지 않은 값이라 비워둔 자리입니다.
+</p>
+
+</div>
+</body>
+</html>
