@@ -17,7 +17,7 @@ const menuGroups: { title: string; items: { label: string; href?: string; note?:
     items: [
       { label: "선물하기", href: "/gift", note: "어머니께 대신 골라드려요" },
       { label: "최근 본 상품", href: "/recent" },
-      { label: "재구매 목록" },
+      { label: "재구매 목록", href: "/repurchase", note: "다 쓸 때쯤 알려드려요" },
       { label: "배송지 관리" },
     ],
   },
