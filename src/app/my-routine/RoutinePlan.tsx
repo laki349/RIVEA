@@ -11,6 +11,7 @@ import { regimenOf } from "@/data/regimen";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import InteractionNotes from "@/components/InteractionNotes";
+import { LoginSheet, useMemberGate } from "@/components/MemberGate";
 import Toast from "@/components/Toast";
 
 /**
@@ -28,6 +29,7 @@ export default function RoutinePlan() {
   const profile = useProfile();
   const [mounted, setMounted] = useState(false);
   const [added, setAdded] = useState(0);
+  const { guard, asking, close } = useMemberGate();
   useEffect(() => setMounted(true), []);
 
   const shelf = useShelfEntries();
@@ -101,10 +103,12 @@ export default function RoutinePlan() {
 
       <div className="px-4 py-4">
         <button
-          onClick={() => {
-            buyable.forEach((id) => addToCart("product", id));
-            setAdded(buyable.length);
-          }}
+          onClick={() =>
+            guard(() => {
+              buyable.forEach((id) => addToCart("product", id));
+              setAdded(buyable.length);
+            })
+          }
           className="press h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink"
         >
           루틴 {buyable.length}개 전부 담기
@@ -117,6 +121,8 @@ export default function RoutinePlan() {
           <Icon name="chevron-right" size={15} />
         </Link>
       </div>
+
+      {asking && <LoginSheet onClose={close} what="루틴을 담아두세요" />}
 
       {added > 0 && (
         <Toast

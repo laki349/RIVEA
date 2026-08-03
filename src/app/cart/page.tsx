@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { won } from "@/data/catalog";
 import InteractionNotes from "@/components/InteractionNotes";
+import { MemberOnlyScreen } from "@/components/MemberGate";
+import { useAuth } from "@/lib/auth";
 import {
   removeFromCart,
   removeMany,
@@ -28,6 +30,7 @@ export default function CartPage() {
   const cart = useCart();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const { ready, isMember } = useAuth();
   useEffect(() => setMounted(true), []);
 
   // 선택은 스토어에 있다 — 결제 화면이 같은 선택을 읽고, 새로고침해도 유지된다
@@ -48,11 +51,27 @@ export default function CartPage() {
     removeMany(selectedLines.map((l) => ({ kind: l.kind, id: l.id })));
   };
 
-  if (!mounted) {
+  // 인증 확인이 끝나기 전엔 아무것도 단정하지 않는다 — 회원인데 로그인 화면이
+  // 한 번 깜빡이면 로그아웃된 줄 안다
+  if (!mounted || !ready) {
     return (
       <>
         <AppBar title="장바구니" bold search={false} />
         <main className="flex-1" />
+      </>
+    );
+  }
+
+  // 장바구니는 회원 전용 (MemberGate.tsx에 이유)
+  if (!isMember) {
+    return (
+      <>
+        <AppBar title="장바구니" bold search={false} />
+        <MemberOnlyScreen
+          title="로그인하면 장바구니를 쓸 수 있어요"
+          body={"주문 내역·배송 조회·재구매가 계정에 남아요.\n둘러보기는 로그인 없이도 계속하실 수 있어요."}
+          next="/cart"
+        />
       </>
     );
   }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addToCart } from "@/lib/cart";
 import { won } from "@/data/catalog";
+import { LoginSheet, useMemberGate } from "./MemberGate";
 import Toast from "./Toast";
 import WishButton from "./WishButton";
 
@@ -24,19 +25,25 @@ export default function BuyBar({
 }) {
   const router = useRouter();
   const [toast, setToast] = useState(false);
+  // 담기·구매는 회원 전용 (MemberGate.tsx) — 게스트는 시트로 안내한다
+  const { guard, asking, close } = useMemberGate();
 
-  const add = () => {
-    addToCart(kind, id);
-    setToast(true);
-  };
+  const add = () =>
+    guard(() => {
+      addToCart(kind, id);
+      setToast(true);
+    });
 
-  const buyNow = () => {
-    addToCart(kind, id);
-    router.push("/checkout");
-  };
+  const buyNow = () =>
+    guard(() => {
+      addToCart(kind, id);
+      router.push("/checkout");
+    });
 
   return (
     <>
+      {asking && <LoginSheet onClose={close} what="담아두세요" />}
+
       {toast && (
         <Toast
           message="장바구니에 담았어요"

@@ -12,6 +12,7 @@ import {
   type Repurchase,
 } from "@/lib/repurchase";
 import Icon from "@/components/Icon";
+import { LoginSheet, useMemberGate } from "@/components/MemberGate";
 import ImageSlot from "@/components/ImageSlot";
 import Toast from "@/components/Toast";
 
@@ -26,6 +27,7 @@ export default function RepurchaseList() {
   const list = useRepurchases();
   const [mounted, setMounted] = useState(false);
   const [added, setAdded] = useState<string | null>(null);
+  const { guard, asking, close } = useMemberGate();
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return <main className="flex-1" />;
@@ -69,7 +71,7 @@ export default function RepurchaseList() {
           <h2 className="text-[16px] font-bold text-ink">지금 챙기실 것 {due.length}</h2>
           <div className="mt-3 space-y-[14px]">
             {due.map((r) => (
-              <Row key={r.product.id} r={r} onAdd={setAdded} />
+              <Row key={r.product.id} r={r} onAdd={setAdded} guard={guard} />
             ))}
           </div>
         </section>
@@ -80,18 +82,27 @@ export default function RepurchaseList() {
           <h2 className="text-[16px] font-bold text-ink">아직 여유 있어요</h2>
           <div className="mt-3 space-y-[14px]">
             {later.map((r) => (
-              <Row key={r.product.id} r={r} onAdd={setAdded} />
+              <Row key={r.product.id} r={r} onAdd={setAdded} guard={guard} />
             ))}
           </div>
         </section>
       )}
 
+      {asking && <LoginSheet onClose={close} what="다시 담아두세요" />}
       {added && <Toast message={`${added}을(를) 담았어요`} onDone={() => setAdded(null)} />}
     </main>
   );
 }
 
-function Row({ r, onAdd }: { r: Repurchase; onAdd: (name: string) => void }) {
+function Row({
+  r,
+  onAdd,
+  guard,
+}: {
+  r: Repurchase;
+  onAdd: (name: string) => void;
+  guard: (fn: () => void) => void;
+}) {
   const p = r.product;
   const ratio = remainRatio(r);
   const out = r.daysLeft <= 0;
@@ -129,10 +140,12 @@ function Row({ r, onAdd }: { r: Repurchase; onAdd: (name: string) => void }) {
           {dueLabel(r)}
         </span>
         <button
-          onClick={() => {
-            addToCart("product", p.id);
-            onAdd(p.name);
-          }}
+          onClick={() =>
+            guard(() => {
+              addToCart("product", p.id);
+              onAdd(p.name);
+            })
+          }
           className="press flex h-11 items-center rounded border border-ink px-4 text-[14px] font-medium text-ink"
         >
           다시 담기

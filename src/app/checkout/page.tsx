@@ -10,12 +10,21 @@ import { COUPON_AMOUNT, applyOrder, earnRate, gradeOf, useWallet } from "@/lib/w
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
+import { MemberOnlyScreen } from "@/components/MemberGate";
+import { displayNameOf, useAuth } from "@/lib/auth";
 
 const payments = ["신용·체크카드", "간편결제 (카카오·네이버·토스)", "무통장 입금"];
 
-/** 배송지 — 서버가 없어 데모 고정값. 주문에는 스냅샷으로 복사해 저장한다 */
-const receiver = {
-  name: "김서연",
+/**
+ * 배송지 — 서버가 없어 주소는 아직 데모 고정값이다. 주문에는 스냅샷으로 복사해 저장한다.
+ *
+ * **이름만은 고정값을 쓰지 않는다.** 예전엔 `김서연`이 박혀 있어서, 로그인한
+ * 사람에게 남의 이름이 뜨는 화면이었다. 그건 버그가 아니라 신뢰 사고다.
+ * 이름은 계정에서 가져온다. 주소·연락처는 배송지 관리가 아직 없어 데모 값이고,
+ * 그건 별개 작업으로 남는다 — 여기서 "미등록"으로 바꾸면 배송지 없이 주문되는
+ * 새 모순이 생긴다.
+ */
+const DEMO_CONTACT = {
   phone: "010-1234-5678",
   address: "서울시 마포구 월드컵북로 000, 101동 1001호",
 };
@@ -23,6 +32,7 @@ const receiver = {
 
 export default function CheckoutPage() {
   const cart = useCart();
+  const { ready, isMember, user } = useAuth();
   const wallet = useWallet();
   const orders = useOrders();
   const grade = gradeOf(orders);
@@ -45,6 +55,13 @@ export default function CheckoutPage() {
   const pointCut = usePoints ? Math.min(wallet.points, itemTotal - couponCut) : 0;
   const total = itemTotal + shipping - couponCut - pointCut;
 
+  // 수취인은 계정에서 만든다 — 회원 전용 화면이라 여기선 user가 있다
+  const receiver = {
+    name: displayNameOf(user),
+    phone: user?.phoneNumber ?? DEMO_CONTACT.phone,
+    address: DEMO_CONTACT.address,
+  };
+
   const pay = () => {
     if (!agreed || lines.length === 0) return;
     // 지갑을 먼저 반영해 적립액을 받고, 그 값을 주문에 박아 넣는다 (취소 시 회수 기준)
@@ -65,11 +82,25 @@ export default function CheckoutPage() {
     router.push(`/order/complete?no=${no}`);
   };
 
-  if (!mounted) {
+  if (!mounted || !ready) {
     return (
       <>
         <AppBar title="주문/결제" bold search={false} />
         <main className="flex-1" />
+      </>
+    );
+  }
+
+  // 결제는 회원 전용. 게스트 주문은 조회·취소·리뷰·재구매 어디에도 닿지 못한다
+  if (!isMember) {
+    return (
+      <>
+        <AppBar title="주문/결제" bold search={false} />
+        <MemberOnlyScreen
+          title="로그인하고 주문해 주세요"
+          body={"받으실 분과 배송지를 확인하려면 계정이 필요해요.\n주문 후에는 배송 조회와 리뷰도 이어서 보실 수 있어요."}
+          next="/checkout"
+        />
       </>
     );
   }

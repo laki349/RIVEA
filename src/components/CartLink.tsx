@@ -2,16 +2,23 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
 import Icon from "./Icon";
 
 /** 장바구니 아이콘 + 수량 뱃지 (하이드레이션 후 표시) */
 export default function CartLink({ size = 21 }: { size?: number }) {
   const cart = useCart();
+  const { isMember } = useAuth();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const count = cart.reduce((s, i) => s + i.qty, 0);
+  /**
+   * 게스트에게는 숫자를 보여주지 않는다. 장바구니가 회원 전용이 되면서 게스트는
+   * 담을 수 없는데, 이 변경 전에 담아둔 게 남아 있으면 배지만 남의 숫자처럼 뜬다.
+   * (아이콘은 남긴다 — 누르면 로그인 안내로 이어지는 게 자연스럽다)
+   */
+  const count = isMember ? cart.reduce((s, i) => s + i.qty, 0) : 0;
 
   /**
    * 담으면 화면 아래에 토스트가 뜨는데 배지는 조용히 숫자만 바뀌었다 —
