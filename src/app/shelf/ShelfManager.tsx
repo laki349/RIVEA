@@ -35,8 +35,9 @@ export default function ShelfManager() {
     <main className="flex-1">
       <section className="border-b border-hairline px-4 py-4">
         <p className="text-[15px] leading-[1.6] text-body">
-          쓰고 계신 걸 등록해 두면 <b className="font-bold text-ink">새로 담는 것과 같이 써도
-          되는지</b> 알려드려요. 「내 루틴」에서는 그 자리를 갖고 계신 것으로 채워요.
+          쓰고 계신 걸 알면 <b className="font-bold text-ink">새로 담는 것과 같이 써도 되는지</b>{" "}
+          알려드려요. <b className="font-bold text-ink">배송이 끝난 주문은 자동으로 들어오고</b>,
+          다 쓰실 때쯤이 지나면 스스로 빠져요.
         </p>
       </section>
 
@@ -75,24 +76,32 @@ export default function ShelfManager() {
                       : "성분을 몰라 병용 판정에는 넣지 못해요"}
                   </p>
                 </div>
-                <button
-                  onClick={() => removeFromShelf(e.id)}
-                  className="press flex h-11 items-center pl-3 text-[14px] text-meta"
-                >
-                  빼기
-                </button>
+                {e.source === "manual" ? (
+                  <button
+                    onClick={() => removeFromShelf(e.id)}
+                    className="press flex h-11 items-center pl-3 text-[14px] text-meta"
+                  >
+                    빼기
+                  </button>
+                ) : (
+                  // 주문에서 온 것은 손으로 못 뺀다 — 다 쓸 때쯤이 지나면 스스로 빠진다.
+                  // 뺄 수 없다는 걸 말해주지 않으면 "빼기가 안 먹는다"로 읽힌다.
+                  <span className="flex h-11 flex-shrink-0 items-center pl-3 text-[13px] text-meta">
+                    주문에서
+                  </span>
+                )}
               </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* 등록의 대가를 바로 보여준다. 화장대끼리의 조합도 볼 값이 있다 */}
-      <InteractionNotes
-        ids={items
-          .filter((i): i is { kind: "product"; id: string } => i.kind === "product")
-          .map((i) => ({ kind: "product" as const, id: i.id }))}
-      />
+      {/*
+        등록의 대가를 바로 보여준다. ids를 비워 넘기는 이유: InteractionNotes가
+        화장대를 스스로 읽고, 그 목록에 주문 파생분까지 이미 들어 있다.
+        여기서 수동 등록분을 또 넘기면 같은 걸 두 번 세게 된다.
+      */}
+      <InteractionNotes ids={[]} />
 
       {adding ? (
         <AddPanel onClose={() => setAdding(false)} />
@@ -106,7 +115,9 @@ export default function ShelfManager() {
           </button>
           {entries.length === 0 && (
             <p className="mt-2 text-center text-[13px] leading-[1.5] text-meta">
-              하나만 넣어도 바로 알려드려요.
+              여기서 산 것은 배송이 끝나면 자동으로 들어와요.
+              <br />
+              다른 곳에서 산 것만 넣어주시면 돼요.
             </p>
           )}
         </div>

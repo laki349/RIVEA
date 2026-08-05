@@ -1,8 +1,9 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { productOf, type ActiveKey, type Product } from "@/data/catalog";
+import { productOf, routines, type ActiveKey, type Product } from "@/data/catalog";
 import { regimenOf, type Step } from "@/data/regimen";
+import { statusOf, useOrders, type Order } from "./orders";
 import { clearScoped, currentScope, readScoped, registerScoped, writeScoped } from "./scope";
 
 /**
@@ -107,27 +108,96 @@ export type ShelfEntry = {
   product: Product | null;
   actives: ActiveKey[];
   step: Step;
+  /**
+   * 어디서 왔나. `order`는 주문에서 자동으로 들어온 것이라 손으로 뺄 수 없다
+   * (다 쓸 때쯤이 지나면 스스로 빠진다).
+   */
+  source: "manual" | "order";
 };
+
+function entryOfProduct(p: Product, source: ShelfEntry["source"]): ShelfEntry {
+  return {
+    id: p.id,
+    name: p.name,
+    product: p,
+    actives: (p.actives ?? []).map((a) => a.key),
+    step: regimenOf(p).step,
+    source,
+  };
+}
 
 export function entriesOf(list: ShelfItem[]): ShelfEntry[] {
   return list.map((i) => {
     if (i.kind === "custom") {
-      return { id: i.id, name: i.name, product: null, actives: i.actives, step: i.step };
+      return {
+        id: i.id, name: i.name, product: null,
+        actives: i.actives, step: i.step, source: "manual" as const,
+      };
     }
     const p = productOf(i.id) as Product | undefined;
-    if (!p) return { id: i.id, name: i.id, product: null, actives: [], step: "serum" as Step };
-    return {
-      id: i.id,
-      name: p.name,
-      product: p,
-      actives: (p.actives ?? []).map((a) => a.key),
-      step: regimenOf(p).step,
-    };
+    if (!p) {
+      return {
+        id: i.id, name: i.id, product: null,
+        actives: [], step: "serum" as Step, source: "manual" as const,
+      };
+    }
+    return entryOfProduct(p, "manual");
   });
 }
 
+const DAY = 24 * 60 * 60 * 1000;
+
+/**
+ * 배송이 끝난 주문에서 **지금 쓰고 있을 것**을 뽑는다.
+ *
+ * 화장대가 값이 없던 이유가 여기 있었다. 등록이 순수한 수동 노동이라
+ * "등록할 이유는 등록해봐야 안다"는 순환에 걸렸고, 아무도 채우지 않았다.
+ * 그런데 **배송이 끝난 상품은 정의상 지금 쓰고 있는 것**이고 앱이 이미 알고 있다.
+ *
+ * 저장하지 않고 주문에서 파생시킨다. 저장 방식이면 "언제 쓰나"(앱을 켜야 함)가
+ * 애매하고, 다 쓴 뒤에도 남아 판정을 틀리게 만든다. 파생이면 다 쓸 때쯤이
+ * 지나는 순간 **스스로 빠진다** — 배송 상태·등급과 같은 처리다.
+ *
+ * 루틴 세트는 구성품으로 펼친다. 세트로 샀어도 실제로 쓰는 건 그 안의 제품들이고,
+ * 성분 판정은 제품 단위로 돌기 때문이다.
+ */
+export function fromOrders(orders: Order[], now = Date.now()): ShelfEntry[] {
+  const ids = new Map<string, number>(); // productId → 마지막으로 받은 시각
+
+  for (const o of orders) {
+    if (statusOf(o, now) !== "delivered") continue;
+    for (const l of o.lines) {
+      const targets =
+        l.kind === "product"
+          ? [l.id]
+          : (routines.find((r) => r.id === l.id)?.steps ?? []).map((s) => s.productId);
+      for (const id of targets) {
+        ids.set(id, Math.max(ids.get(id) ?? 0, o.placedAt));
+      }
+    }
+  }
+
+  const out: ShelfEntry[] = [];
+  ids.forEach((at, id) => {
+    const p = productOf(id) as Product | undefined;
+    if (!p) return;
+    const { lifespanDays } = regimenOf(p);
+    // 기기는 다 쓰는 개념이 없으니 계속 화장대에 남는다
+    if (lifespanDays !== null && now > at + lifespanDays * DAY) return;
+    out.push(entryOfProduct(p, "order"));
+  });
+  return out;
+}
+
+/**
+ * 화장대 = 손으로 넣은 것 + 주문에서 자동으로 들어온 것.
+ * 같은 상품이 양쪽에 있으면 손으로 넣은 쪽을 남긴다 (사용자가 명시한 것이 우선).
+ */
 export function useShelfEntries(): ShelfEntry[] {
-  return entriesOf(useShelf());
+  const manual = entriesOf(useShelf());
+  const auto = fromOrders(useOrders());
+  const seen = new Set(manual.map((e) => e.id));
+  return [...manual, ...auto.filter((e) => !seen.has(e.id))];
 }
 
 /** 다른 계정으로 로그인했을 때 게스트가 등록한 것을 합친다 (id 기준 합집합) */
