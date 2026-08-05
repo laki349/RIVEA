@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>뻔한 선물 말고, 부모님이 안 사는 다섯 가지 — RIVEA MAG</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#1C1815; --body:#4A443E; --muted:#8B8279;
+  --line:rgba(28,24,21,.16); --accent:#C13B54;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#9c968c;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.card{position:relative;width:1080px;height:1350px;overflow:hidden;margin:0 auto 40px}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* 아이보리 베일 — 사진이 배경으로 살아야 하므로 최소한만 */
+/* 70% — 본문 3줄 + 제품명까지 들어가야 하므로 v2(58%)보다 길다 */
+.veil{position:absolute;left:0;right:0;height:70%}
+.veil.top{top:0;background:linear-gradient(to bottom,
+  rgba(250,247,242,.70) 0%,rgba(250,247,242,.48) 46%,rgba(250,247,242,0) 100%)}
+.veil.deep.top{background:linear-gradient(to bottom,
+  rgba(250,247,242,.90) 0%,rgba(250,247,242,.70) 46%,rgba(250,247,242,0) 100%)}
+.veil.full{top:0;height:100%;background:linear-gradient(to bottom,
+  rgba(250,247,242,.82) 0%,rgba(250,247,242,.68) 58%,rgba(250,247,242,.52) 100%)}
+
+/* 매 장 공통 프레임 — 좌: 코너 라벨 / 우: 마스트헤드 */
+.frame{position:absolute;top:56px;left:80px;right:80px;display:flex;
+  justify-content:space-between;align-items:baseline;z-index:3}
+.corner{font-size:25px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.corner b{color:var(--accent);margin-right:10px}
+.mast{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--ink);opacity:.72}
+
+.txt{position:absolute;left:80px;right:80px}
+.txt.top{top:172px}
+
+.label{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--accent);
+  margin-bottom:22px}
+h2{font-size:74px;font-weight:700;line-height:1.22;letter-spacing:-.035em;color:var(--ink)}
+.lead{margin-top:28px;font-size:32px;font-weight:400;line-height:1.6;
+  letter-spacing:-.012em;color:var(--body)}
+/* 제품명 — 브랜드 로고 대신 텍스트로만 표기한다 */
+.prod{margin-top:26px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:30px;font-weight:600;line-height:1.35;letter-spacing:-.015em;color:var(--ink)}
+.prod b{display:block;font-weight:700;font-size:22px;letter-spacing:.16em;
+  color:var(--accent);margin-bottom:10px}
+.pg{position:absolute;right:74px;bottom:68px;font-size:23px;font-weight:600;
+  letter-spacing:.16em;color:rgba(28,24,21,.58);line-height:1;
+  background:rgba(250,247,242,.62);border-radius:4px;padding:9px 13px}
+
+/* 커버 */
+h1{font-size:92px;font-weight:700;line-height:1.18;letter-spacing:-.04em;color:var(--ink)}
+.cover-line{margin-top:34px;padding-top:26px;border-top:1px solid var(--line);
+  font-size:30px;font-weight:600;color:var(--body);letter-spacing:-.01em}
+
+/* 정리 카드 */
+.steps{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
+.steps li{display:flex;align-items:baseline;gap:22px;padding:15px 0;
+  border-bottom:1px solid var(--line);font-size:35px;font-weight:700;color:var(--ink);
+  letter-spacing:-.02em}
+.steps li i{font-style:normal;font-size:24px;font-weight:700;color:var(--accent);
+  letter-spacing:.1em}
+.more{margin-top:26px;font-size:30px;font-weight:600;color:var(--body);letter-spacing:-.01em}
+
+/* 브랜드 아웃트로 */
+.outro{background:#FAF7F2}
+.outro::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 78% at 50% 8%,rgba(255,255,255,.85) 0%,
+    rgba(250,247,242,0) 62%)}
+.outro-in{position:absolute;left:80px;right:80px;top:45%;transform:translateY(-50%);
+  text-align:center}
+.pre{font-size:38px;font-weight:500;line-height:1.5;letter-spacing:-.015em;color:var(--body)}
+.rebeauty{margin-top:44px;font-size:144px;font-weight:700;line-height:1;
+  letter-spacing:.005em;color:var(--ink)}
+.rebeauty span{color:var(--accent)}
+.rule-c{width:92px;height:1px;background:rgba(28,24,21,.26);margin:52px auto 0}
+.wordmark{margin-top:44px;font-size:46px;font-weight:700;letter-spacing:.44em;
+  color:var(--accent);text-indent:.44em}
+</style>
+</head>
+<body>
+
+<!-- 1 · 커버 -->
+<section class="card" id="c1">
+  <img src="img/01-cover.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <h1>뻔한 선물 말고,<br>부모님이 안 사는 다섯 가지</h1>
+    <p class="lead">홍삼도 안마의자도 이미 있으실 거예요.<br>정작 불편해하시면서 본인 돈으로는<br>절대 안 사는 것들만 골랐습니다.</p>
+    <p class="cover-line">직접 고른 다섯 가지 · 협찬 아님</p>
+  </div>
+</section>
+
+<!-- 2 · 자외선 -->
+<section class="card" id="c2">
+  <img src="img/02-uv.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">01 자외선</div>
+    <h2>얼굴에 가장 먼저<br>티가 나는 건 빛이다</h2>
+    <p class="lead">피부 노화의 큰 몫은 누적된 자외선 탓으로 알려져 있어요.<br>그런데 부모님 세대가 가장 안 바르는 게 선크림입니다.<br>자극이 적은 무기자차부터 시작하시면 됩니다.</p>
+    <p class="prod"><b>추천</b>에스트라 더마UV365 장벽수분 무기자차 선크림</p>
+  </div>
+  <div class="pg">02 / 08</div>
+</section>
+
+<!-- 3 · 세안 -->
+<section class="card" id="c3">
+  <img src="img/03-wash.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">02 세안</div>
+    <h2>비누로 씻으면<br>건조는 계속 온다</h2>
+    <p class="lead">부모님은 아직 세숫비누를 쓰시는 경우가 많아요.<br>알칼리성 비누는 피부 장벽을 깎아 건조를 만듭니다.<br>결과가 아니라 원인을 바꾸는 선물입니다.</p>
+    <p class="prod"><b>추천</b>라운드랩 1025 독도 클렌저 (약산성)</p>
+  </div>
+  <div class="pg">03 / 08</div>
+</section>
+
+<!-- 4 · 주름 -->
+<section class="card" id="c4">
+  <img src="img/04-wrinkle.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">03 주름</div>
+    <h2>주름에는 아무것도<br>안 쓰고 계신다</h2>
+    <p class="lead">레티놀은 주름 관리에서 근거가 가장 많이 쌓인 성분이에요.<br>0.1%는 처음 쓰시기에 적당한 농도입니다.<br>밤에만, 주 2~3회부터 시작하세요.</p>
+    <p class="prod"><b>추천</b>코스알엑스 더 레티놀 0.1 크림</p>
+  </div>
+  <div class="pg">04 / 08</div>
+</section>
+
+<!-- 5 · 눈가 -->
+<section class="card" id="c5">
+  <img src="img/05-eye.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">04 눈가</div>
+    <h2>탄력은 눈가에서<br>가장 먼저 빠진다</h2>
+    <p class="lead">눈가는 피부가 얇아 변화가 제일 먼저 보이는 곳이에요.<br>그런데 눈가 전용 제품을 쓰는 부모님은 드뭅니다.<br>레티놀보다 순해서 03번과 같이 쓰기도 좋습니다.</p>
+    <p class="prod"><b>추천</b>토리든 셀메이징 저분자 콜라겐 탄력 아이크림</p>
+  </div>
+  <div class="pg">05 / 08</div>
+</section>
+
+<!-- 6 · 발 -->
+<section class="card" id="c6">
+  <img src="img/06-foot.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">05 발</div>
+    <h2>말은 안 하시지만<br>발뒤꿈치가 아프다</h2>
+    <p class="lead">갈라진 발뒤꿈치는 아프고 잘 낫지 않아요.<br>우레아가 굳은 각질을 부드럽게 만드는 성분입니다.<br>아무도 선물하지 않는, 그래서 가장 반가운 것.</p>
+    <p class="prod"><b>추천</b>비욘드 우레아 12% 발꿈치 리페어링 풋크림</p>
+  </div>
+  <div class="pg">06 / 08</div>
+</section>
+
+<!-- 7 · 정리 -->
+<section class="card" id="c7">
+  <img src="img/07-sum.jpg" alt="">
+  <div class="veil full"></div>
+  <div class="frame"><div class="corner"><b>▪</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">정리</div>
+    <h2>하나씩만으로도 된다</h2>
+    <p class="lead">다섯 개를 다 사드릴 필요는 없어요.<br>01번부터 하나씩이면 충분합니다.</p>
+    <ul class="steps">
+      <li><i>01</i>자외선</li>
+      <li><i>02</i>세안</li>
+      <li><i>03</i>주름</li>
+      <li><i>04</i>눈가</li>
+      <li><i>05</i>발</li>
+    </ul>
+    <p class="more">제품명과 주의사항은 캡션에 정리해 뒀어요 ↓</p>
+  </div>
+  <div class="pg">07 / 08</div>
+</section>
+
+<!-- 8 · 브랜드 아웃트로 -->
+<section class="card outro" id="c8">
+  <div class="outro-in">
+    <p class="pre">당신이 푸르렀던 그 시절로</p>
+    <p class="rebeauty">RE<span>:</span>BEAUTY</p>
+    <div class="rule-c"></div>
+    <p class="wordmark">RIVEA</p>
+  </div>
+</section>
+
+</body>
+</html>

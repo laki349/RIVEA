@@ -33,13 +33,6 @@ export default function HomePage() {
           >
             매거진
           </Link>
-          {/* 순서 검사 — 홈 섹션으로 끼우면 상품 흐름을 끊는다. 상시 도구라 상단 바가 맞다 */}
-          <Link
-            href="/check"
-            className="flex h-11 items-center whitespace-nowrap text-[14px] font-medium text-ink"
-          >
-            루틴 확인
-          </Link>
           <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>

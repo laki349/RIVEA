@@ -66,8 +66,8 @@ function buildSlides(): Slide[] {
     },
     {
       image: routineImage("r1"),
-      href: "/check",
-      title: "쓰는 순서가\n맞는지 봐드려요",
+      href: "/shelf",
+      title: "쓰던 것과 겹치는지\n봐드려요",
       sub: "다른 곳에서 산 제품도 같이 검사해요",
       position: "center 50%",
     },

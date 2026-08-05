@@ -10,21 +10,38 @@ import GradeCard from "./GradeCard";
 import ProfileEntry from "./ProfileEntry";
 import AccountBlock from "./AccountBlock";
 
-/** href가 있으면 실제로 동작하는 항목. 없으면 아직 미구현 (docs/05 §5 죽은 UI 참고) */
+/**
+ * href가 있으면 실제로 동작하는 항목. 없으면 아직 미구현.
+ *
+ * **동작하는 것을 앞에 몰았다.** 예전엔 살아있는 4개가 죽은 6개 사이에 섞여 있어서
+ * 「내 화장대」·「재구매 목록」처럼 새로 만든 화면이 목록에 묻혔다. 죽은 항목을
+ * 지우지 않기로 한 이상, 최소한 순서로는 갈라놔야 한다.
+ */
 const menuGroups: { title: string; items: { label: string; href?: string; note?: string }[] }[] = [
+  {
+    title: "내 관리",
+    items: [
+      { label: "내 루틴", href: "/my-routine", note: "고민에 맞춘 아침·저녁 순서" },
+      { label: "내 화장대", href: "/shelf", note: "쓰고 있는 것과 같이 써도 되는지" },
+      { label: "재구매 목록", href: "/repurchase", note: "다 쓸 때쯤 알려드려요" },
+    ],
+  },
   {
     title: "쇼핑",
     items: [
       { label: "선물하기", href: "/gift", note: "어머니께 대신 골라드려요" },
       { label: "최근 본 상품", href: "/recent" },
-      { label: "내 화장대", href: "/shelf", note: "쓰고 있는 것과 같이 써도 되는지" },
-      { label: "재구매 목록", href: "/repurchase", note: "다 쓸 때쯤 알려드려요" },
-      { label: "배송지 관리" },
+      { label: "내가 쓴 리뷰", href: "/reviews" },
     ],
   },
   {
     title: "고객센터",
-    items: [{ label: "1:1 문의" }, { label: "공지사항" }, { label: "자주 묻는 질문" }],
+    items: [
+      { label: "배송지 관리" },
+      { label: "1:1 문의" },
+      { label: "공지사항" },
+      { label: "자주 묻는 질문" },
+    ],
   },
   { title: "리워드 · 참여", items: [{ label: "체험단 신청" }, { label: "리뷰 이벤트" }] },
 ];
