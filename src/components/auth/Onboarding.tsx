@@ -14,8 +14,12 @@ import LoginPanel from "./LoginPanel";
  *
  * 표준 패턴은 **콘텐츠는 공개, 커머스는 로그인**이다. 담기·결제 지점에서 인증을 요구하면
  * 되고(장바구니·결제 화면), 첫 화면부터 막을 필요가 없다.
+ *
+ * `/lp`는 이유가 하나 더 있다. 인스타·오프라인 카드에서 들어오는 랜딩이라
+ * 스플래시가 뜨는 순간 광고비(와 도달)가 그대로 증발한다. 슬래시 없이 적은 건
+ * `/lp` 자체를 매칭하기 위해서다.
  */
-const OPEN_PREFIXES = ["/product/", "/routine/", "/magazine/", "/concern/", "/brand/"];
+const OPEN_PREFIXES = ["/product/", "/routine/", "/magazine/", "/concern/", "/brand/", "/lp"];
 
 /**
  * 앱 첫 진입 시퀀스 — 스플래시 → 매거진 커머스 소개 → 로그인.

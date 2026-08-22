@@ -1,5 +1,6 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 /**
  * Firebase 초기화.
@@ -21,3 +22,10 @@ const firebaseConfig = {
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+
+/**
+ * Firestore — 지금은 `/lp` 리드 수집 한 곳만 쓴다 (src/lib/leads.ts).
+ * 장바구니·찜·주문은 여전히 localStorage다(정적 export라 서버가 없다).
+ * 보안은 firestore.rules가 담당한다: leads는 create만 열려 있고 read는 막혀 있다.
+ */
+export const db = getFirestore(app);

@@ -11,7 +11,7 @@ const BASE = "https://rivea-app.web.app";
  * 개인 화면이라 색인 대상이 아니다(robots.ts에서 크롤링도 막는다).
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["", "/category", "/pick", "/brands", "/magazine", "/gift", "/shelf", "/my-routine"];
+  const staticPaths = ["", "/lp", "/category", "/pick", "/brands", "/magazine", "/gift", "/shelf", "/my-routine"];
 
   return [
     ...staticPaths.map((path) => ({

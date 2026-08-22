@@ -10,7 +10,12 @@
  *
  * 버전을 올리면 activate에서 옛 캐시를 지운다. 배포 후 정리를 잊지 말 것.
  */
-const VERSION = "rivea-v1";
+/**
+ * ⚠️ 버전을 올리면 activate에서 옛 캐시를 통째로 지운다.
+ * v2: HTML이 max-age=3600으로 캐시되던 문제를 firebase.json headers로 고치면서,
+ *     이미 캐시에 박힌 옛 화면을 비우려고 올렸다.
+ */
+const VERSION = "rivea-v2";
 const SHELL = ["/", "/manifest.webmanifest", "/icons/icon-192.png"];
 
 self.addEventListener("install", (event) => {
