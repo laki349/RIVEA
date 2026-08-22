@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pretendard — 단일 폰트 패밀리 (위계는 크기·굵기·색으로) */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root {
+  color-scheme: light only;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  /* 데스크탑에서 모바일 프레임 바깥 영역 */
+  background: #efedea;
+  -webkit-font-smoothing: antialiased;
+}
+
+/**
+ * 눌림 피드백.
+ *
+ * 모바일엔 hover가 없어서, 탭이 먹었다는 신호가 화면 변화뿐이다. 확신이 없으면
+ * 두 번 누르고, 그러면 같은 상품이 두 번 담긴다. docs/03이 "모션은 tap 피드백
+ * 중심"이라고 적어둔 자리인데 구현이 없었다.
+ *
+ * 카드는 면적이 커서 0.98, 버튼·칩은 0.96으로 더 눌린다 —
+ * 같은 배율이면 큰 요소가 훨씬 크게 움직여 과해 보인다.
+ */
+@layer components {
+  .press {
+    transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .press:active {
+    transform: scale(0.96);
+  }
+  .press-card {
+    transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .press-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/**
+ * 모션 최소화 설정 존중 — 전역.
+ * 전정기관이 예민한 사용자에게 움직임은 불편이 아니라 증상이 된다.
+ * 40대+ 타깃이라 이 비율이 낮지 않다.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 가로 스크롤 레일 — 스크롤바 숨김 */
+.rail {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+/**
+ * 스크롤은 되지만 막대는 안 보이는 영역 (온보딩 로그인 패널 등).
+ *
+ * `overflow-y: auto`만 지정하면 **가로축도 자동으로 `auto`가 된다** — CSS 규칙상
+ * 한 축이 visible이 아니면 나머지 visible 축은 auto로 계산된다. 그래서 가로로
+ * 넘칠 게 없는데도 하단에 막대가 그려졌다. `overflow-x`를 명시로 잠그고,
+ * 막대를 항상 표시하는 설정(맥 "스크롤 막대 항상 표시"·윈도우)에서도 안 보이게 한다.
+ */
+.no-scrollbar {
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

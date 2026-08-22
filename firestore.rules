@@ -1,0 +1,54 @@
+rules_version = '2';
+
+/**
+ * RIVEA Firestore 보안 규칙.
+ *
+ * 지금 쓰는 컬렉션은 `leads` 하나다 (`/lp` 랜딩의 진단 신청).
+ * 여기엔 이메일·휴대폰이 들어가므로 **읽기를 아무에게도 열지 않는다.**
+ * 열람은 Firebase 콘솔에서만 한다.
+ *
+ * 기본은 전부 거부. 컬렉션을 추가할 때 명시적으로 열어야 한다.
+ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /leads/{leadId} {
+      // 브라우저에서 남의 신청 내역을 읽어가면 그 순간 개인정보 사고다.
+      allow read, update, delete: if false;
+
+      allow create: if isValidLead();
+    }
+
+    // 그 외 전부 거부
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+
+  function isValidLead() {
+    let d = request.resource.data;
+    return
+      // 완전 무인증 쓰기 차단 (익명 인증이면 통과)
+      request.auth != null
+      && d.uid == request.auth.uid
+
+      // 필드 화이트리스트 — 정의 안 한 필드가 섞여 들어오면 거부
+      && d.keys().hasOnly(
+           ['products', 'contact', 'contactType', 'agreed', 'ref', 'uid', 'createdAt']
+         )
+
+      && d.products is list
+      && d.products.size() >= 1 && d.products.size() <= 3
+
+      && d.contact is string
+      && d.contact.size() >= 5 && d.contact.size() <= 100
+
+      && d.contactType in ['email', 'phone']
+
+      // 동의 없이 들어온 건은 보관하지 않는다
+      && d.agreed == true
+
+      && d.ref is string && d.ref.size() <= 40
+      && d.createdAt == request.time;
+  }
+}

@@ -1,0 +1,21 @@
+node_modules/
+.next/
+out/
+*.log
+.DS_Store
+.env*
+next-env.d.ts
+tsconfig.tsbuildinfo
+.firebase/
+.gstack/
+.claude/
+cards/
+
+# 미디어 원본 (git으로 관리하지 않는다)
+cardnews/
+images/
+*.mp4
+
+# 사업 문서 (비공개)
+docs/
+research/
