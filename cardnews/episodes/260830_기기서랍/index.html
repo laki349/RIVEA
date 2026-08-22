@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>서랍 속 기기 다시 꺼내는 3가지 — RIVEA MAG</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#1C1815; --body:#4A443E; --muted:#8B8279;
+  --line:rgba(28,24,21,.16); --accent:#C13B54;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#9c968c;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.card{position:relative;width:1080px;height:1350px;overflow:hidden;margin:0 auto 40px}
+/* 직계 자식만 — 안 그러면 팔로우 카드 아바타까지 배경으로 깔린다 */
+.card > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* 제품 카드는 제품명·확인표기까지 들어가 텍스트가 길다 → 베일을 72%로 */
+.veil{position:absolute;left:0;right:0;height:72%}
+.veil.top{top:0;background:linear-gradient(to bottom,
+  rgba(250,247,242,.72) 0%,rgba(250,247,242,.50) 46%,rgba(250,247,242,0) 100%)}
+.veil.deep.top{background:linear-gradient(to bottom,
+  rgba(250,247,242,.90) 0%,rgba(250,247,242,.70) 46%,rgba(250,247,242,0) 100%)}
+.veil.full{top:0;height:100%;background:linear-gradient(to bottom,
+  rgba(250,247,242,.86) 0%,rgba(250,247,242,.72) 58%,rgba(250,247,242,.56) 100%)}
+
+/* 매 장 공통 프레임 */
+.frame{position:absolute;top:56px;left:80px;right:80px;display:flex;
+  justify-content:space-between;align-items:baseline;z-index:3}
+.corner{font-size:25px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.corner b{color:var(--accent);margin-right:10px}
+.mast{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--ink);opacity:.72}
+
+.txt{position:absolute;left:80px;right:80px;top:168px}
+.txt.narrow{right:auto;width:600px}
+
+.label{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--accent);
+  margin-bottom:22px}
+h2{font-size:72px;font-weight:700;line-height:1.22;letter-spacing:-.035em;color:var(--ink)}
+.lead{margin-top:24px;font-size:31px;font-weight:400;line-height:1.6;
+  letter-spacing:-.012em;color:var(--body)}
+.lead b{font-weight:700;color:var(--ink)}
+
+/* 제품명 + 식약처 확인. 브랜드 로고 대신 텍스트로만 표기한다. */
+.prod{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.prod .row{display:flex;gap:18px;align-items:flex-start;margin-top:14px}
+.prod .row:first-child{margin-top:0}
+.prod b{flex:0 0 auto;font-size:22px;font-weight:700;letter-spacing:.16em;
+  color:var(--accent);padding-top:7px;min-width:76px}
+.prod span{font-size:29px;font-weight:600;line-height:1.36;letter-spacing:-.015em;
+  color:var(--ink)}
+.prod .row.chk b{color:var(--muted)}
+.prod .row.chk span{font-weight:500;color:var(--body);font-size:27px}
+
+.pg{position:absolute;right:74px;bottom:68px;font-size:23px;font-weight:600;
+  letter-spacing:.16em;color:rgba(28,24,21,.58);line-height:1;
+  background:rgba(250,247,242,.62);border-radius:4px;padding:9px 13px}
+
+/* 커버 */
+h1{font-size:88px;font-weight:700;line-height:1.18;letter-spacing:-.04em;color:var(--ink)}
+.cover-line{margin-top:32px;padding-top:26px;border-top:1px solid var(--line);
+  font-size:29px;font-weight:600;color:var(--body);letter-spacing:-.01em}
+
+/* 정리 카드 */
+.steps{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
+.steps li{display:flex;align-items:baseline;gap:20px;padding:15px 0;
+  border-bottom:1px solid var(--line);font-size:31px;font-weight:700;color:var(--ink);
+  letter-spacing:-.02em}
+.steps li i{font-style:normal;font-size:23px;font-weight:700;color:var(--accent);
+  letter-spacing:.1em;flex:0 0 auto}
+.steps li em{font-style:normal;font-weight:500;color:var(--body);font-size:27px;margin-left:auto}
+.more{margin-top:26px;font-size:29px;font-weight:600;color:var(--body);letter-spacing:-.01em;
+  line-height:1.5}
+
+/* 아웃트로의 팔로우 카드 — 인스타 UI를 빌리되 pill 대신 4px 라운드(우리 언어) */
+.fcard{margin:52px auto 0;max-width:820px;background:#fff;border:1px solid var(--line);
+  border-radius:4px;padding:26px 30px;display:flex;align-items:center;gap:26px;text-align:left}
+.fcard .av{position:static;flex:0 0 auto;width:112px;height:112px;border-radius:50%;
+  object-fit:cover;border:1px solid var(--line);display:block}
+.fcard .who{flex:1 1 auto;min-width:0}
+.fcard .nm{font-size:34px;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.2}
+.fcard .hd{margin-top:8px;font-size:28px;font-weight:500;color:var(--muted);letter-spacing:-.01em}
+.fcard .btn{flex:0 0 auto;background:var(--ink);color:#FAF7F2;border-radius:4px;
+  padding:20px 34px;font-size:30px;font-weight:700;letter-spacing:-.01em}
+
+/* 브랜드 아웃트로 (style.md §7 — 매 회차 동일, 고치지 않는다) */
+.outro{background:#FAF7F2}
+.outro::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 78% at 50% 8%,rgba(255,255,255,.85) 0%,
+    rgba(250,247,242,0) 62%)}
+/* 팔로우 카드가 붙어 블록이 길어졌다 → 정중앙. (카드 없던 시절엔 45%가 맞았다) */
+.outro-in{position:absolute;left:80px;right:80px;top:50%;transform:translateY(-50%);
+  text-align:center}
+.pre{font-size:38px;font-weight:500;line-height:1.5;letter-spacing:-.015em;color:var(--body)}
+.rebeauty{margin-top:44px;font-size:144px;font-weight:700;line-height:1;
+  letter-spacing:.005em;color:var(--ink)}
+.rebeauty span{color:var(--accent)}
+.rule-c{width:92px;height:1px;background:rgba(28,24,21,.26);margin:52px auto 0}
+.wordmark{margin-top:44px;font-size:46px;font-weight:700;letter-spacing:.44em;
+  color:var(--accent);text-indent:.44em}
+</style>
+
+
+
+<section class="card" id="c1">
+  <img src="img/01-cover.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <h1>서랍 속 기기<br>다시 꺼내는 3가지</h1>
+    <p class="lead"><b>기기를 가진 13명 중 5명이 안 쓰고 있었습니다.</b><br>가격을 답한 14명 중 <b>8명이 50만원 이상</b>이었어요.<br>값이 아니라 꺼내는 횟수가 결과를 정합니다.</p>
+    <p class="cover-line">2026년 8월 자체 설문 · 32명</p>
+  </div>
+</section>
+
+<section class="card" id="c2">
+  <img src="img/02-num.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">01 숫자</div>
+    <h2>비싼 쪽이<br>더 자주 멈춥니다</h2>
+    <p class="lead">10~30만원 3명, 30~50만원 2명, <b>50만원 이상 8명.</b><br>값이 완주를 보장하지 않았어요.<br>오히려 비쌀수록 「제대로 해야 한다」가 부담이 됩니다.</p>
+    <div class="prod"><div class="row"><b>응답</b><span>가격 응답 14명 중 8명</span></div></div>
+  </div>
+  <div class="pg">02 / 09</div>
+</section>
+
+<section class="card" id="c3">
+  <img src="img/03-why.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">02 이유</div>
+    <h2>순서를 몰라서가<br>아니었습니다</h2>
+    <p class="lead">기기를 가진 사람과 아닌 사람의 <b>「순서 모르겠다」 비율이 같았어요</b>(둘 다 31%).<br>대신 방치한 5명 중 4명이 <b>효과나 순서 혼란</b>을 함께 답했습니다.</p>
+  </div>
+  <div class="pg">03 / 09</div>
+</section>
+
+<section class="card" id="c4">
+  <img src="img/04-weight.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">03 무게</div>
+    <h2>손이 먼저<br>지칩니다</h2>
+    <p class="lead">같은 홈케어 기기가 75g부터 320g까지 있어요.<br>무거우면 자세가 흐트러지고, 그러면 안 꺼내게 됩니다.</p>
+  </div>
+  <div class="pg">04 / 09</div>
+</section>
+
+<section class="card" id="c5">
+  <img src="img/05-day.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">꺼내는 법 01</div>
+    <h2>요일을<br>정해 둡니다</h2>
+    <p class="lead">「생각날 때」는 안 옵니다.<br>주 2회, <b>요일을 정해서 달력에 적어두세요.</b></p>
+    <div class="prod"><div class="row"><b>주기</b><span>주 2회 · 고정 요일</span></div></div>
+  </div>
+  <div class="pg">05 / 09</div>
+</section>
+
+<section class="card" id="c6">
+  <img src="img/06-place.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">꺼내는 법 02</div>
+    <h2>서랍이 아니라<br>보이는 곳에</h2>
+    <p class="lead">넣어두면 잊습니다. 화장대 위, 충전기에 꽂힌 채로.<br><b>꺼내는 동작 하나가 줄면 완주율이 달라져요.</b></p>
+  </div>
+  <div class="pg">06 / 09</div>
+</section>
+
+<section class="card" id="c7">
+  <img src="img/07-time.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">꺼내는 법 03</div>
+    <h2>한 번에<br>10분을 넘기지 않기</h2>
+    <p class="lead">길게 하려다 안 하게 됩니다. 짧게, 대신 계속.<br>고주파를 쓴 날 저녁은 <b>세라마이드 · 판테놀</b>로 채우세요.</p>
+    <div class="prod"><div class="row chk"><b>주의</b><span>열이 들어간 날은 장벽부터</span></div></div>
+  </div>
+  <div class="pg">07 / 09</div>
+</section>
+
+<section class="card" id="c8">
+  <img src="img/08-sum.jpg" alt="">
+  <div class="veil full"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>제품</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">정리</div>
+    <h2>값이 아니라<br>꺼내는 횟수입니다</h2>
+    <ul class="steps"><li><i>01</i>요일<em>주 2회 고정</em></li><li><i>02</i>자리<em>보이는 곳</em></li><li><i>03</i>시간<em>10분 이하</em></li><li><i>04</i>고주파 쓴 날<em>장벽부터</em></li><li><i>05</i>판정<em>12주 뒤에</em></li></ul>
+    <p class="more">서랍에 있는 기기부터 꺼내 두세요.<br><b>저장해두고 이번 주 요일만 정하시면 됩니다.</b></p>
+  </div>
+  <div class="pg">08 / 09</div>
+</section>
+
+<section class="card outro" id="c9">
+  <div class="outro-in">
+    <p class="pre">당신이 푸르렀던 그 시절로</p>
+    <p class="rebeauty">RE<span>:</span>BEAUTY</p>
+    <div class="rule-c"></div>
+    <div class="fcard">
+      <img class="av" src="../../assets/avatar.png" alt="">
+      <div class="who">
+        <div class="nm">RIVEA 매거진</div>
+        <div class="hd">@rivea.mag</div>
+      </div>
+      <div class="btn">팔로우</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>10만원 쓰기 전에 볼 5가지 — RIVEA MAG</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#1C1815; --body:#4A443E; --muted:#8B8279;
+  --line:rgba(28,24,21,.16); --accent:#C13B54;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#9c968c;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.card{position:relative;width:1080px;height:1350px;overflow:hidden;margin:0 auto 40px}
+/* 직계 자식만 — 안 그러면 팔로우 카드 아바타까지 배경으로 깔린다 */
+.card > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* 제품 카드는 제품명·확인표기까지 들어가 텍스트가 길다 → 베일을 72%로 */
+.veil{position:absolute;left:0;right:0;height:72%}
+.veil.top{top:0;background:linear-gradient(to bottom,
+  rgba(250,247,242,.72) 0%,rgba(250,247,242,.50) 46%,rgba(250,247,242,0) 100%)}
+.veil.deep.top{background:linear-gradient(to bottom,
+  rgba(250,247,242,.90) 0%,rgba(250,247,242,.70) 46%,rgba(250,247,242,0) 100%)}
+.veil.full{top:0;height:100%;background:linear-gradient(to bottom,
+  rgba(250,247,242,.86) 0%,rgba(250,247,242,.72) 58%,rgba(250,247,242,.56) 100%)}
+
+/* 매 장 공통 프레임 */
+.frame{position:absolute;top:56px;left:80px;right:80px;display:flex;
+  justify-content:space-between;align-items:baseline;z-index:3}
+.corner{font-size:25px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.corner b{color:var(--accent);margin-right:10px}
+.mast{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--ink);opacity:.72}
+
+.txt{position:absolute;left:80px;right:80px;top:168px}
+.txt.narrow{right:auto;width:600px}
+
+.label{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--accent);
+  margin-bottom:22px}
+h2{font-size:72px;font-weight:700;line-height:1.22;letter-spacing:-.035em;color:var(--ink)}
+.lead{margin-top:24px;font-size:31px;font-weight:400;line-height:1.6;
+  letter-spacing:-.012em;color:var(--body)}
+.lead b{font-weight:700;color:var(--ink)}
+
+/* 제품명 + 식약처 확인. 브랜드 로고 대신 텍스트로만 표기한다. */
+.prod{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.prod .row{display:flex;gap:18px;align-items:flex-start;margin-top:14px}
+.prod .row:first-child{margin-top:0}
+.prod b{flex:0 0 auto;font-size:22px;font-weight:700;letter-spacing:.16em;
+  color:var(--accent);padding-top:7px;min-width:76px}
+.prod span{font-size:29px;font-weight:600;line-height:1.36;letter-spacing:-.015em;
+  color:var(--ink)}
+.prod .row.chk b{color:var(--muted)}
+.prod .row.chk span{font-weight:500;color:var(--body);font-size:27px}
+
+.pg{position:absolute;right:74px;bottom:68px;font-size:23px;font-weight:600;
+  letter-spacing:.16em;color:rgba(28,24,21,.58);line-height:1;
+  background:rgba(250,247,242,.62);border-radius:4px;padding:9px 13px}
+
+/* 커버 */
+h1{font-size:88px;font-weight:700;line-height:1.18;letter-spacing:-.04em;color:var(--ink)}
+.cover-line{margin-top:32px;padding-top:26px;border-top:1px solid var(--line);
+  font-size:29px;font-weight:600;color:var(--body);letter-spacing:-.01em}
+
+/* 정리 카드 */
+.steps{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
+.steps li{display:flex;align-items:baseline;gap:20px;padding:15px 0;
+  border-bottom:1px solid var(--line);font-size:31px;font-weight:700;color:var(--ink);
+  letter-spacing:-.02em}
+.steps li i{font-style:normal;font-size:23px;font-weight:700;color:var(--accent);
+  letter-spacing:.1em;flex:0 0 auto}
+.steps li em{font-style:normal;font-weight:500;color:var(--body);font-size:27px;margin-left:auto}
+.more{margin-top:26px;font-size:29px;font-weight:600;color:var(--body);letter-spacing:-.01em;
+  line-height:1.5}
+
+/* 아웃트로의 팔로우 카드 — 인스타 UI를 빌리되 pill 대신 4px 라운드(우리 언어) */
+.fcard{margin:52px auto 0;max-width:820px;background:#fff;border:1px solid var(--line);
+  border-radius:4px;padding:26px 30px;display:flex;align-items:center;gap:26px;text-align:left}
+.fcard .av{position:static;flex:0 0 auto;width:112px;height:112px;border-radius:50%;
+  object-fit:cover;border:1px solid var(--line);display:block}
+.fcard .who{flex:1 1 auto;min-width:0}
+.fcard .nm{font-size:34px;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.2}
+.fcard .hd{margin-top:8px;font-size:28px;font-weight:500;color:var(--muted);letter-spacing:-.01em}
+.fcard .btn{flex:0 0 auto;background:var(--ink);color:#FAF7F2;border-radius:4px;
+  padding:20px 34px;font-size:30px;font-weight:700;letter-spacing:-.01em}
+
+/* 브랜드 아웃트로 (style.md §7 — 매 회차 동일, 고치지 않는다) */
+.outro{background:#FAF7F2}
+.outro::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 78% at 50% 8%,rgba(255,255,255,.85) 0%,
+    rgba(250,247,242,0) 62%)}
+/* 팔로우 카드가 붙어 블록이 길어졌다 → 정중앙. (카드 없던 시절엔 45%가 맞았다) */
+.outro-in{position:absolute;left:80px;right:80px;top:50%;transform:translateY(-50%);
+  text-align:center}
+.pre{font-size:38px;font-weight:500;line-height:1.5;letter-spacing:-.015em;color:var(--body)}
+.rebeauty{margin-top:44px;font-size:144px;font-weight:700;line-height:1;
+  letter-spacing:.005em;color:var(--ink)}
+.rebeauty span{color:var(--accent)}
+.rule-c{width:92px;height:1px;background:rgba(28,24,21,.26);margin:52px auto 0}
+.wordmark{margin-top:44px;font-size:46px;font-weight:700;letter-spacing:.44em;
+  color:var(--accent);text-indent:.44em}
+
+/* ── 리서치 포맷 (2026-08-21 신설) ───────────────────────────
+   논문 지면을 캡처하지 않는다. 저작물이고, 1080px에서 읽히지도 않는다.
+   대신 인용을 타이포로 재조판한다. 출처가 카드 안에 박혀 있어야 신뢰가 선다. */
+.quote{margin-top:32px;background:rgba(250,247,242,.94);
+  border:1px solid rgba(28,24,21,.20);border-radius:4px;padding:42px 42px 34px}
+.quote .rlabel{font-size:21px;font-weight:700;letter-spacing:.28em;
+  color:var(--accent);margin-bottom:22px}
+.quote q{display:block;quotes:none;font-size:44px;font-weight:700;line-height:1.36;
+  letter-spacing:-.03em;color:var(--ink)}
+.quote .src{margin-top:26px;padding-top:19px;border-top:1px solid var(--line);
+  font-size:21px;font-weight:500;line-height:1.55;color:var(--muted)}
+.quote .src b{font-weight:700;color:var(--body)}
+
+.stat{margin-top:28px;display:flex;align-items:baseline;gap:12px}
+.stat .n{font-size:158px;font-weight:700;line-height:.88;letter-spacing:-.055em;color:var(--ink)}
+.stat .u{font-size:56px;font-weight:700;color:var(--accent);letter-spacing:-.02em}
+.statcap{margin-top:20px;font-size:29px;font-weight:500;line-height:1.5;
+  letter-spacing:-.012em;color:var(--body)}
+.statcap b{font-weight:700;color:var(--ink)}
+.mini{margin-top:26px;padding-top:20px;border-top:1px solid var(--line);display:flex;gap:44px}
+.mini div{font-size:25px;font-weight:500;color:var(--body);letter-spacing:-.01em}
+.mini b{display:block;font-size:46px;font-weight:700;color:var(--ink);
+  letter-spacing:-.035em;margin-bottom:2px}
+.cite{margin-top:24px;font-size:21px;font-weight:600;color:var(--body);line-height:1.5}
+
+/* ── 논문 지면 배경 (2026-08-21 신설) ──────────────────────
+   실제 논문 지면을 깔지 않는다. 흐릿해도 복제다. 지면 구조를 CSS로 그린다.
+   2단 조판 + 도표 + 러닝헤드. 글자가 아니라 「줄」이라 어느 배율에서도 안 읽힌다. */
+.paperbg{position:absolute;inset:0;background:#F3EFE8;padding:150px 58px 46px;
+  opacity:.32;filter:blur(.3px)}
+.paperbg .rh{display:flex;justify-content:space-between;font-size:15px;font-weight:700;
+  letter-spacing:.2em;color:rgba(28,24,21,.75);border-bottom:1px solid rgba(28,24,21,.55);
+  padding-bottom:9px}
+.paperbg .ttl{margin:26px 0 8px}
+.paperbg .ttl .l{height:13px;background:rgba(28,24,21,.78);margin-bottom:10px}
+.paperbg .ttl .l:nth-child(2){width:72%}
+.paperbg .auth{height:7px;width:46%;background:rgba(28,24,21,.5);margin-bottom:24px}
+.pcols{display:flex;gap:38px;height:calc(100% - 200px)}
+.pcol{flex:1;overflow:hidden}
+.par{margin-bottom:19px}
+.par .l{height:6px;background:rgba(28,24,21,.46);margin-bottom:9px}
+.par .l.s{width:58%}
+.par .l.m{width:82%}
+.par .h{height:7px;width:38%;background:rgba(28,24,21,.72);margin-bottom:11px}
+.fig{border:1px solid rgba(28,24,21,.6);height:210px;margin:6px 0 14px;position:relative;
+  padding:14px 14px 22px}
+.fig .ax{position:absolute;left:36px;right:14px;bottom:22px;height:1px;background:rgba(28,24,21,.6)}
+.fig .ay{position:absolute;left:36px;top:14px;bottom:22px;width:1px;background:rgba(28,24,21,.6)}
+.fig .bars{position:absolute;left:48px;right:18px;bottom:23px;height:150px;
+  display:flex;align-items:flex-end;gap:12px}
+.fig .bars i{flex:1;background:rgba(28,24,21,.42)}
+.fig .cap{position:absolute;left:0;right:0;bottom:2px;height:5px;
+  background:rgba(28,24,21,.42);width:64%;margin:0 auto}
+.tbl{border-top:1px solid rgba(28,24,21,.6);border-bottom:1px solid rgba(28,24,21,.6);
+  padding:8px 0;margin:6px 0 16px}
+.tbl div{display:flex;gap:10px;margin:7px 0}
+.tbl div i{height:5px;background:rgba(28,24,21,.44);flex:1}
+.tbl div i:first-child{flex:2.2}
+</style>
+
+
+
+<!-- 1 · 커버 — 문제 제기 + 질문 심기 -->
+<section class="card" id="c1">
+  <img src="img/01-cover.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <h1>10만원 쓰기 전에<br>볼 5가지</h1>
+    <p class="lead"><b>임상시험에선 성분을 뺀 크림을 바른 그룹도 좋아졌습니다.</b><br>그것도 활성 성분군 효과의 절반 넘게요.<br>그럼 우리가 낸 세럼값은 어디로 간 걸까요.</p>
+    <p class="cover-line">자체 설문 32명 · 국제 학술지 리뷰 2026</p>
+  </div>
+</section>
+
+<!-- 2 · 공감 -->
+<section class="card" id="c2">
+  <img src="img/02-us.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">01 우리 이야기</div>
+    <h2>다들<br>모르고 있었습니다</h2>
+    <p class="lead">8월에 32명께 여쭤봤어요.<br>「쓰는 중에 불편한 것」 1위가<br><b>「효과가 있는 건지 없는 건지 모르겠다」</b>였습니다.</p>
+    <div class="prod"><div class="row"><b>응답</b><span>32명 중 23명 · 50대 24 · 40대 4</span></div></div>
+  </div>
+  <div class="pg">02 / 09</div>
+</section>
+
+<!-- 3 · 손해 -->
+<section class="card" id="c3">
+  <img src="img/03-loss.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">02 손해</div>
+    <h2>느낌으로 판정하면<br>두 번 잃습니다</h2>
+    <p class="lead">안 듣는 걸 계속 쓰면 시간을 잃고,<br>듣는 걸 일찍 버리면 <b>다시 처음부터</b>예요.<br>설문에서도 18명(56%)이 다 못 쓰고 방치했습니다.</p>
+  </div>
+  <div class="pg">03 / 09</div>
+</section>
+
+<!-- 4 · 근거 — 수치 + 인용 (한 장으로 합침) -->
+<section class="card" id="c4">
+  <img src="img/04-paper.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">03 숫자</div>
+    <div class="stat"><span class="n">51.2</span><span class="u">%</span></div>
+    <p class="statcap"><b>성분을 뺀 크림만 바른 그룹</b>에서 나타난<br>염증성 병변 감소폭입니다. 참가자 2,817명 임상시험.</p>
+    <div class="mini">
+      <div><b>27%</b>홍조 감소</div>
+      <div><b>44.9%</b>색소침착 개선</div>
+      <div><b>24%</b>병변 수 감소</div>
+    </div>
+    <p class="cite"><b>Siripanich C, Chow YC, Ali FR.</b> Skin Health and Disease 2026;6(3):207–213<br>위 리뷰가 정리한 임상시험들의 <b>기제(위약)군 수치</b>입니다</p>
+  </div>
+  <div class="pg">04 / 09</div>
+</section>
+
+<!-- 5 · 해석 — 돈으로 착지 -->
+<section class="card" id="c5">
+  <img src="img/06-mean.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">04 그래서</div>
+    <h2>세럼값의 절반은<br>기본이 하고 있었습니다</h2>
+    <p class="lead">새 제품을 쓰면 같이 바뀝니다. 더 신경 써서 바르고,<br>거르지 않고, 자외선 차단도 챙기게 되죠.<br><b>2주 뒤의 「좋아졌다」에는 그게 다 섞여 있어요.</b></p>
+  </div>
+  <div class="pg">05 / 09</div>
+</section>
+
+<!-- 6 · 그럼 성분은 언제 -->
+<section class="card" id="c6">
+  <img src="img/07-base.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">05 그럼 성분은</div>
+    <h2>안 사도 된다는<br>말이 아닙니다</h2>
+    <p class="lead">기본을 채웠는데도 12주째 그대로일 때.<br>그때가 성분이 할 일이 생기는 시점이에요.<br><b>그 전에 사면 빈자리 값을 성분값으로 내는 겁니다.</b></p>
+    <div class="prod"><div class="row"><b>순서</b><span>기본 3자리 → 12주 → 그다음 성분 하나</span></div></div>
+  </div>
+  <div class="pg">06 / 09</div>
+</section>
+
+<!-- 7 · 행동 -->
+<section class="card" id="c7">
+  <img src="img/08-sum.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">06 기본 세 자리</div>
+    <h2>정확히<br>이 세 가지입니다</h2>
+    <p class="lead">비싼 걸 더하는 게 아니라 <b>빠진 자리를 메우는 일</b>이에요.</p>
+    <div class="prod">
+      <div class="row"><b>아침</b><span>세안 → 보습 → 자외선 차단.<br>흐린 날도 거르지 않기</span></div>
+      <div class="row"><b>저녁</b><span>세안 후 3분 안에 바르고,<br>마지막은 크림으로 덮어 잠그기</span></div>
+      <div class="row chk"><b>확인</b><span>이 셋 중 빠진 게 있으면 거기부터</span></div>
+    </div>
+  </div>
+  <div class="pg">07 / 09</div>
+</section>
+
+<!-- 8 · 판정표 -->
+<section class="card" id="c8">
+  <img src="img/05-stat.jpg" alt="">
+  <div class="veil full"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>생활</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">판정</div>
+    <h2>10만원 쓰기 전에<br>여기를 봅니다</h2>
+    <ul class="steps">
+      <li><i>01</i>기본 세 자리가 비었다<em>지금은 사지 않는다</em></li>
+      <li><i>02</i>기본은 찼고 4주째다<em>아직 판정하지 않는다</em></li>
+      <li><i>03</i>기본 찼는데 12주째 그대로<em>이때 성분을 올린다</em></li>
+      <li><i>04</i>따갑거나 붉어졌다<em>횟수부터 줄인다</em></li>
+      <li><i>05</i>좋아진 것 같다<em>사진으로 확인한다</em></li>
+    </ul>
+    <p class="more">사기 전에 한 번, 12주 뒤에 한 번 보시면 됩니다.<br><b>저장해두고 팔로우해두시면 다음 회차에서 이어집니다.</b></p>
+  </div>
+  <div class="pg">08 / 09</div>
+</section>
+
+<!-- 9 · 브랜드 아웃트로 + 팔로우 -->
+<section class="card outro" id="c9">
+  <div class="outro-in">
+    <p class="pre">당신이 푸르렀던 그 시절로</p>
+    <p class="rebeauty">RE<span>:</span>BEAUTY</p>
+    <div class="rule-c"></div>
+    <div class="fcard">
+      <img class="av" src="../../assets/avatar.png" alt="">
+      <div class="who">
+        <div class="nm">RIVEA 매거진</div>
+        <div class="hd">@rivea.mag</div>
+      </div>
+      <div class="btn">팔로우</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

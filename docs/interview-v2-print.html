@@ -1,0 +1,652 @@
+<!-- RIVEA 인터뷰 기록지 v2 — 인쇄용 A4
+     내용 원본: docs/09-interview-script.md (v2)
+     ⚠️ docx 생성기(build-interview-docx-v2.js)와 내용이 중복된다. 문항을 고치면 둘 다 고쳐야 한다.
+     빌드: node docs/build-interview-pdf-v2.js -->
+<meta charset="utf-8">
+<title>RIVEA 인터뷰 기록지 v2</title>
+<style>
+  @page { size: A4; margin: 12mm 13mm 11mm; }
+
+  :root {
+    --ink:   #1F2933;
+    --sub:   #6B7280;
+    --hair:  #C9C2B8;
+    --fill:  #F2EFEA;
+    --rule:  #9A9188;
+    --red:   #A03030;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 10pt;
+    line-height: 1.45;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── 장 표지 ─────────────────────────────── */
+  .chapter { break-before: page; }
+  .chapter:first-of-type { break-before: auto; }
+
+  .mast h1 { font-size: 17pt; font-weight: 700; letter-spacing: -0.02em; }
+  .mast .sub {
+    font-size: 9pt; color: #555;
+    border-bottom: 1.6pt solid var(--ink);
+    padding-bottom: 6pt; margin-top: 3pt;
+  }
+
+  /* ── 섹션 바 ─────────────────────────────── */
+  .sec {
+    background: var(--ink); color: #fff;
+    padding: 4pt 9pt; margin: 13pt 0 7pt;
+    font-size: 11pt; font-weight: 700;
+    break-after: avoid;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .sec.new { background: #8A5A00; }
+  .sec .min { font-size: 8.5pt; font-weight: 400; color: #C9D1D9; }
+
+  h2.h {
+    font-size: 11.5pt; font-weight: 700;
+    border-bottom: 1.2pt solid var(--ink);
+    padding-bottom: 3pt; margin: 15pt 0 6pt;
+    break-after: avoid;
+  }
+
+  /* ── 문항 ────────────────────────────────── */
+  .blk { break-inside: avoid; }
+
+  .q { font-size: 10.5pt; font-weight: 700; margin: 7pt 0 3pt; break-after: avoid; }
+  .q::before { content: "▸  "; }
+
+  .s { font-size: 9.3pt; color: #444; margin: 1.5pt 0 1.5pt 14pt; }
+  .s::before { content: "– "; }
+
+  .n {
+    font-size: 8.8pt; color: var(--red); font-style: italic;
+    margin: 3pt 0 3pt 14pt;
+  }
+  .n::before { content: "※ "; }
+
+  .f { font-size: 9.5pt; margin: 4pt 0 4pt 14pt; }
+
+  .say {
+    font-size: 10pt; font-style: italic;
+    border-left: 2.5pt solid #B8BEC6;
+    padding: 3pt 0 3pt 9pt;
+    margin: 7pt 0 8pt 6pt;
+  }
+
+  .box {
+    border: 0.8pt solid; border-left-width: 4pt;
+    padding: 5pt 8pt; margin: 7pt 0;
+    font-size: 9.5pt; break-inside: avoid;
+  }
+  .box.warn  { background: #FFE8E8; border-color: #C05050; }
+  .box.new   { background: #FFF4E5; border-color: #E0A030; }
+  .box.info  { background: #E8F0FF; border-color: #3060B0; }
+  .box.go    { background: #E8F5E9; border-color: #4A8B5A; }
+
+  /* 기입선 */
+  .line { border-bottom: 0.7pt solid var(--rule); height: 19pt; margin: 0 0 4pt 14pt; }
+  .lbl  { font-size: 8.5pt; color: #777; margin: 5pt 0 2pt 14pt; break-after: avoid; }
+
+  /* ── 표 ──────────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0; break-inside: avoid; }
+  th, td { border: 0.7pt solid var(--hair); padding: 3.5pt 6pt; text-align: left; vertical-align: top; }
+  th { background: #E8EAED; font-size: 8.8pt; font-weight: 700; }
+  td { font-size: 9pt; }
+  td.k { background: #F0F1F3; font-weight: 700; font-size: 8.8pt; white-space: nowrap; }
+  td.hint { color: #9AA0A6; font-size: 8.5pt; }
+  td.blank { height: 19pt; }
+  th.info { background: #E8F0FF; }
+  td.num  { background: #FAFBFC; text-align: center; width: 5%; font-size: 8.5pt; }
+  td.star { background: #FFF4E5; }
+
+  ul { list-style: none; }
+  ul.b li { font-size: 9.3pt; margin: 3pt 0; padding-left: 11pt; text-indent: -11pt; }
+  ul.b li::before { content: "• "; }
+
+  .cl td:first-child { width: 5%; text-align: center; font-size: 11pt; }
+  .cl td { font-size: 9.3pt; }
+  .cl td.bold { font-weight: 700; }
+
+  .end { font-weight: 700; font-size: 10pt; margin-top: 9pt; }
+</style>
+
+<!-- ═══════════ 1장 · A세트 ═══════════ -->
+<div class="chapter">
+  <div class="mast">
+    <h1>RIVEA 인터뷰 v2 — A세트 (전원 8명)</h1>
+    <div class="sub">2026-08-17 (월) · 인당 10분 · <strong>8부 인쇄</strong> — 한 사람당 한 부</div>
+  </div>
+
+  <table>
+    <tr>
+      <td class="k">참가자</td><td style="width:18%"></td>
+      <td class="k" style="background:#FFF4E5">연세</td>
+      <td style="width:26%;font-size:8.5pt">☐40초 ☐40후 ☐50초 ☐50후 ☐60+</td>
+      <td class="k">방식</td>
+      <td style="font-size:8.5pt">☐ 대면　☐ 전화</td>
+    </tr>
+  </table>
+
+  <div class="box warn">
+    앱 얘기는 관찰 파트 전까지 <strong>절대 꺼내지 않는다.</strong>
+    시간이 모자라면 B세트를 버리고 이 장을 끝까지 한다.
+  </div>
+
+  <div class="say">
+    "제가 뭘 팔러 온 게 아니고요, 화장품이랑 피부 관리 어떻게 하시는지 여쭤보려고요.
+    10분이면 돼요. 정답 없는 질문이라 편하게 말씀해 주시면 돼요."
+  </div>
+
+  <!-- 0 -->
+  <div class="sec"><span>0. 연세</span><span class="min">10초</span></div>
+  <div class="blk">
+    <div class="q">연세가 어떻게 되세요?</div>
+    <div class="n">맨 위 표에 먼저 적는다. 나머지 답 전부의 해석이 여기에 달렸다.
+      40대가 3명 미만이면 이 인터뷰는 「40대 검증」이 아니다 (4장 표본 경고).</div>
+  </div>
+
+  <!-- 1 -->
+  <div class="sec"><span>1. 지금 뭘 쓰고 계세요</span><span class="min">1분</span></div>
+  <div class="blk">
+    <div class="q">혹시 화장대 한 장만 찍어서 보여주실 수 있으세요?</div>
+    <div class="n">사진이 받아적는 것보다 빠르고 정확하다. <strong>말로 받지 말고 사진으로 받는다.</strong></div>
+    <div class="s">(대면·지금 없으면) "이따 집에서 한 장만 카톡으로 주실 수 있으세요?" → 약속만 받고 넘어간다</div>
+    <div class="s">(전화) "지금 화장대 앞이세요? 하나씩 읽어주실 수 있으세요?"</div>
+    <div class="f">사진 　☐ 지금 받음 　☐ 카톡 약속 　☐ 못 받음 　　　　제품 총 개수: ________ 개</div>
+    <div class="n">사진을 못 받는 경우에만 아래 표를 손으로 채운다.</div>
+  </div>
+  <table>
+    <tr><th style="width:12%"></th><th style="width:46%">브랜드 + 제품명</th><th>메모</th></tr>
+    <tr><td class="k">아침</td><td class="blank"></td><td></td></tr>
+    <tr><td></td><td class="blank"></td><td></td></tr>
+    <tr><td></td><td class="blank"></td><td></td></tr>
+    <tr><td class="k">저녁</td><td class="blank"></td><td></td></tr>
+    <tr><td></td><td class="blank"></td><td></td></tr>
+    <tr><td></td><td class="blank"></td><td></td></tr>
+    <tr><td class="k">주1~2회</td><td class="blank"></td><td></td></tr>
+  </table>
+
+  <!-- 2 -->
+  <div class="sec"><span>2. 최근에 산 것 + 검색 기록</span><span class="min">2분 30초</span></div>
+  <div class="blk">
+    <div class="q">제일 최근에 새로 사신 게 뭐예요? 그건 어떻게 알게 되셨어요?</div>
+    <div class="line"></div>
+  </div>
+  <div class="blk">
+    <div class="q">어디서 사셨어요?</div>
+    <div class="f">☐ 쿠팡 　☐ 네이버 　☐ 올리브영 　☐ 백화점 　☐ 홈쇼핑 　☐ 매장 　☐ 기타 ____________</div>
+  </div>
+
+  <div class="box info">
+    <strong>여기가 이 인터뷰에서 제일 중요한 30초다.</strong> 기억으로 묻지 말고 폰 화면을 본다.
+  </div>
+
+  <div class="say">
+    "혹시 폰에서 네이버 검색창 한 번만 열어봐 주실 수 있으세요?
+    최근에 뭐 치셨는지 그것만 보려고요. 다른 건 안 봅니다. 불편하시면 안 하셔도 괜찮아요."
+  </div>
+
+  <div class="blk">
+    <div class="s">네이버 앱 → 검색창 탭 → 최근 검색어 목록</div>
+    <div class="n"><strong>폰을 건네받지 않는다.</strong> 본인이 들고 읽어주시게 한다. 사생활이다.</div>
+    <div class="n">거부하면 바로 물러선다. 기억으로 대체하고, 아래 표에 「기억」이라고 표시한다.</div>
+    <div class="n">화장품과 무관한 검색어도 그대로 적는다. 이 층이 뭘 검색하는지 자체가 데이터다.</div>
+    <div class="f">출처: 　☐ 폰 화면 그대로 　☐ 기억으로 회상 　☐ 확보 실패</div>
+  </div>
+
+  <table>
+    <tr>
+      <th class="info" style="width:5%">#</th>
+      <th class="info" style="width:63%">검색어 — 화면에 뜬 글자 그대로 (띄어쓰기·오타 포함)</th>
+      <th class="info">어디에 / 뭘 봤나</th>
+    </tr>
+    <tr><td class="num">1</td><td class="blank"></td><td></td></tr>
+    <tr><td class="num">2</td><td class="blank"></td><td></td></tr>
+    <tr><td class="num">3</td><td class="blank"></td><td></td></tr>
+    <tr><td class="num">4</td><td class="blank"></td><td></td></tr>
+    <tr><td class="num">5</td><td class="blank"></td><td></td></tr>
+    <tr><td class="num">6</td><td class="blank"></td><td></td></tr>
+  </table>
+
+  <div class="box info">
+    <strong>정리하지 말 것.</strong> 「기미없애는방법」(월 190) vs 「기미없애는법」(월 13,250) —
+    한 글자에 <strong>70배</strong>다. 띄어쓰기·오타·조사까지 화면 그대로.
+  </div>
+
+  <!-- 3 -->
+  <div class="sec new"><span>3. 집에서 쓰는 기기</span><span class="min">2분</span></div>
+  <div class="box new">
+    <strong>★ 신설</strong> — 여기가 v2에서 제일 중요해진 문항이다.
+    「디바이스 중심」으로 피봇했는데 우리한테 1차 데이터가 <strong>0건</strong>이다.
+  </div>
+  <div class="blk">
+    <div class="q">LED 마스크나 갈바닉, 고주파 같은 기기 써보신 적 있으세요?</div>
+    <div class="f">☐ 지금도 쓴다 　　☐ 샀는데 안 쓴다 　　☐ 없다 　　☐ 사려다 말았다</div>
+  <table>
+    <tr><td class="k" style="width:26%">뭐예요? 브랜드</td><td class="hint">메디큐브 / 프라엘 / LED마스크 / 갈바닉 / 고주파 / 기타 — 원문 그대로</td></tr>
+    <tr><td class="k">얼마 주고?</td><td class="hint">실제 지불 금액. 「기억 안 남」도 적는다</td></tr>
+    <tr><td class="k">누가 샀나</td><td class="hint">☐ 본인　☐ 딸·자녀　☐ 배우자　☐ 선물받음(누구)</td></tr>
+    <tr><td class="k">어떻게 알고?</td><td class="hint">홈쇼핑 / 유튜브 / 딸 / 매장 / 광고 / 친구</td></tr>
+    <tr><td class="k">언제 샀나</td><td class="blank"></td></tr>
+    <tr><td class="k">지금도 쓰나</td><td class="hint">☐ 매일　☐ 가끔　☐ 안 쓴다</td></tr>
+    <tr><td class="k star">★ 안 쓰면, 왜</td><td class="hint" style="height:26pt">이 칸이 이 문항의 핵심이다. 원문으로</td></tr>
+    <tr><td class="k">바르기 전/후</td><td class="hint">☐ 바르기 전　☐ 바른 다음　☐ 그때그때　☐ 생각해본 적 없다</td></tr>
+    <tr><td class="k">사려다 만 적</td><td class="hint">뭐가 걸렸나</td></tr>
+  </table>
+  </div>
+  <div class="n"><strong>「안 쓰게 된 이유」가 이 문항의 핵심이다.</strong> 기기 시장의 진짜 문제는 구매가 아니라 이탈이다.</div>
+  <div class="n">브랜드명을 반드시 원문으로. 「메디큐브디바이스」가 월 2만 검색인데 우리한테 근거가 없다.</div>
+
+  <!-- 4 -->
+  <div class="sec new"><span>4. 피부과</span><span class="min">1분 30초</span></div>
+  <div class="box new">
+    <strong>★ 신설</strong> — 시술어 월 <strong>31만 회</strong>(전체의 17.6%). 리쥬란 하나가 뷰티디바이스 전체의 3배.
+    IR덱 09 경쟁표에 피부과 행이 없다.
+  </div>
+  <div class="blk">
+  <div class="q">기미나 주름 때문에 피부과 가보신 적 있으세요?</div>
+  <table>
+    <tr><td class="k" style="width:26%">가본 적</td><td class="hint">☐ 있다　☐ 없다</td></tr>
+    <tr><td class="k">뭘 받았나</td><td class="hint">레이저토닝 / 피코 / 리쥬란 / 스킨부스터 / 리프팅 / 기타</td></tr>
+    <tr><td class="k">몇 번 / 총 얼마</td><td class="blank"></td></tr>
+    <tr><td class="k">또 갈 건가</td><td class="hint">☐ 또 간다　☐ 모르겠다　☐ 안 간다 → 왜?</td></tr>
+    <tr><td class="k star">★ 시술 후 뭘 바르랬나</td><td class="hint" style="height:26pt">「아무도 안 알려줬다」 / 「거기서 파는 걸 샀다」 — 어느 쪽인지가 전부 다르다</td></tr>
+    <tr><td class="k">그건 어디서 샀나</td><td class="hint">병원 / 인터넷 / 매장</td></tr>
+    <tr><td class="k">(안 간 경우) 왜</td><td class="hint">생각은 해봤나</td></tr>
+  </table>
+  </div>
+  <div class="n"><strong>「시술받고 나서 뭘 바르라고 하던가요」가 이 문항의 목적지다.</strong>
+    「아무도 안 알려줬다」면 그 자리가 비어 있고, 「거기서 파는 걸 샀다」면 병원이 이미 먹었다.</div>
+
+  <!-- 5 -->
+  <div class="sec"><span>5. 퀸잇</span><span class="min">1분</span></div>
+  <div class="n">40대+ 여성 도달에 성공한 <strong>유일한 확인 사례</strong> (월 16.7만 · 경쟁 「낮음」).
+    어떻게 알았는지가 우리가 따라갈 경로다.</div>
+  <div class="blk">
+  <div class="q">40대 이상 옷 파는 「퀸잇」이라는 앱 아세요?</div>
+  <table>
+    <tr><th style="width:22%"></th><th style="width:33%">인지</th><th>어떻게 아셨어요? (경로 원문)</th></tr>
+    <tr><td class="k star">퀸잇</td><td>☐ 모름　☐ 들어봄　☐ 깔아서 씀</td><td class="blank"></td></tr>
+    <tr><td class="k">설치는 누가</td><td>☐ 본인　☐ 딸·자녀　☐ 기타</td><td></td></tr>
+    <tr><td class="k">사봤나</td><td>☐ 없음　☐ 1~2번　☐ 여러 번</td><td></td></tr>
+  </table>
+  </div>
+  <div class="blk">
+    <div class="s">모르신다면 → "폰에 깔린 앱 중에 쇼핑하는 거 뭐 있으세요?" (홈 화면을 같이 본다)</div>
+    <div class="lbl">홈 화면에 있던 쇼핑 앱</div>
+    <div class="line"></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="sec new"><span>6. 따님이 뭘 사줬나</span><span class="min">1분 30초</span></div>
+  <div class="box new">
+    <strong>★ 가정법 → 실제 사례.</strong> 「엄마생신선물」(월 1,830)이 「50대화장품」(월 280)의 <strong>6.5배</strong>다.
+    획득 경로인데 v1은 "골라주는 게 나을까요?"라고 물었다.
+  </div>
+  <div class="blk">
+    <div class="q">따님(또는 자녀) 계세요? 몇 살이에요?</div>
+    <div class="f">☐ 딸 ______세 　　☐ 아들 ______세 　　☐ 없다</div>
+  </div>
+  <div class="blk">
+  <div class="q">따님이 뭐 사드린 적 있으세요? 뭐였어요?</div>
+  <table>
+    <tr>
+      <th style="width:26%">뭘 사줬나 (품목)</th><th style="width:14%">얼마</th>
+      <th style="width:14%">언제</th><th style="width:16%">지금도 쓰나</th><th>어떻게 골랐대요</th>
+    </tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  </div>
+  <div class="blk">
+    <div class="s">따님한테 뭐 사달라고 말씀하신 적 있으세요? 뭘요?</div>
+    <div class="line"></div>
+  </div>
+  <div class="box go">
+    여기서 <strong>따님 연락처를 받는다.</strong> 획득이 딸이면 딸이 더 급한 표본이다.
+  </div>
+  <div class="f">따님 인터뷰 요청 　☐ 승낙 (연락처: ______________________) 　☐ 거절 　☐ 안 물어봄</div>
+
+  <!-- 7 -->
+  <div class="sec"><span>7. 같이 쓰면 안 되는 거</span><span class="min">30초</span></div>
+  <div class="n">병용 검색량 <strong>0</strong>으로 이미 확정된 사안이다. 짧게 치고 넘어간다.
+    진짜 증거는 1번 화장대 사진이 준다 — 말이 아니라 실물이 겹침을 증명한다.</div>
+  <div class="blk">
+    <div class="q">화장품 두 개를 같이 쓰면 안 되는 경우가 있다는 얘기, 들어보신 적 있으세요?</div>
+    <div class="f">판정: 　☐ 전혀 모름 　　☐ 들어는 봤는데 뭔지는 모름 　　☐ 구체적으로 안다 (예시를 말함)</div>
+    <div class="lbl">「안다」면 뭐라고 했는지 (원문)</div>
+    <div class="line"></div>
+    <div class="n">예시를 절대 먼저 말하지 않는다. 5초 기다리고 넘어간다.</div>
+  </div>
+
+  <h2 class="h">A세트 끝내기 전에 확인</h2>
+  <table class="cl">
+    <tr><td>☐</td><td class="bold">연세 — 맨 위 표에 적었나</td></tr>
+    <tr><td>☐</td><td>화장대 사진 (또는 카톡 약속)</td></tr>
+    <tr><td>☐</td><td class="bold">검색 기록 원문 — 화면 그대로 옮겼나, 정리하지 않았나</td></tr>
+    <tr><td>☐</td><td class="bold">기기 — 브랜드 · 가격 · 지금 쓰는지 · 안 쓰면 왜</td></tr>
+    <tr><td>☐</td><td class="bold">피부과 — 시술 후 뭘 바르라 했는지</td></tr>
+    <tr><td>☐</td><td class="bold">딸이 사준 것 — 품목 · 가격 · 지금도 쓰는지</td></tr>
+    <tr><td>☐</td><td>퀸잇 인지 경로</td></tr>
+    <tr><td>☐</td><td class="bold">딸 연락처 (인터뷰 요청)</td></tr>
+  </table>
+
+  <h2 class="h">그 밖에 들은 말 — 원문 그대로</h2>
+  <div class="n">문항에 없던 말일수록 값지다. <strong>요약하지 말고 말한 그대로</strong> 적는다.
+    나중에 IR덱에 인용할 수 있는 건 우리가 정리한 문장이 아니라 이 칸의 문장이다.</div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+
+  <h2 class="h">인터뷰 직후 30초 안에 적는다</h2>
+  <div class="n">기억이 날아가기 전에. 나중에 8명을 구분하는 건 이 두 줄이다.</div>
+  <table>
+    <tr>
+      <td class="k" style="width:26%">이 사람을 한 줄로</td>
+      <td class="hint">예: "기기 두 대 샀는데 둘 다 서랍에 있음"</td>
+    </tr>
+    <tr>
+      <td class="k star">★ 제일 놀랐던 답</td>
+      <td class="hint" style="height:26pt">우리 예상과 어긋난 것</td>
+    </tr>
+    <tr>
+      <td class="k">다시 연락해도 되나</td>
+      <td class="hint">☐ 된다 (연락처 확보) 　☐ 안 된다 　☐ 안 물어봄</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══════════ 2장 · B세트 ═══════════ -->
+<div class="chapter">
+  <div class="mast">
+    <h1>RIVEA 인터뷰 v2 — B세트 (여유 있는 3~4명)</h1>
+    <div class="sub">A세트가 끝난 사람에게만 · +5분 · <strong>3~4부 인쇄</strong></div>
+  </div>
+
+  <table>
+    <tr>
+      <td class="k">참가자</td><td style="width:18%"></td>
+      <td class="k" style="background:#FFF4E5">연세</td>
+      <td style="width:26%;font-size:8.5pt">☐40초 ☐40후 ☐50초 ☐50후 ☐60+</td>
+      <td class="k">방식</td>
+      <td style="font-size:8.5pt">☐ 대면　☐ 전화</td>
+    </tr>
+  </table>
+
+  <div class="box new">
+    시간이 없으면 통째로 버린다. 단 <strong>10번(성분어)은 2명이라도 확보</strong>한다 —
+    데이터랩을 대신하는 유일한 문항이다.
+  </div>
+
+  <!-- 8 -->
+  <div class="sec new"><span>8. 얼마까지 쓰시나</span><span class="min">2분</span></div>
+  <div class="box new">
+    <strong>★ 신설</strong> — 「적정가 인식 6~10만원 vs 실구매 20~100만원」 괴리.
+    중개형인데 v1에는 가격 질문이 <strong>한 개도 없었다.</strong>
+  </div>
+  <div class="blk">
+  <div class="q">화장품 한 병에 보통 얼마쯤 쓰세요? 제일 비싸게 주고 사신 건 얼마였어요?</div>
+  <div class="q">기기는요? 얼마까지면 사시겠어요? 얼마 넘어가면 안 사시겠어요?</div>
+  <div class="q">피부과 한 번에 15만원, 기기 한 대에 30만원이면 어느 쪽에 쓰시겠어요? 왜요?</div>
+  <table>
+    <tr><td class="k" style="width:30%">화장품 한 병 보통</td><td class="hint">원 　← 열린 질문으로 먼저 받는다</td></tr>
+    <tr><td class="k">제일 비싸게 산 것</td><td class="hint">원 (뭐였나)</td></tr>
+    <tr><td class="k">기기는 얼마까지</td><td class="hint">원까지 산다 　/ 　　　　원 넘으면 안 산다</td></tr>
+    <tr><td class="k star">★ 피부과 15만 vs 기기 30만</td><td class="hint">☐ 피부과　☐ 기기　☐ 둘 다 안 함 　→ 왜?</td></tr>
+  </table>
+  </div>
+  <div class="n"><strong>금액을 먼저 제시하지 않는다.</strong> 앞 두 질문은 반드시 열린 질문으로 받고, 선택지는 마지막 질문에서만.</div>
+  <div class="lbl">"왜요?" 답변 원문</div>
+  <div class="line"></div>
+  <div class="line"></div>
+
+  <!-- 9 -->
+  <div class="sec"><span>9. 누구한테 물어보시나</span><span class="min">1분 30초</span></div>
+  <div class="n">40·50대 정보원 상위 3개 중 2개가 오프라인(매장판매원, 가족)이라는 문헌이 있다.
+    「온라인 앱이 끼어들 자리가 아니다」 — 이게 사실인지 확인한다.</div>
+  <div class="blk">
+    <div class="q">화장품 사실 때 누구한테 물어보세요?</div>
+    <div class="f">☐ 아무한테도 안 물어본다 　☐ 친구 　☐ 딸·자녀 　☐ 매장 직원 　☐ 인터넷 　☐ 기타</div>
+    <div class="n">「아무도 안 물어본다」가 나오면 그것도 데이터다 — 위임 수요가 없다는 뜻이니까.</div>
+  </div>
+  <div class="blk">
+    <div class="q">매장 직원 말 듣고 사신 적 있으세요? 그때 뭐라고 하던가요?</div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+  <div class="blk">
+    <div class="q">네이버 카페나 밴드 하시는 거 있으세요? 어떤 데요?</div>
+    <div class="lbl">카페·밴드 이름 — 그대로 적는다 (공개 순위가 없다. 8명이 실제로 들어가는 곳이 우리가 들어갈 곳이다)</div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+  <div class="blk">
+    <div class="s">거기서 화장품 얘기도 나와요? 뭐 사실 때 거기서 물어보신 적 있으세요?</div>
+    <div class="f">☐ 물어본 적 있다 　☐ 얘기는 나오는데 안 물어봄 　☐ 화장품 얘기 안 나옴 　☐ 하는 데 없음</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="sec new"><span>10. 성분 이름을 아시나</span><span class="min">1분 30초</span></div>
+  <div class="box new">
+    <strong>★ 신설</strong> — 성분어가 월 <strong>33.3만 회</strong>로 전체의 19%인데 연령 미확인이다.
+    8명에게 직접 물으면 데이터랩보다 거친 대신 훨씬 빠른 답이 나온다.
+  </div>
+  <div class="blk">
+  <div class="q">이런 말 들어보셨어요? 하나씩 여쭐게요.</div>
+  <table>
+    <tr><th style="width:30%">성분·앱</th><th style="width:46%">인지 수준</th><th>어디서 아셨나</th></tr>
+    <tr><td class="k">레티놀</td><td style="font-size:8.5pt">☐ 모름　☐ 들어봄　☐ 뭔지 안다　☐ 쓰고 있다</td><td class="blank"></td></tr>
+    <tr><td class="k">히알루론산</td><td style="font-size:8.5pt">☐ 모름　☐ 들어봄　☐ 뭔지 안다　☐ 쓰고 있다</td><td></td></tr>
+    <tr><td class="k">나이아신아마이드</td><td style="font-size:8.5pt">☐ 모름　☐ 들어봄　☐ 뭔지 안다　☐ 쓰고 있다</td><td></td></tr>
+    <tr><td class="k">리포좀 비타민C</td><td style="font-size:8.5pt">☐ 모름　☐ 들어봄　☐ 뭔지 안다　☐ 쓰고 있다</td><td></td></tr>
+    <tr><td class="k">(화해 앱)</td><td style="font-size:8.5pt">☐ 모름　☐ 들어봄　☐ 뭔지 안다　☐ 써봤다</td><td></td></tr>
+  </table>
+  </div>
+  <div class="n"><strong>「쓰고 있다」가 8명 중 0명이면 33만 회는 우리 층이 아니다.</strong> 그럼 성분 축은 접는다.</div>
+  <div class="n">이름을 읽어줄 때 설명을 붙이지 않는다. 「레티놀 아세요?」까지만.</div>
+
+  <h2 class="h">B세트 끝내기 전에 확인</h2>
+  <table class="cl">
+    <tr><td>☐</td><td class="bold">기기 30만 vs 피부과 15만 — 어느 쪽을 골랐고, 「왜요?」 답이 원문으로 적혔나</td></tr>
+    <tr><td>☐</td><td>화장품 한 병 / 기기 상한 금액 — 숫자로 적혔나</td></tr>
+    <tr><td>☐</td><td class="bold">성분 4개 인지 수준 — 「쓰고 있다」가 몇 명인가</td></tr>
+    <tr><td>☐</td><td>카페·밴드 이름 — 원문 그대로</td></tr>
+    <tr><td>☐</td><td>매장 직원이 뭐라고 했는지 (원문)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ 3장 · 관찰 ═══════════ -->
+<div class="chapter">
+  <div class="mast">
+    <h1>RIVEA 인터뷰 v2 — 관찰 기록지 (2~3명)</h1>
+    <div class="sub">A·B세트가 다 끝난 뒤에만 · +15분 · <strong>대면 전용</strong> · 2~3부 인쇄</div>
+  </div>
+
+  <table>
+    <tr>
+      <td class="k">참가자</td><td style="width:18%"></td>
+      <td class="k" style="background:#FFF4E5">연세</td>
+      <td style="width:26%;font-size:8.5pt">☐40초 ☐40후 ☐50초 ☐50후 ☐60+</td>
+      <td class="k">일시</td>
+      <td style="font-size:8.5pt">　　　:　　</td>
+    </tr>
+  </table>
+
+  <div class="box go">
+    지금 우리한테 <strong>아예 없는 유일한 데이터</strong>다. 한 명이라도 확보한다.
+  </div>
+
+  <div class="f"><strong>rivea-app.web.app</strong> · 반드시 <strong>시크릿 모드</strong>로 열어 온보딩이 처음부터 뜨게 한다</div>
+
+  <div class="say">
+    "제가 만들고 있는 게 있는데 한번 써보시겠어요? 설명은 안 드릴 거고요,
+    뭘 하시든 다 괜찮아요. 생각나시는 게 있으면 소리 내서 말씀해 주시면 좋고요."
+  </div>
+
+  <h2 class="h">과업 — 성공과 실패를 가른다</h2>
+  <div class="n">v1에는 기록 항목만 있고 무엇이 성공인지가 없었다. 과업을 주고 완료 여부를 적는다.</div>
+  <table>
+    <tr>
+      <th style="width:5%">#</th><th style="width:37%">과업 — 이 문장 그대로 읽는다</th>
+      <th style="width:19%">성공 기준</th><th style="width:19%">결과</th><th>걸린 시간 / 포기 화면</th>
+    </tr>
+    <tr>
+      <td class="num">1</td>
+      <td>"기미가 고민이라고 치고, 뭘 사면 될지 한번 찾아봐 주세요"</td>
+      <td>제품 상세까지 도달</td>
+      <td style="font-size:8.5pt">☐ 성공<br>☐ 실패<br>☐ 포기</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="num">2</td>
+      <td>"지금 쓰시는 거 두 개만 등록해 보세요"</td>
+      <td>화장대에 2개 등록</td>
+      <td style="font-size:8.5pt">☐ 성공<br>☐ 실패<br>☐ 포기</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="num">3</td>
+      <td>"그 둘이 같이 써도 되는지 확인해 보세요"</td>
+      <td>판정 결과 확인</td>
+      <td style="font-size:8.5pt">☐ 성공<br>☐ 실패<br>☐ 포기</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <h2 class="h">과업마다 기록</h2>
+  <table>
+    <tr><th style="width:34%">항목</th><th>기록</th></tr>
+    <tr><td class="k">처음 누른 곳</td><td class="blank"></td></tr>
+    <tr><td class="k">멈춘 지점 (3초 이상) — 어느 화면</td><td class="blank"></td></tr>
+    <tr><td class="k">뒤로가기 횟수</td><td class="blank"></td></tr>
+    <tr><td class="k">도움을 요청하기까지 (초)</td><td class="blank"></td></tr>
+    <tr><td class="k">소리 내어 말한 것 (원문, 요약 금지)</td><td style="height:44pt"></td></tr>
+    <tr><td class="k">끝까지 못 한 것 + 그 이유</td><td style="height:32pt"></td></tr>
+  </table>
+
+  <div class="box warn">
+    폰을 건네고 <strong>입을 닫는다.</strong> "어떻게 해요?" → <strong>"편하신 대로 해보세요"</strong>만 반복.
+    3분이 지나면 딱 한 번만 "지금 뭐 하시려던 거예요?"
+  </div>
+  <div class="n">과업 3은 병용 판정이다. 여기서 「이런 게 있는지 몰랐다」가 나오면 그게 유지 가치의 증거다.</div>
+
+  <h2 class="h">소리 내어 말한 것 — 원문 그대로</h2>
+  <div class="n">이게 관찰의 진짜 산출물이다. <strong>다듬지 말고 들린 대로.</strong>
+    "이게 뭐야", "아 이거 어떻게 하지" 같은 혼잣말이 제일 값지다.
+    앞에 <strong>어느 화면에서</strong> 한 말인지 적는다.</div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+
+  <h2 class="h">가장 값진 비교</h2>
+  <div class="lbl">이 사람이 A세트에서 <strong>말한 것</strong>과, 여기서 <strong>실제로 한 행동</strong>이 어떻게 달랐나</div>
+  <div class="line"></div>
+  <div class="line"></div>
+
+  <h2 class="h">관찰 끝나고 30초 안에 적는다</h2>
+  <table>
+    <tr><td class="k star" style="width:30%">★ 제일 헤맨 화면</td>
+        <td class="hint">한 곳만 고른다. 여러 개면 우선순위가 없어진다</td></tr>
+    <tr><td class="k">이 사람이 다시 쓸까</td>
+        <td class="hint">☐ 쓸 것 같다 　☐ 모르겠다 　☐ 안 쓸 것 같다 　→ 왜 그렇게 봤나</td></tr>
+    <tr><td class="k">내일 당장 고칠 것 하나</td>
+        <td class="hint" style="height:26pt">이 관찰에서 나온 것만. 원래 알던 건 적지 않는다</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════ 4장 · 진행 안내 ═══════════ -->
+<div class="chapter">
+  <div class="mast">
+    <h1>진행 안내 — 진행자만 본다</h1>
+    <div class="sub"><strong>1부만 인쇄</strong> · 참가자에게 보여주지 않는다</div>
+  </div>
+
+  <h2 class="h">표본 경고 — 시작 전에 반드시 읽는다</h2>
+  <div class="box warn">
+    어머니 모임 8명은 십중팔구 <strong>50대</strong>다. 그런데 우리 전제는 「40대 중심」으로 좁혀져 있고,
+    비교탐색이 유의한 것도 <strong>40대뿐</strong>이다 (50대에서는 사라진다).
+  </div>
+  <ul class="b">
+    <li>연세를 맨 먼저 묻고 기록한다. 나머지 답 전부의 해석이 여기에 달렸다.</li>
+    <li><strong>40대가 3명 미만이면 IR에 「40대 대상 인터뷰 8건」이라고 쓰면 안 된다.</strong>
+      「타깃 인접층 관찰」로 이름을 바꿔서 인용한다.</li>
+    <li>40대를 못 채우면 딸(30~40대) 쪽에서 따로 확보한다. 획득이 딸이면 딸이 더 급한 표본이다.</li>
+  </ul>
+
+  <h2 class="h">v1에서 무엇을 왜 바꿨나</h2>
+  <ul class="b">
+    <li><strong>기기·피부과를 B세트 → A세트로 올렸다.</strong> 「디바이스 중심」으로 피봇해 놓고 A세트 7문항이 전부 화장품 얘기였다.</li>
+    <li>조합 문항을 1분 30초 → 30초로 줄였다. 병용 검색량 0으로 이미 확정된 사안이라, 「모른다」가 나와도 전략이 안 바뀐다.</li>
+    <li>「이런 데 있으면 쓰시겠어요」를 삭제했다. 「'좋다'는 말을 수요로 적지 말 것」이라 써놓고 그걸 묻고 있었다.</li>
+    <li>검색어를 기억 회상 → 폰 화면 확인으로 바꿨다. 한 글자에 70배가 갈리는데 기억으로 복원하면 그 한 글자가 틀린다.</li>
+    <li>딸 질문을 가정법 → 실제로 사준 것(품목·가격·시기·지금도 쓰는지)으로 바꿨다.</li>
+    <li>지불의사 문항을 신설했다. 중개형인데 가격 질문이 한 개도 없었다.</li>
+    <li>성분어 인지 문항을 신설했다. 월 33만 회의 연령을 8명에게 직접 확인한다.</li>
+    <li>관찰에 과업과 성공 기준을 넣었다.</li>
+  </ul>
+
+  <h2 class="h">시간이 모자랄 때 무엇을 버리나</h2>
+  <ul class="b">
+    <li>A세트(10분)는 8명 전원. <strong>이건 안 버린다.</strong></li>
+    <li>A세트 안에서도 못 버리는 것: <strong>0(연세) · 2(검색 기록) · 3(기기) · 4(피부과)</strong></li>
+    <li>B세트(5분)는 3~4명. 시간 없으면 버린다. 단 10번(성분어)은 2명이라도 확보.</li>
+    <li>관찰(15분)은 2~3명. 한 명이라도 확보한다.</li>
+    <li>8명을 20분씩 얕게 보는 것보다, 5명을 A+B+관찰로 제대로 보는 게 낫다.</li>
+  </ul>
+
+  <h2 class="h">모임에서 어떻게 도나</h2>
+  <ul class="b">
+    <li>전체 3분 인사 → 한 분씩 조용한 자리로. A세트만 8명이면 90분.</li>
+    <li><strong>여러 명이 같이 있는 자리에서는 묻지 않는다</strong> — 옆 사람 답을 듣고 따라간다.</li>
+    <li>화장대 사진·검색 기록을 그 자리에서 못 받으면 카톡 약속을 받고 넘어간다.</li>
+  </ul>
+
+  <h2 class="h">전화로 할 때</h2>
+  <ul class="b">
+    <li><strong>더 나은 것</strong>: 제품명·기기 브랜드. "지금 화장대 앞이세요?"가 기억보다 정확하다.</li>
+    <li><strong>못 하는 것</strong>: 관찰, 검색 기록 화면 확인. 둘 다 대면으로 따로 확보한다.</li>
+    <li>1:1이라 7번(조합) 답의 신뢰도는 전화가 더 높다.</li>
+  </ul>
+
+  <h2 class="h">하지 말 것</h2>
+  <ul class="b">
+    <li>관찰 전에 앱을 보여주기</li>
+    <li>7번에서 예시 먼저 말하기</li>
+    <li><strong>검색어를 정리해서 적기</strong> — 화면 그대로. 70배 차이가 난다</li>
+    <li><strong>폰을 건네받아 직접 뒤지기</strong> — 본인이 들고 읽어주시게 한다</li>
+    <li>8번에서 금액을 먼저 제시하기 — 열린 질문 먼저, 선택지는 마지막에만</li>
+    <li>관찰 중 도와주기</li>
+    <li>"좋다"는 말을 수요로 적기</li>
+    <li>8명 답을 평균 내기 — 개별 사례로 인용한다</li>
+    <li>40대가 3명 미만인데 「40대 인터뷰」라고 쓰기</li>
+  </ul>
+
+  <h2 class="h">끝나고 할 일 (화요일)</h2>
+  <ul class="b">
+    <li><strong>기기 보유·가격·이탈 사유를 표로 만든다</strong> → "N명 중 M명이 기기를 샀고, 그중 K명이 지금은 안 쓴다. 이유는 ○○."
+      ← 「디바이스 중심」 피봇을 떠받치는 유일한 1차 데이터가 된다</li>
+    <li><strong>피부과 이용 + 「시술 후 뭘 바르라 했나」를 모은다</strong> → IR덱 09 경쟁표에 「피부과 시술」 행을 추가한다</li>
+    <li><strong>검색 기록 원문을 전부 모아 키워드 도구에 넣는다.</strong> 지금 우리 키워드는 전부 추측이다</li>
+    <li><strong>딸이 사준 것 목록 + 딸 연락처.</strong> 딸 인터뷰를 다음 주에 잡는다</li>
+    <li>화장대 사진 속 제품을 <code>rules.ts</code> 판정에 넣는다 → "N명 중 M명이 지금 겹치는 조합을 쓰고 있었다. 스스로 알던 사람은 K명."</li>
+    <li>성분어 4개 인지도를 정리한다 (데이터랩 대체)</li>
+  </ul>
+
+  <div class="end">이 여섯이 IR덱 03 · 05 · 06 · 08 · 09를 채운다.</div>
+</div>

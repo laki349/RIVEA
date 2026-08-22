@@ -1,0 +1,506 @@
+<!-- RIVEA 자기기입식 설문지 · 인쇄용 A4
+     ▸ 연락처 2곳을 채우고 인쇄하세요 — 아래에서 "010-" 를 검색 (1장 하단 사진 수신용, 마지막 장 문의용)
+     ▸ 빌드: node docs/build-survey-pdf.js -->
+<meta charset="utf-8">
+<title>화장품 설문</title>
+<style>
+  @page { size: A4; margin: 13mm 14mm 12mm; }
+
+  :root {
+    --ink:  #24211E;
+    --sub:  #6E655C;
+    --hair: #C9C2B8;
+    --fill: #F2EFEA;
+    --rule: #9A9188;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.5;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── 표지 헤더 ───────────────────────────── */
+  .masthead {
+    border-top: 2.5pt solid var(--ink);
+    border-bottom: 0.7pt solid var(--hair);
+    padding: 9pt 0 8pt;
+    margin-bottom: 10pt;
+  }
+  .masthead h1 { font-size: 16pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+  .masthead .kicker { font-size: 8.5pt; color: var(--sub); letter-spacing: 0.14em; margin-bottom: 5pt; }
+
+  .intro { font-size: 9.8pt; color: var(--sub); line-height: 1.65; }
+  .intro li { list-style: none; padding-left: 11pt; text-indent: -11pt; }
+  .intro li::before { content: "· "; }
+  .intro strong { color: var(--ink); font-weight: 700; }
+
+  .warnbox {
+    border: 1pt solid var(--ink);
+    padding: 6pt 9pt;
+    margin: 9pt 0 11pt;
+    font-size: 9.8pt;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .meta { display: flex; gap: 16pt; font-size: 9.5pt; color: var(--sub); margin-bottom: 14pt; }
+  .meta span { flex: 1; border-bottom: 0.7pt solid var(--rule); padding-bottom: 3pt; }
+
+  /* ── 섹션 ────────────────────────────────── */
+  .sec {
+    background: var(--fill);
+    border-left: 3.5pt solid var(--ink);
+    padding: 4.5pt 9pt;
+    margin: 15pt 0 8pt;
+    font-size: 11.5pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    break-after: avoid;
+  }
+  .sec .n { margin-right: 7pt; }
+
+  .part {
+    border-top: 2pt solid var(--ink);
+    padding-top: 7pt;
+    margin-top: 16pt;
+    font-size: 10.5pt;
+    font-weight: 700;
+    break-inside: avoid;
+  }
+  .part small { font-weight: 400; color: var(--sub); font-size: 9.3pt; }
+
+  /* ── 문항 블록 — 질문과 응답란은 절대 갈라지지 않는다 ── */
+  .blk { break-inside: avoid; margin-bottom: 9pt; }
+
+  .q { font-size: 10.5pt; font-weight: 700; margin-bottom: 4pt; }
+  .hint { font-size: 9pt; color: var(--sub); margin: -1pt 0 4pt; }
+
+  .line { border-bottom: 0.7pt solid var(--rule); height: 21pt; margin-bottom: 4pt; }
+  .line.tall { height: 24pt; }
+  .short { display: inline-block; border-bottom: 0.7pt solid var(--rule); min-width: 92pt; height: 14pt; }
+
+  ul.opts { list-style: none; margin: 2pt 0 0; break-inside: avoid; }
+  ul.opts li { margin: 2.5pt 0; padding-left: 2pt; break-inside: avoid; }
+  ul.opts.two   { column-count: 2; column-gap: 16pt; }
+  ul.opts.three { column-count: 3; column-gap: 12pt; }
+
+  .cb {
+    display: inline-block;
+    width: 10pt; height: 10pt;
+    border: 0.9pt solid var(--rule);
+    margin-right: 5pt;
+    vertical-align: -1pt;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 3pt; }
+  th, td { border: 0.7pt solid var(--hair); padding: 4pt 6pt; text-align: left; }
+  th { background: var(--fill); font-size: 9pt; font-weight: 700; width: 62pt; white-space: nowrap; }
+  td { height: 22pt; }
+
+  .note {
+    font-size: 9pt;
+    color: var(--sub);
+    border-left: 2pt solid var(--hair);
+    padding-left: 7pt;
+    margin: 5pt 0 0;
+  }
+
+  .contact { border-bottom: 0.7pt solid var(--rule); display: inline-block; min-width: 110pt; }
+
+  .foot {
+    margin-top: 14pt;
+    border-top: 0.7pt solid var(--hair);
+    padding-top: 6pt;
+    font-size: 8.5pt;
+    color: var(--sub);
+    line-height: 1.6;
+    break-inside: avoid;
+  }
+
+  .pagebreak { break-before: page; }
+</style>
+
+<div class="masthead">
+  <div class="kicker">화 장 품 사 용 실 태 조 사</div>
+  <h1>화장품 고르실 때<br>뭐가 불편하신지 여쭙습니다</h1>
+</div>
+
+<ul class="intro">
+  <li><strong>뭘 팔려는 게 아닙니다.</strong> 저희가 만들고 있는 걸 제대로 만들려고 여쭙는 겁니다.</li>
+  <li><strong>정답이 없는 질문입니다.</strong> 생각나시는 대로, 편하게 적어주세요.</li>
+  <li>15분쯤 걸립니다. 모르시거나 답하기 곤란한 건 <strong>비워두셔도 됩니다.</strong></li>
+</ul>
+
+<div class="warnbox">앞에서부터 순서대로 채워주세요 — 뒤를 먼저 보시면 답이 달라집니다</div>
+
+<div class="meta">
+  <span>작성일 &nbsp; &nbsp; &nbsp; 월 &nbsp; &nbsp; &nbsp; 일</span>
+  <span>성함 (안 쓰셔도 됩니다)</span>
+  <span>연세</span>
+</div>
+
+<!-- 1 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">1</span>지금 쓰고 계신 것</div>
+
+<div class="blk">
+  <div class="q">지금 얼굴에 바르시는 걸 적어주세요.</div>
+  <div class="hint">제품 이름이 정확하지 않아도 괜찮습니다. "OO회사 파란 통", "딸이 사준 거" 이렇게 적으셔도 됩니다.</div>
+  <table>
+    <tr><th>아침에</th><td></td></tr>
+    <tr><th></th><td></td></tr>
+    <tr><th>저녁에</th><td></td></tr>
+    <tr><th></th><td></td></tr>
+    <tr><th>가끔<br>(주 1~2회)</th><td></td></tr>
+  </table>
+  <div class="note">
+    적기 번거로우시면 <strong>화장대를 한 장 찍어서</strong> 아래로 보내주셔도 됩니다.
+    훨씬 빠르고 정확합니다. &nbsp; → &nbsp; <span class="contact">&nbsp;010-</span>
+  </div>
+</div>
+
+<!-- 2 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">2</span>그건 어떻게 알고 사셨어요</div>
+
+<div class="blk">
+  <div class="q">제일 최근에 새로 사신 화장품이 뭐예요?</div>
+  <div class="line"></div>
+</div>
+
+<div class="blk">
+  <div class="q">그건 어떻게 알게 되셨어요?</div>
+  <ul class="opts two">
+    <li><span class="cb"></span>TV·홈쇼핑</li>
+    <li><span class="cb"></span>친구·지인이 알려줌</li>
+    <li><span class="cb"></span>유튜브</li>
+    <li><span class="cb"></span>딸·자녀가 알려줌</li>
+    <li><span class="cb"></span>인스타·페이스북</li>
+    <li><span class="cb"></span>매장에서 직접 보고</li>
+    <li><span class="cb"></span>블로그·카페 후기</li>
+    <li><span class="cb"></span>그 밖에 <span class="short"></span></li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">어디서 사셨어요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>쿠팡</li>
+    <li><span class="cb"></span>네이버</li>
+    <li><span class="cb"></span>올리브영</li>
+    <li><span class="cb"></span>백화점</li>
+    <li><span class="cb"></span>홈쇼핑</li>
+    <li><span class="cb"></span>그 밖에 <span class="short"></span></li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">사기 전에 인터넷에 뭐 쳐보셨어요? <u>치신 글자 그대로</u> 적어주세요.</div>
+  <div class="hint">
+    이게 저희한테 제일 중요한 질문입니다. 띄어쓰기도 <strong>기억나시는 그대로</strong> 적어주세요.
+    다듬지 마시고요.
+  </div>
+  <div class="line tall"></div>
+  <div class="line tall"></div>
+</div>
+
+<div class="blk">
+  <div class="q">어디에 치셨어요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>네이버</li>
+    <li><span class="cb"></span>유튜브</li>
+    <li><span class="cb"></span>쿠팡</li>
+    <li><span class="cb"></span>구글</li>
+    <li><span class="cb"></span>인스타</li>
+    <li><span class="cb"></span>안 쳐봤다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">쳐서 나온 것 중에 뭘 보셨어요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>블로그</li>
+    <li><span class="cb"></span>카페</li>
+    <li><span class="cb"></span>쇼핑·가격</li>
+    <li><span class="cb"></span>지식iN</li>
+    <li><span class="cb"></span>유튜브 영상</li>
+    <li><span class="cb"></span>기억 안 남</li>
+  </ul>
+</div>
+
+<!-- 3 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">3</span>고르실 때 불편한 점</div>
+
+<div class="blk">
+  <div class="q">화장품 고르실 때 불편하거나 답답했던 적 있으세요? 있으시면 어떤 거였어요?</div>
+  <div class="hint">아래 보기를 보기 전에, 먼저 생각나시는 걸 적어주세요.</div>
+  <div class="line"></div>
+  <div class="line"></div>
+</div>
+
+<div class="blk">
+  <div class="q">아래 중에 해당되는 것도 표시해 주세요. (여러 개 표시하셔도 됩니다)</div>
+  <ul class="opts two">
+    <li><span class="cb"></span>성분을 모르겠다</li>
+    <li><span class="cb"></span>나한테 맞는 건지 모르겠다</li>
+    <li><span class="cb"></span>광고인지 후기인지 못 믿겠다</li>
+    <li><span class="cb"></span>효과가 있는 건지 모르겠다</li>
+    <li><span class="cb"></span>종류가 너무 많다</li>
+    <li><span class="cb"></span>딱히 없다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">돈이 아깝다고 느끼신 제품 있으세요? 뭐였어요?</div>
+  <div class="line"></div>
+</div>
+
+<!-- 4 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">4</span>같이 쓰면 안 되는 경우</div>
+
+<div class="blk">
+  <div class="q">화장품 두 개를 같이 쓰면 안 되는 경우가 있다는 얘기, 들어보신 적 있으세요?</div>
+  <ul class="opts">
+    <li><span class="cb"></span>전혀 못 들어봤다</li>
+    <li><span class="cb"></span>들어는 봤는데 뭔지는 모르겠다</li>
+    <li><span class="cb"></span>안다 &nbsp;→&nbsp; 어떤 건지 아래에 적어주세요</li>
+  </ul>
+  <div class="line" style="margin-top:5pt"></div>
+  <div class="line"></div>
+</div>
+
+<!-- 5 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">5</span>「퀸잇」이라는 앱</div>
+
+<div class="blk">
+  <div class="q">40대 이상 옷 파는 「퀸잇」이라는 앱, 아세요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>모른다</li>
+    <li><span class="cb"></span>들어는 봤다</li>
+    <li><span class="cb"></span>깔아서 쓴다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">아신다면 — 어떻게 알게 되셨어요?</div>
+  <ul class="opts two">
+    <li><span class="cb"></span>TV 광고</li>
+    <li><span class="cb"></span>친구가 알려줌</li>
+    <li><span class="cb"></span>딸·자녀가 알려줌</li>
+    <li><span class="cb"></span>카톡으로 받았다</li>
+    <li><span class="cb"></span>유튜브</li>
+    <li><span class="cb"></span>인스타</li>
+    <li><span class="cb"></span>그냥 화면에 떴다</li>
+    <li><span class="cb"></span>그 밖에 <span class="short"></span></li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">설치는 누가 하셨어요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>직접 했다</li>
+    <li><span class="cb"></span>딸·자녀가 해줬다</li>
+    <li><span class="cb"></span>다른 사람이 해줬다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">거기서 사보셨어요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>안 사봤다</li>
+    <li><span class="cb"></span>1~2번</li>
+    <li><span class="cb"></span>여러 번</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">모르신다면 — 폰에 깔린 앱 중에 쇼핑하는 건 뭐가 있으세요?</div>
+  <div class="line"></div>
+</div>
+
+<!-- 6 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">6</span>이런 데가 있으면</div>
+
+<div class="blk">
+  <div class="q">
+    피부 고민을 말하면 나한테 맞는 제품을 골라주고, 뭘 어떻게 쓰면 되는지
+    쉽게 알려주는 데가 있으면 한번 써보실 것 같으세요?
+  </div>
+  <ul class="opts three">
+    <li><span class="cb"></span>써볼 것 같다</li>
+    <li><span class="cb"></span>잘 모르겠다</li>
+    <li><span class="cb"></span>안 쓸 것 같다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">지금은 그런 걸 누가 대신 해주세요? 없으면 어떻게 하세요?</div>
+  <div class="line"></div>
+</div>
+
+<!-- 7 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">7</span>따님</div>
+
+<div class="blk">
+  <div class="q">따님 계세요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>있다</li>
+    <li><span class="cb"></span>없다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">이런 걸 선물 받으신다면, 따님이 골라주는 게 나을까요 직접 고르시는 게 나을까요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>따님이 골라주는 게 낫다</li>
+    <li><span class="cb"></span>내가 직접 고르는 게 낫다</li>
+    <li><span class="cb"></span>모르겠다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">따님이 화장품 사드린 적 있으세요? 뭐였어요?</div>
+  <div class="line"></div>
+</div>
+
+<div class="part">
+  여기까지만 하셔도 됩니다 &nbsp;·&nbsp;
+  <small>시간 여유가 되시면 다음 장까지 부탁드립니다 (5분)</small>
+</div>
+
+<div class="pagebreak"></div>
+
+<!-- 8 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">8</span>피부과</div>
+
+<div class="blk">
+  <div class="q">기미나 주름 때문에 피부과 가보신 적 있으세요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>있다</li>
+    <li><span class="cb"></span>없다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">가보셨다면 — 뭘 받으셨어요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>레이저토닝</li>
+    <li><span class="cb"></span>피코</li>
+    <li><span class="cb"></span>리쥬란</li>
+    <li><span class="cb"></span>스킨부스터</li>
+    <li><span class="cb"></span>리프팅</li>
+    <li><span class="cb"></span>그 밖에 <span class="short"></span></li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">몇 번쯤 받으셨어요? 대략 얼마나 드셨어요?</div>
+  <div class="line"></div>
+</div>
+
+<div class="blk">
+  <div class="q">또 가실 생각 있으세요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>또 갈 것 같다</li>
+    <li><span class="cb"></span>모르겠다</li>
+    <li><span class="cb"></span>안 갈 것 같다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">시술받고 나서 뭘 바르라고 하던가요? 그건 어디서 사셨어요?</div>
+  <div class="line"></div>
+  <div class="line"></div>
+</div>
+
+<div class="blk">
+  <div class="q">안 가보셨다면 — 왜 안 가셨어요?</div>
+  <div class="line"></div>
+</div>
+
+<!-- 9 ─────────────────────────────────────── -->
+<div class="sec"><span class="n">9</span>집에서 쓰는 기기</div>
+
+<div class="blk">
+  <div class="q">LED 마스크나 마사지 기기 같은 거 써보신 적 있으세요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>지금도 쓴다</li>
+    <li><span class="cb"></span>샀는데 안 쓴다</li>
+    <li><span class="cb"></span>없다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">쓰신다면 — 화장품 <u>바르기 전에</u> 쓰세요, <u>바른 다음에</u> 쓰세요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>바르기 전</li>
+    <li><span class="cb"></span>바른 다음</li>
+    <li><span class="cb"></span>그때그때 다르다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">안 쓰시게 됐다면 왜 그만두셨어요? / 아예 없으시다면 뭐가 걸리셨어요?</div>
+  <div class="line"></div>
+</div>
+
+<div class="pagebreak"></div>
+
+<!-- 10 ────────────────────────────────────── -->
+<div class="sec"><span class="n">10</span>어디서 정보를 얻으시나</div>
+
+<div class="blk">
+  <div class="q">화장품 성분 알려주는 「화해」라는 앱은 아세요?</div>
+  <ul class="opts three">
+    <li><span class="cb"></span>모른다</li>
+    <li><span class="cb"></span>들어는 봤다</li>
+    <li><span class="cb"></span>써봤다</li>
+  </ul>
+</div>
+
+<div class="blk">
+  <div class="q">네이버 카페나 밴드 하시는 거 있으세요? <u>이름을 그대로</u> 적어주세요.</div>
+  <div class="hint">동네 모임, 취미, 자녀 학교, 뭐든 좋습니다.</div>
+  <div class="line"></div>
+  <div class="line"></div>
+</div>
+
+<div class="blk">
+  <div class="q">거기서 화장품 얘기도 나와요? 뭐 사실 때 거기서 물어보신 적 있으세요?</div>
+  <ul class="opts two">
+    <li><span class="cb"></span>물어본 적 있다</li>
+    <li><span class="cb"></span>얘기는 나오는데 물어본 적은 없다</li>
+    <li><span class="cb"></span>화장품 얘기는 안 나온다</li>
+    <li><span class="cb"></span>하는 카페·밴드가 없다</li>
+  </ul>
+</div>
+
+<!-- 마무리 ─────────────────────────────────── -->
+<div class="sec">마지막으로</div>
+
+<div class="blk">
+  <div class="q">저희가 만들고 있는 게 나오면 알려드릴까요?</div>
+  <div class="hint">보내드리는 것 말고 다른 데는 쓰지 않습니다. 안 남기셔도 괜찮습니다.</div>
+  <table><tr><th>연락처</th><td></td></tr></table>
+</div>
+
+<div class="blk">
+  <div class="q">더 하고 싶으신 말씀 있으시면 편하게 적어주세요.</div>
+  <div class="hint">화장품 말고 다른 얘기라도 좋습니다.</div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+</div>
+
+<div class="foot">
+  <strong>고맙습니다.</strong> 적어주신 내용은 저희가 만드는 서비스를 다듬는 데에만 씁니다.
+  이름과 연락처는 남기신 분께 소식을 전해드리는 용도로만 쓰고, 다른 곳에 제공하지 않습니다.
+  원하시면 언제든 지워드립니다.
+  <br>
+  문의 &nbsp; <span class="contact">&nbsp;010-</span>
+</div>

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>좋다는 건 다 샀는데 왜 그대로일까 — RIVEA MAG</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#1C1815; --body:#4A443E; --muted:#8B8279;
+  --line:rgba(28,24,21,.16); --accent:#C13B54;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#9c968c;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.card{position:relative;width:1080px;height:1350px;overflow:hidden;margin:0 auto 40px}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* 아이보리 베일 — 사진이 배경으로 살아야 하므로 최소한만 (style.md 4항) */
+.veil{position:absolute;left:0;right:0;height:66%}
+.veil.top{top:0;background:linear-gradient(to bottom,
+  rgba(250,247,242,.72) 0%,rgba(250,247,242,.50) 46%,rgba(250,247,242,0) 100%)}
+.veil.deep.top{background:linear-gradient(to bottom,
+  rgba(250,247,242,.90) 0%,rgba(250,247,242,.70) 46%,rgba(250,247,242,0) 100%)}
+.veil.bot{bottom:0;background:linear-gradient(to top,
+  rgba(250,247,242,.80) 0%,rgba(250,247,242,.56) 46%,rgba(250,247,242,0) 100%)}
+.veil.full{top:0;height:100%;background:linear-gradient(to bottom,
+  rgba(250,247,242,.84) 0%,rgba(250,247,242,.70) 58%,rgba(250,247,242,.54) 100%)}
+
+/* 매 장 공통 프레임 — 좌: 코너 라벨 / 우: 마스트헤드 */
+.frame{position:absolute;top:56px;left:80px;right:80px;display:flex;
+  justify-content:space-between;align-items:baseline;z-index:3}
+.corner{font-size:25px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.corner b{color:var(--accent);margin-right:10px}
+.mast{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--ink);opacity:.72}
+
+.txt{position:absolute;left:80px;right:80px}
+.txt.top{top:172px}
+/* 하단 배치 카드는 성분 줄이 페이지번호(bottom:68px)와 같은 줄에 나란히 보여
+   답답해진다. 한 줄 높이만큼 띄운다. */
+.txt.bot{bottom:140px}
+
+.label{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--accent);
+  margin-bottom:22px}
+h2{font-size:78px;font-weight:700;line-height:1.22;letter-spacing:-.035em;color:var(--ink)}
+.lead{margin-top:28px;font-size:33px;font-weight:400;line-height:1.6;
+  letter-spacing:-.012em;color:var(--body)}
+
+/* 성분 1줄 — style.md 6항 "각 카드에 성분 한 줄은 반드시 있어야 한다".
+   라벨을 muted로 두는 건 액센트를 카드당 2곳(코너 ▪ + label) 안으로 지키기 위해서다. */
+.ing{margin-top:26px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:31px;font-weight:600;line-height:1.35;letter-spacing:-.015em;color:var(--ink)}
+.ing b{display:block;font-weight:700;font-size:22px;letter-spacing:.16em;
+  color:var(--muted);margin-bottom:10px}
+
+.pg{position:absolute;right:74px;bottom:68px;font-size:23px;font-weight:600;
+  letter-spacing:.16em;color:rgba(28,24,21,.58);line-height:1;
+  background:rgba(250,247,242,.62);border-radius:4px;padding:9px 13px}
+
+/* 커버 — 지침서형.
+   숫자를 헤드라인에 넣고(카피공식 "숫자가 주는 힘"), 그 아래 다루는 성분 이름을 깐다.
+   썸네일에서 자기가 쓰는 성분이 보이면 멈춘다. 공감 문장은 서브라인으로 내렸다. */
+h1{font-size:96px;font-weight:700;line-height:1.18;letter-spacing:-.04em;color:var(--ink)}
+h1 em{font-style:normal;color:var(--accent)}
+.cover-tags{margin-top:34px;padding-top:26px;border-top:1px solid var(--line);
+  font-size:33px;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.4}
+.cover-tags span{color:var(--muted);font-weight:500;margin:0 6px}
+.cover-line{margin-top:18px;font-size:30px;font-weight:500;color:var(--body);
+  letter-spacing:-.01em;line-height:1.5}
+
+/* 정리 카드 */
+.steps{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
+.steps li{display:flex;align-items:baseline;gap:22px;padding:16px 0;
+  border-bottom:1px solid var(--line);font-size:33px;font-weight:700;color:var(--ink);
+  letter-spacing:-.022em;line-height:1.3}
+.steps li i{font-style:normal;font-size:24px;font-weight:700;color:var(--muted);
+  letter-spacing:.1em;flex-shrink:0}
+.more{margin-top:28px;font-size:31px;font-weight:600;color:var(--body);
+  letter-spacing:-.01em;line-height:1.45}
+
+/* ── 브랜드 아웃트로 (고정) ──────────────────────────────────
+   style.md 7항. **회차마다 바꾸지 않는다.** 마지막 장이 매번 같아야
+   시리즈로 읽히고, 팔로워가 "아 그 계정"으로 기억한다.
+   여기 수치를 고칠 일이 생기면 style.md를 먼저 고치고 전 회차에 같이 반영한다. */
+.outro{background:#FAF7F2}
+/* 위에서 내려오는 아주 옅은 온기 — 평평해 보이지 않게만 */
+.outro::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 78% at 50% 8%,rgba(255,255,255,.85) 0%,
+    rgba(250,247,242,0) 62%)}
+/* 정중앙보다 살짝 위 — 아래 여백이 더 넓어야 시각적으로 안정된다(광학 중심) */
+.outro-in{position:absolute;left:80px;right:80px;top:45%;transform:translateY(-50%);
+  text-align:center}
+.pre{font-size:38px;font-weight:500;line-height:1.5;letter-spacing:-.015em;color:var(--body)}
+.rebeauty{margin-top:44px;font-size:144px;font-weight:700;line-height:1;
+  letter-spacing:.005em;color:var(--ink)}
+.rebeauty span{color:var(--accent)}
+.rule-c{width:92px;height:1px;background:rgba(28,24,21,.26);margin:52px auto 0}
+.wordmark{margin-top:44px;font-size:46px;font-weight:700;letter-spacing:.44em;
+  color:var(--accent);text-indent:.44em}
+</style>
+</head>
+<body>
+
+<!-- 1 · 커버 -->
+<section class="card" id="c1">
+  <img src="img/01-cover.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <h1>같이 쓰면 안 되는<br>조합 <em>4가지</em></h1>
+    <p class="cover-tags">레티놀<span>·</span>각질<span>·</span>나이아신아마이드<span>·</span>비타민C</p>
+    <p class="cover-line">좋다는 건 다 샀는데 그대로라면,<br>겹쳐서 서로 자극만 키우고 있을 수 있어요.</p>
+  </div>
+</section>
+
+<!-- 2 · 숫자 -->
+<section class="card" id="c2">
+  <img src="img/02-count.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">01 개수</div>
+    <h2>4개를 쓰면<br>확인할 조합이 6가지</h2>
+    <p class="lead">두 개씩 짝지어 보면 그렇습니다.
+      5개면 10가지, 6개면 15가지예요.
+      제품이 하나 늘 때 확인할 자리는 그보다 빨리 늘어납니다.</p>
+    <p class="ing"><b>계산</b>제품 수 × (제품 수 − 1) ÷ 2</p>
+  </div>
+  <div class="pg">02 / 08</div>
+</section>
+
+<!-- 3 · 레티놀 × 각질 -->
+<section class="card" id="c3">
+  <img src="img/03-retinol.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">02 겹침</div>
+    <h2>레티놀과 각질 제품은<br>같은 날 저녁을 피한다</h2>
+    <p class="lead">둘 다 각질층에 작용해서 같은 날 저녁에 겹치면 자극이 커집니다.
+      하루씩 번갈아 두는 편이 낫습니다.</p>
+    <p class="ing"><b>성분</b>레티놀 · AHA · BHA</p>
+  </div>
+  <div class="pg">03 / 08</div>
+</section>
+
+<!-- 4 · 나이아신아마이드 합산 -->
+<section class="card" id="c4">
+  <img src="img/04-niacin.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">03 함량</div>
+    <h2>나이아신아마이드는<br>두 개면 합산된다</h2>
+    <p class="lead">세럼과 크림에 함께 들어 있는 경우가 많아요.
+      각각은 적정 함량이어도 같이 쓰면 합쳐집니다.</p>
+    <p class="ing"><b>성분</b>나이아신아마이드 · 고시 함량 2~5%</p>
+  </div>
+  <div class="pg">04 / 08</div>
+</section>
+
+<!-- 5 · 비타민C 아침 / 레티놀 저녁 -->
+<section class="card" id="c5">
+  <img src="img/05-clock.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">04 시간</div>
+    <h2>비타민C는 아침<br>레티놀은 저녁</h2>
+    <p class="lead">두 성분은 안정적인 조건이 서로 다르다고 알려져 있어요.
+      같은 시간에 겹쳐 바르기보다 아침과 저녁으로 나누는 쪽이 무난합니다.</p>
+    <p class="ing"><b>성분</b>비타민C · 레티놀</p>
+  </div>
+  <div class="pg">05 / 08</div>
+</section>
+
+<!-- 6 · 선크림 — 튜브가 위쪽까지 올라온 사진이라 텍스트를 하단으로 (CLAUDE.md) -->
+<section class="card" id="c6">
+  <img src="img/06-uv.jpg" alt="">
+  <div class="veil bot"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt bot">
+    <div class="label">05 필수</div>
+    <h2>레티놀을 쓰면<br>선크림이 선택이 아니다</h2>
+    <p class="lead">레티놀을 쓰는 동안 피부가 빛에 더 민감해진다고 알려져 있어요.
+      아침 자외선 차단을 함께 쓰는 것이 기본입니다.</p>
+    <p class="ing"><b>기준</b>SPF30 · PA+++ 이상</p>
+  </div>
+  <div class="pg">06 / 08</div>
+</section>
+
+<!-- 7 · 정리 + 행동 지침서 -->
+<section class="card" id="c7">
+  <img src="img/07-shelf.jpg" alt="">
+  <div class="veil full"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt top">
+    <div class="label">정리</div>
+    <h2>오늘 화장대를<br>한 번만 펼쳐보세요</h2>
+    <ul class="steps">
+      <li><i>01</i>레티놀과 각질 제품이 같은 날 저녁에 있는지</li>
+      <li><i>02</i>나이아신아마이드가 두 제품에 함께 있는지</li>
+      <li><i>03</i>비타민C와 레티놀이 같은 시간에 있는지</li>
+      <li><i>04</i>레티놀을 쓰는데 아침 선크림이 없는지</li>
+    </ul>
+    <p class="more">하나라도 겹친다면, 하나를 빼는 게 하나를 더 사는 것보다 빠릅니다.</p>
+  </div>
+  <div class="pg">07 / 08</div>
+</section>
+
+<!-- 8 · 브랜드 마무리 — 고정. 회차마다 바꾸지 않는다 (style.md 7항) -->
+<section class="card outro" id="c8">
+  <div class="outro-in">
+    <p class="pre">당신이 푸르렀던 그 시절로</p>
+    <p class="rebeauty">RE<span>:</span>BEAUTY</p>
+    <div class="rule-c"></div>
+    <p class="wordmark">RIVEA</p>
+  </div>
+</section>
+
+</body>
+</html>

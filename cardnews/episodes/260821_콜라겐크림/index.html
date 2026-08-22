@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>콜라겐 크림이 못 하는 1가지 — RIVEA MAG</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#1C1815; --body:#4A443E; --muted:#8B8279;
+  --line:rgba(28,24,21,.16); --accent:#C13B54;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#9c968c;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.card{position:relative;width:1080px;height:1350px;overflow:hidden;margin:0 auto 40px}
+/* 직계 자식만 — 안 그러면 팔로우 카드 아바타까지 배경으로 깔린다 */
+.card > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* 제품 카드는 제품명·확인표기까지 들어가 텍스트가 길다 → 베일을 72%로 */
+.veil{position:absolute;left:0;right:0;height:72%}
+.veil.top{top:0;background:linear-gradient(to bottom,
+  rgba(250,247,242,.72) 0%,rgba(250,247,242,.50) 46%,rgba(250,247,242,0) 100%)}
+.veil.deep.top{background:linear-gradient(to bottom,
+  rgba(250,247,242,.90) 0%,rgba(250,247,242,.70) 46%,rgba(250,247,242,0) 100%)}
+.veil.full{top:0;height:100%;background:linear-gradient(to bottom,
+  rgba(250,247,242,.86) 0%,rgba(250,247,242,.72) 58%,rgba(250,247,242,.56) 100%)}
+
+/* 매 장 공통 프레임 */
+.frame{position:absolute;top:56px;left:80px;right:80px;display:flex;
+  justify-content:space-between;align-items:baseline;z-index:3}
+.corner{font-size:25px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.corner b{color:var(--accent);margin-right:10px}
+.mast{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--ink);opacity:.72}
+
+.txt{position:absolute;left:80px;right:80px;top:168px}
+.txt.narrow{right:auto;width:600px}
+
+.label{font-size:25px;font-weight:700;letter-spacing:.2em;color:var(--accent);
+  margin-bottom:22px}
+h2{font-size:72px;font-weight:700;line-height:1.22;letter-spacing:-.035em;color:var(--ink)}
+.lead{margin-top:24px;font-size:31px;font-weight:400;line-height:1.6;
+  letter-spacing:-.012em;color:var(--body)}
+.lead b{font-weight:700;color:var(--ink)}
+
+/* 제품명 + 식약처 확인. 브랜드 로고 대신 텍스트로만 표기한다. */
+.prod{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.prod .row{display:flex;gap:18px;align-items:flex-start;margin-top:14px}
+.prod .row:first-child{margin-top:0}
+.prod b{flex:0 0 auto;font-size:22px;font-weight:700;letter-spacing:.16em;
+  color:var(--accent);padding-top:7px;min-width:76px}
+.prod span{font-size:29px;font-weight:600;line-height:1.36;letter-spacing:-.015em;
+  color:var(--ink)}
+.prod .row.chk b{color:var(--muted)}
+.prod .row.chk span{font-weight:500;color:var(--body);font-size:27px}
+
+.pg{position:absolute;right:74px;bottom:68px;font-size:23px;font-weight:600;
+  letter-spacing:.16em;color:rgba(28,24,21,.58);line-height:1;
+  background:rgba(250,247,242,.62);border-radius:4px;padding:9px 13px}
+
+/* 커버 */
+h1{font-size:88px;font-weight:700;line-height:1.18;letter-spacing:-.04em;color:var(--ink)}
+.cover-line{margin-top:32px;padding-top:26px;border-top:1px solid var(--line);
+  font-size:29px;font-weight:600;color:var(--body);letter-spacing:-.01em}
+
+/* 정리 카드 */
+.steps{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
+.steps li{display:flex;align-items:baseline;gap:20px;padding:15px 0;
+  border-bottom:1px solid var(--line);font-size:31px;font-weight:700;color:var(--ink);
+  letter-spacing:-.02em}
+.steps li i{font-style:normal;font-size:23px;font-weight:700;color:var(--accent);
+  letter-spacing:.1em;flex:0 0 auto}
+.steps li em{font-style:normal;font-weight:500;color:var(--body);font-size:27px;margin-left:auto}
+.more{margin-top:26px;font-size:29px;font-weight:600;color:var(--body);letter-spacing:-.01em;
+  line-height:1.5}
+
+/* 아웃트로의 팔로우 카드 — 인스타 UI를 빌리되 pill 대신 4px 라운드(우리 언어) */
+.fcard{margin:52px auto 0;max-width:820px;background:#fff;border:1px solid var(--line);
+  border-radius:4px;padding:26px 30px;display:flex;align-items:center;gap:26px;text-align:left}
+.fcard .av{position:static;flex:0 0 auto;width:112px;height:112px;border-radius:50%;
+  object-fit:cover;border:1px solid var(--line);display:block}
+.fcard .who{flex:1 1 auto;min-width:0}
+.fcard .nm{font-size:34px;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.2}
+.fcard .hd{margin-top:8px;font-size:28px;font-weight:500;color:var(--muted);letter-spacing:-.01em}
+.fcard .btn{flex:0 0 auto;background:var(--ink);color:#FAF7F2;border-radius:4px;
+  padding:20px 34px;font-size:30px;font-weight:700;letter-spacing:-.01em}
+
+/* 브랜드 아웃트로 (style.md §7 — 매 회차 동일, 고치지 않는다) */
+.outro{background:#FAF7F2}
+.outro::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 78% at 50% 8%,rgba(255,255,255,.85) 0%,
+    rgba(250,247,242,0) 62%)}
+/* 팔로우 카드가 붙어 블록이 길어졌다 → 정중앙. (카드 없던 시절엔 45%가 맞았다) */
+.outro-in{position:absolute;left:80px;right:80px;top:50%;transform:translateY(-50%);
+  text-align:center}
+.pre{font-size:38px;font-weight:500;line-height:1.5;letter-spacing:-.015em;color:var(--body)}
+.rebeauty{margin-top:44px;font-size:144px;font-weight:700;line-height:1;
+  letter-spacing:.005em;color:var(--ink)}
+.rebeauty span{color:var(--accent)}
+.rule-c{width:92px;height:1px;background:rgba(28,24,21,.26);margin:52px auto 0}
+.wordmark{margin-top:44px;font-size:46px;font-weight:700;letter-spacing:.44em;
+  color:var(--accent);text-indent:.44em}
+</style>
+
+
+
+<section class="card" id="c1">
+  <img src="img/01-cover.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <h1>콜라겐 크림이<br>못 하는 1가지</h1>
+    <p class="lead"><b>붙잡는 일은 합니다. 늘리는 일은 못 합니다.</b><br>분자 크기 하나로 갈립니다 — <b>500 대 30만.</b><br>그럼 늘리는 건 누가 하느냐가 남죠.</p>
+    <p class="cover-line">분자 크기부터 따라가 봅니다</p>
+  </div>
+</section>
+
+<section class="card" id="c2">
+  <img src="img/02-size.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">01 크기</div>
+    <h2>들어갈 수 있는<br>크기가 아닙니다</h2>
+    <p class="lead">피부를 통과하려면 대개 500달톤 이하여야 한다고 알려져 있어요.<br>콜라겐은 약 30만 달톤입니다.<br><b>600배쯤 큽니다.</b></p>
+  </div>
+  <div class="pg">02 / 09</div>
+</section>
+
+<section class="card" id="c3">
+  <img src="img/03-film.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">02 역할</div>
+    <h2>대신 위에서<br>붙잡습니다</h2>
+    <p class="lead">표면에 얇은 막을 만들어 수분이 날아가는 걸 늦춥니다.<br>바른 직후 매끈해지는 건 착각이 아니에요.<br><b>다만 그건 보습이지 구조는 아닙니다.</b></p>
+  </div>
+  <div class="pg">03 / 09</div>
+</section>
+
+<section class="card" id="c4">
+  <img src="img/04-low.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">03 저분자</div>
+    <h2>「저분자」라고<br>쓰여 있으면요</h2>
+    <p class="lead">잘게 쪼갠 콜라겐은 원래보다 작습니다.<br>다만 얼마나 작은지는 <b>제품마다 다르고 표기 의무가 없어요.</b><br>확인할 수 없는 건 기대치에서 빼는 게 맞습니다.</p>
+  </div>
+  <div class="pg">04 / 09</div>
+</section>
+
+<section class="card" id="c5">
+  <img src="img/05-other.jpg" alt="">
+  <div class="veil top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">처방 01</div>
+    <h2>늘리는 건<br>다른 성분입니다</h2>
+    <p class="lead">펩타이드는 크기가 작아 신호 역할로 쓰입니다.<br>비타민C는 콜라겐이 만들어질 때 필요한 보조 인자로 알려져 있어요.</p>
+    <div class="prod"><div class="row"><b>함께</b><span>펩타이드 · 비타민C · 레티노이드</span></div></div>
+  </div>
+  <div class="pg">05 / 09</div>
+</section>
+
+<section class="card" id="c6">
+  <img src="img/06-uv.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">처방 02</div>
+    <h2>지키는 쪽이<br>더 큽니다</h2>
+    <p class="lead">자외선은 이미 있는 콜라겐이 분해되는 걸 앞당기는 것으로 알려져 있어요.<br><b>아침 자외선 차단이 가장 싼 탄력 관리</b>인 이유입니다.</p>
+    <div class="prod"><div class="row"><b>매일</b><span>아침 자외선 차단</span></div></div>
+  </div>
+  <div class="pg">06 / 09</div>
+</section>
+
+<section class="card" id="c7">
+  <img src="img/07-keep.jpg" alt="">
+  <div class="veil deep top"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">처방 03</div>
+    <h2>그래도 버릴<br>필요는 없어요</h2>
+    <p class="lead">마지막에 덮어 잠그는 자리에서는 제 몫을 합니다.<br>세라마이드·스쿠알란이 함께 들어 있으면 더 맞아요.<br><b>기대를 바꾸면 쓸 자리가 보입니다.</b></p>
+  </div>
+  <div class="pg">07 / 09</div>
+</section>
+
+<section class="card" id="c8">
+  <img src="img/08-sum.jpg" alt="">
+  <div class="veil full"></div>
+  <div class="frame"><div class="corner"><b>&#9642;</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="label">정리</div>
+    <h2>붙잡기 · 늘리기<br>그리고 지키기</h2>
+    <ul class="steps"><li><i>01</i>콜라겐 크림<em>표면 보습</em></li><li><i>02</i>펩타이드 · 비타민C<em>늘리는 쪽</em></li><li><i>03</i>레티놀<em>밤에</em></li><li><i>04</i>자외선 차단<em>지키는 쪽</em></li><li><i>05</i>「저분자」 표기<em>확인 안 되면 제외</em></li></ul>
+    <p class="more">크림을 바꾸기 전에 기대부터 맞춰보세요.<br><b>저장해두고 살 때 꺼내 보시면 됩니다.</b></p>
+  </div>
+  <div class="pg">08 / 09</div>
+</section>
+
+<section class="card outro" id="c9">
+  <div class="outro-in">
+    <p class="pre">당신이 푸르렀던 그 시절로</p>
+    <p class="rebeauty">RE<span>:</span>BEAUTY</p>
+    <div class="rule-c"></div>
+    <div class="fcard">
+      <img class="av" src="../../assets/avatar.png" alt="">
+      <div class="who">
+        <div class="nm">RIVEA 매거진</div>
+        <div class="hd">@rivea.mag</div>
+      </div>
+      <div class="btn">팔로우</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

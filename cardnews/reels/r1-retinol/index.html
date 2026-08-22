@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>RIVEA 릴스 — 레티놀은 %가 아니다</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{ --ink:#1C1815; --body:#4A443E; --line:rgba(28,24,21,.18); --accent:#C13B54; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#8f8a80}
+/* 릴스 판형 1080×1920. 배경 이미지는 1.15배로 넣고 ffmpeg이 줌·팬을 준다. */
+.scene{position:relative;width:1080px;height:1920px;overflow:hidden;margin:0 auto 30px}
+.scene img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:1242px;height:2208px;object-fit:cover}
+.veil{position:absolute;inset:0;background:linear-gradient(to bottom,
+  rgba(250,247,242,.80) 0%,rgba(250,247,242,.62) 46%,rgba(250,247,242,.30) 100%)}
+.veil.deep{background:linear-gradient(to bottom,
+  rgba(250,247,242,.92) 0%,rgba(250,247,242,.78) 46%,rgba(250,247,242,.45) 100%)}
+
+/* 매 장 프레임 — 캐러셀과 같은 언어 */
+.frame{position:absolute;top:96px;left:80px;right:80px;display:flex;
+  justify-content:space-between;align-items:baseline;z-index:3}
+.corner{font-size:30px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.corner b{color:var(--accent);margin-right:12px}
+.mast{font-size:30px;font-weight:700;letter-spacing:.2em;color:var(--ink);opacity:.72}
+
+/* 릴스는 세로 중앙에서 조금 위. 하단은 인스타 UI(캡션·버튼)가 덮으므로 비운다. */
+.txt{position:absolute;left:80px;right:80px;top:33%;transform:translateY(-42%)}
+.kicker{font-size:32px;font-weight:700;letter-spacing:.18em;color:var(--accent);
+  margin-bottom:32px}
+h2{font-size:104px;font-weight:700;line-height:1.2;letter-spacing:-.04em;color:var(--ink)}
+h2 em{font-style:normal;color:var(--accent)}
+.sub{margin-top:40px;font-size:44px;font-weight:400;line-height:1.55;
+  letter-spacing:-.015em;color:var(--body)}
+.big{margin-top:44px;font-size:132px;font-weight:700;letter-spacing:-.04em;
+  color:var(--accent);line-height:1}
+.big small{display:block;font-size:38px;font-weight:600;color:var(--body);
+  letter-spacing:-.01em;margin-top:18px}
+.rule{height:1px;background:var(--line);margin:44px 0}
+.cta{font-size:46px;font-weight:700;line-height:1.4;letter-spacing:-.02em;color:var(--ink)}
+.cta span{color:var(--accent)}
+.wordmark{margin-top:56px;font-size:36px;font-weight:700;letter-spacing:.42em;
+  color:var(--accent);text-indent:.42em}
+</style>
+</head>
+<body>
+
+<!-- S1 · 후킹 (0~2.4s) 첫 3초가 도달을 5~10배 가른다 -->
+<section class="scene" id="s1">
+  <img src="img/s1.jpg" alt=""><div class="veil deep"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <div class="kicker">레티놀 고를 때</div>
+    <h2>레티놀은<br><em>%로 세면</em><br>안 됩니다</h2>
+  </div>
+</section>
+
+<!-- S2 · 기준 제시 -->
+<section class="scene" id="s2">
+  <img src="img/s2.jpg" alt=""><div class="veil"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <h2>식약처 기준은<br>IU/g입니다</h2>
+    <p class="big">2,500 IU/g<small>주름개선 기능성 고시 함량</small></p>
+  </div>
+</section>
+
+<!-- S3 · 왜 %가 애매한가 -->
+<section class="scene" id="s3">
+  <img src="img/s3.jpg" alt=""><div class="veil"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <h2>%는 브랜드마다<br>기준이 다릅니다</h2>
+    <p class="sub">그래서 0.1%라고 적혀 있어도<br>같은 양이라는 뜻이 아니에요.</p>
+  </div>
+</section>
+
+<!-- S4 · 실행 -->
+<section class="scene" id="s4">
+  <img src="img/s4.jpg" alt=""><div class="veil"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <h2>확인할 건 하나</h2>
+    <p class="sub">용기에 <em style="font-style:normal;color:#1C1815;font-weight:700">'주름개선 기능성화장품'</em><br>표기가 있는지만 보세요.</p>
+    <div class="rule"></div>
+    <p class="sub" style="margin-top:0">그 표기가 있으면 고시 함량을 넣었거나<br>식약처 심사를 받은 제품입니다.</p>
+  </div>
+</section>
+
+<!-- S5 · CTA -->
+<section class="scene" id="s5">
+  <img src="img/s5.jpg" alt=""><div class="veil deep"></div>
+  <div class="frame"><div class="corner"><b>▪</b>성분</div><div class="mast">RIVEA MAG</div></div>
+  <div class="txt">
+    <p class="cta">자외선 · 장벽 · 색소 · 탄력 · 근육<br><span>다섯 가지 기준</span>은<br>프로필에 정리해 뒀어요</p>
+    <p class="wordmark">RIVEA</p>
+  </div>
+</section>
+
+</body>
+</html>

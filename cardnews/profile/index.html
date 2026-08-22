@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>RIVEA 프로필 마크 — 반전(웜화이트 배경 + 로즈 R)</title>
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+<style>
+:root{ --warm:#FAF7F2; --warm100:#F2EEE7; --rose:#C13B54; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#8f8a80}
+.mark{position:relative;width:1080px;height:1080px;overflow:hidden;margin:0 auto 30px}
+.mark .g{position:absolute;inset:0}
+.mark span{position:absolute;left:50%;top:50%;line-height:1;display:block;
+  white-space:nowrap;font-family:"Parisienne",cursive;color:var(--rose)}
+
+/* A · 직접 반전 — 웜화이트 배경 + 로즈 R */
+#a{background:var(--warm)}
+#a .g{background:radial-gradient(120% 90% at 50% 10%,rgba(255,255,255,.9) 0%,rgba(250,247,242,0) 60%)}
+#a span{font-size:840px;transform:translate(-50%,-53%)}
+
+/* B · A + 로즈 헤어라인 링 — 흰 UI에서도 원 경계가 보인다 */
+#b{background:var(--warm)}
+#b .g{background:radial-gradient(120% 90% at 50% 10%,rgba(255,255,255,.9) 0%,rgba(250,247,242,0) 60%)}
+#b .ring{position:absolute;inset:0;border:14px solid var(--rose);border-radius:50%}
+#b span{font-size:760px;transform:translate(-50%,-53%)}
+
+/* C · 배경을 한 단 진한 웜(#F2EEE7 = warm-100 토큰)으로 — 흰 배경과 구분된다 */
+#c{background:var(--warm100)}
+#c .g{background:radial-gradient(120% 90% at 50% 10%,rgba(255,255,255,.75) 0%,rgba(242,238,231,0) 60%)}
+#c span{font-size:840px;transform:translate(-50%,-53%)}
+
+/* D · 글자를 더 키운 반전 — 획이 굵어 보여 작은 크기에 유리 */
+#d{background:var(--warm)}
+#d .g{background:radial-gradient(120% 90% at 50% 10%,rgba(255,255,255,.9) 0%,rgba(250,247,242,0) 60%)}
+#d span{font-size:960px;transform:translate(-50%,-53%)}
+
+/* E · 비교용 — 현재 추천안(로즈 배경 + 웜화이트 R) */
+#e{background:var(--rose)}
+#e .g{background:radial-gradient(120% 90% at 50% 10%,rgba(255,255,255,.18) 0%,rgba(193,59,84,0) 60%)}
+#e span{font-size:840px;transform:translate(-50%,-53%);color:var(--warm)}
+</style>
+</head>
+<body>
+  <section class="mark" id="a"><div class="g"></div><span>R</span></section>
+  <section class="mark" id="b"><div class="g"></div><div class="ring"></div><span>R</span></section>
+  <section class="mark" id="c"><div class="g"></div><span>R</span></section>
+  <section class="mark" id="d"><div class="g"></div><span>R</span></section>
+  <section class="mark" id="e"><div class="g"></div><span>R</span></section>
+</body>
+</html>
