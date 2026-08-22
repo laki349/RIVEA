@@ -17,6 +17,7 @@ import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import RoutineCard from "@/components/RoutineCard";
 import BuyBar from "@/components/BuyBar";
+import Track from "@/components/Track";
 import TrackRecent from "@/components/TrackRecent";
 import ActiveBars from "@/components/ActiveBars";
 import MyReview from "@/components/MyReview";
@@ -135,6 +136,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     <>
       {/* 최근 본 상품으로 기록 (렌더 없음) */}
       <TrackRecent kind="product" id={product.id} />
+      {/* 계측 — 4단계 퍼널 밖의 부수 지표. 어느 제품이 열리는지가 입점 협상 재료가 된다 */}
+      <Track name="product_view" value={product.id} />
       <AppBar
         title={brand.name}
         share={{ title: `${brand.name} ${modelLabel(product)}`, text: `${won(product.price)}원` }}

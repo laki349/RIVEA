@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { concerns } from "@/data/catalog";
 import { currentScope, readScoped, registerScoped, writeScoped } from "./scope";
+import { track } from "./events";
 
 /**
  * 내 피부 프로필 — 고민과 연령대. 계정(uid)별 저장.
@@ -84,6 +85,8 @@ export function useProfile(): Profile {
 
 export function toggleConcern(slug: string) {
   load();
+  // 계측은 **켜는 순간만** 남긴다. 껐다 켰다를 다 세면 도달률이 부풀려진다
+  if (!profile.concerns.includes(slug)) track("concern_select", slug);
   profile = profile.concerns.includes(slug)
     ? { ...profile, concerns: profile.concerns.filter((s) => s !== slug) }
     : { ...profile, concerns: [...profile.concerns, slug] };

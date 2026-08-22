@@ -5,6 +5,7 @@ import { productOf, routines, type ActiveKey, type Product } from "@/data/catalo
 import { regimenOf, type Step } from "@/data/regimen";
 import { statusOf, useOrders, type Order } from "./orders";
 import { clearScoped, currentScope, readScoped, registerScoped, writeScoped } from "./scope";
+import { track } from "./events";
 
 /**
  * 내 화장대 — **이미 쓰고 있는 것.**
@@ -78,11 +79,13 @@ export function useOnShelf(productId: string): boolean {
 }
 
 export function toggleShelfProduct(productId: string) {
+  // 뺄 때가 아니라 **넣을 때만** 센다
   load();
   const found = items.some((i) => i.kind === "product" && i.id === productId);
   items = found
     ? items.filter((i) => !(i.kind === "product" && i.id === productId))
     : [{ kind: "product", id: productId }, ...items];
+  if (!found) track("shelf_add", productId);
   emit();
 }
 
@@ -91,6 +94,8 @@ export function addCustom(name: string, actives: ActiveKey[], step: Step) {
   load();
   const id = `c${Date.now().toString(36)}`;
   items = [{ kind: "custom", id, name: name.trim(), actives, step }, ...items];
+  // 직접 입력한 제품명은 자유 텍스트다 — **값으로 보내지 않는다.** 개인정보가 섞일 수 있다
+  track("shelf_add", "custom");
   emit();
 }
 

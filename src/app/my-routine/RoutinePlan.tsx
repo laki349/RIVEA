@@ -6,6 +6,7 @@ import { brandOf, concernOf, productImage, productOf, won, type Product } from "
 import { addToCart } from "@/lib/cart";
 import { prescribe, type Slotted } from "@/lib/prescribe";
 import { useProfile } from "@/lib/profile";
+import { track } from "@/lib/events";
 import { useShelfEntries } from "@/lib/shelf";
 import { regimenOf } from "@/data/regimen";
 import Icon from "@/components/Icon";
@@ -34,6 +35,11 @@ export default function RoutinePlan() {
 
   const shelf = useShelfEntries();
   const plan = useMemo(() => prescribe(profile.concerns, shelf), [profile.concerns, shelf]);
+
+  // 처방 도달 — 고민이 있어야 처방이 나온다. 빈 화면은 도달로 세지 않는다
+  useEffect(() => {
+    if (profile.concerns.length > 0) track("prescription_view", profile.concerns[0]);
+  }, [profile.concerns]);
 
   if (!mounted) return <main className="flex-1" />;
 

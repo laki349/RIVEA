@@ -3,6 +3,7 @@ import "./globals.css";
 import AuthScope from "@/components/auth/AuthScope";
 import ServiceWorker from "@/components/ServiceWorker";
 import Onboarding from "@/components/auth/Onboarding";
+import Track from "@/components/Track";
 
 /**
  * `metadataBase`가 반드시 있어야 한다. og:image는 절대 URL이어야 카톡·문자에서
@@ -61,6 +62,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="font-sans text-ink">
+        {/* 세션 시작. 여기가 퍼널의 분모다 */}
+        <Track name="app_open" />
         {/* 장바구니·찜·주문의 저장 위치를 로그인 계정에 맞춘다 (렌더 없음) */}
         <AuthScope />
         {/* 오프라인에서도 앱 껍데기가 열리게 (프로덕션에서만 등록) */}
