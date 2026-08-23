@@ -78,13 +78,18 @@ export function useOnShelf(productId: string): boolean {
   return useShelf().some((i) => i.kind === "product" && i.id === productId);
 }
 
-export function toggleShelfProduct(productId: string) {
+/**
+ * `startedAt`은 **등록 시각이 아니라 쓰기 시작한 시각**이다 (addCustom 주석과 같은 이유).
+ * 목록에서 고르는 경로에도 이 값을 받아야 한다 — 여기만 빼놓으면 카탈로그 제품은
+ * 전부 오늘 시작한 것이 되고, 판정이 2주 뒤에야 뜬다.
+ */
+export function toggleShelfProduct(productId: string, startedAt = Date.now()) {
   // 뺄 때가 아니라 **넣을 때만** 센다
   load();
   const found = items.some((i) => i.kind === "product" && i.id === productId);
   items = found
     ? items.filter((i) => !(i.kind === "product" && i.id === productId))
-    : [{ kind: "product", id: productId, addedAt: Date.now() }, ...items];
+    : [{ kind: "product", id: productId, addedAt: startedAt }, ...items];
   if (!found) track("shelf_add", productId);
   emit();
 }
