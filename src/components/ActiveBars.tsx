@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { concernOf, type Product } from "@/data/catalog";
-import { activeInfo, pctLabel } from "@/data/actives";
+import { activeInfo, gradeLabel, pctLabel } from "@/data/actives";
 import Icon from "./Icon";
 
 /**
@@ -80,12 +80,44 @@ export default function ActiveBars({ product }: { product: Product }) {
               ))}
             </div>
             <p className="ml-[20px] mt-[2px] text-[14px] leading-[1.55] text-soft">{info.role}</p>
+
+            {/*
+              근거. 「효과 모르겠다」가 설문 최대 신호(72%)였고, 그 답은 더 센 카피가 아니라
+              **누가 몇 명에게 확인했고 언제쯤 답이 오는가**다. 그래서 등급·출처·단서를 같이 낸다.
+              단서(caveat)를 빼지 않는 게 핵심이다 — 유리한 절반만 실으면 광고가 된다.
+            */}
+            {info.evidence && (
+              <div className="ml-[20px] mt-[6px] border-l-2 border-subtle pl-[10px]">
+                <p className="mb-[3px] flex flex-wrap items-center gap-[6px]">
+                  <span className="rounded bg-ink px-[6px] py-[2px] text-[12px] font-medium text-on-ink">
+                    근거 {info.evidence.grade}
+                  </span>
+                  <span className="text-[13px] text-meta">{gradeLabel[info.evidence.grade]}</span>
+                  {info.verdictWeeks && (
+                    <span className="rounded border border-line px-[7px] py-[1px] text-[13px] text-body">
+                      {info.verdictWeeks}주쯤 판정
+                    </span>
+                  )}
+                </p>
+                <p className="text-[14px] leading-[1.55] text-body">{info.evidence.claim}</p>
+                {info.evidence.caveat && (
+                  <p className="mt-[3px] text-[13px] leading-[1.55] text-meta">
+                    같이 알아둘 것 — {info.evidence.caveat}
+                  </p>
+                )}
+                <p className="mt-[3px] text-[12px] leading-[1.5] text-meta">
+                  출처 · {info.evidence.source}
+                </p>
+              </div>
+            )}
           </div>
         );
       })}
 
       <p className="mt-3 border-t border-subtle pt-[10px] text-[13px] leading-[1.6] text-meta">
         성분이 어디서 작용하는지만 적었어요. 효과는 사람마다 달라요.
+        <br />
+        근거는 브랜드 자체 시험을 빼고 동료심사 논문만 씁니다. 정리가 안 끝난 성분은 비워뒀어요.
       </p>
     </section>
   );

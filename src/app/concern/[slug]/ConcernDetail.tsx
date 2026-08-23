@@ -66,6 +66,71 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
             ))}
           </div>
 
+        </section>
+
+        {/*
+          「이런 경우예요」 — 고를 때 불편 1위가 「이게 나한테 맞는 건지 모르겠다」 50%였다
+          (docs/15). 고민 이름만으론 그 절반을 못 넘는다. 자기 확인 문장이 먼저 와야
+          「내 얘기다」가 성립하고, 그 다음에야 아래 상품이 의미를 갖는다.
+          ⚠️ 진단이 아니다. 증상을 단정하지 않고 관찰 가능한 상황으로만 쓴다.
+        */}
+        <section className="border-b border-hairline bg-subtle px-4 py-4">
+          <h3 className="mb-[9px] text-[16px] font-bold text-ink">이런 경우예요</h3>
+          {concern.youIf.map((line) => (
+            <p
+              key={line}
+              className="flex items-start gap-[9px] py-[5px] text-[14px] leading-[1.55] text-body"
+            >
+              <span className="mt-[1px] flex-shrink-0 text-ink">
+                <Icon name="check" size={17} />
+              </span>
+              <span>{line}</span>
+            </p>
+          ))}
+          <p className="mt-[8px] text-[13px] leading-[1.55] text-meta">
+            해당하는 게 하나도 없으면 다른 고민일 수 있어요. 진단이 아니라 방향을 잡는 문장입니다.
+          </p>
+        </section>
+
+        {/*
+          「언제 판정하나」 — 쓰는 중 불편 1위가 「효과가 있는 건지 모르겠다」 72%로
+          설문 전체 최대 신호다(docs/15). 시점을 처음부터 말하지 않으면 방치·폐기(56%)로 간다.
+          파는 쪽이 먼저 「아직 판단하지 마세요」를 말하는 게 이 앱의 각도다.
+        */}
+        <section className="border-b border-hairline px-4 py-4">
+          <div className="mb-[7px] flex flex-wrap items-center gap-2">
+            <h3 className="text-[16px] font-bold text-ink">언제 판정하나</h3>
+            <span className="rounded bg-ink px-[7px] py-[2px] text-[13px] font-medium text-on-ink">
+              {concern.verdictAt.weeks}주
+            </span>
+          </div>
+          <p className="text-[14px] leading-[1.6] text-body">{concern.verdictAt.what}</p>
+        </section>
+
+        {/*
+          아는 단어로 말을 건다 — 성분 병용 개념은 30/32가 모르지만 성분 「단어」는 안다
+          (설문 Q22 실측). 개념을 가르치려 들지 않고, 아는 단어를 입구로 쓴다.
+        */}
+        {concern.knownWords.length > 0 && (
+          <section className="border-b border-hairline px-4 py-4">
+            <h3 className="mb-[9px] text-[16px] font-bold text-ink">이 고민에서 자주 듣는 성분</h3>
+            <div className="flex flex-wrap gap-[6px]">
+              {concern.knownWords.map((w) => (
+                <span
+                  key={w}
+                  className="rounded border border-line px-[10px] py-[5px] text-[14px] text-body"
+                >
+                  {w}
+                </span>
+              ))}
+            </div>
+            <p className="mt-[9px] text-[13px] leading-[1.55] text-meta">
+              성분별 근거와 판정 시점은 각 상품 상세의 「성분이 하는 일」에 있어요.
+            </p>
+          </section>
+        )}
+
+        <section className="border-b border-hairline px-4 py-4">
           {/* 매거진 — 위 요약의 근거 전문 */}
           {concernArticles.length > 0 && (
             <div className="mt-4">

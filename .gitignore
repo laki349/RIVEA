@@ -26,5 +26,7 @@ cardnews/episodes/*/img/src-*
 cardnews/episodes/*/img/_contact.jpg
 
 # 운영자 원본 이미지 (생성물 · 대용량). 쓰는 회차의 img/ 에 사본이 있다
-images/
+# 앞 슬래시가 있어야 루트만 잡는다. 없으면 public/images/ 까지 무시돼서
+# 앱 이미지가 조용히 커밋에서 빠진다
+/images/
 /ChatGPT Image *.png

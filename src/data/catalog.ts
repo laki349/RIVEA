@@ -536,6 +536,8 @@ export const products: Product[] = [
       sourceUrl: "https://prod.danawa.com/info/?pcode=108463403",
       pricedAt: "2026-07-30",
       priceNote: "다나와 최저가",
+      imageUrl: "/images/product/real/d-medicube-x2.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=108463403",
       officialUrl: "https://themedicube.co.kr/age-r/main.html",
       deviceClass: "unknown",
     },
@@ -570,6 +572,8 @@ export const products: Product[] = [
       sourceUrl: "https://prod.danawa.com/info/?pcode=28857110",
       pricedAt: "2026-07-30",
       priceNote: "다나와 최저가",
+      imageUrl: "/images/product/real/d-medicube-pro.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=28857110",
       officialUrl: "https://themedicube.co.kr/age-r/main.html",
       deviceClass: "unknown",
     },
@@ -604,6 +608,8 @@ export const products: Product[] = [
       sourceUrl: "https://prod.danawa.com/info/?pcode=96368432",
       pricedAt: "2026-07-30",
       priceNote: "다나와 최저가",
+      imageUrl: "/images/product/real/d-medicube-mini.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=96368432",
       officialUrl: "https://themedicube.co.kr/age-r/main.html",
       deviceClass: "unknown",
     },
@@ -641,6 +647,8 @@ export const products: Product[] = [
       sourceUrl: "https://prod.danawa.com/info/?pcode=52365911",
       pricedAt: "2026-07-30",
       priceNote: "다나와 최저가",
+      imageUrl: "/images/product/real/d-medicube-ultratune.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=52365911",
       officialUrl: "https://themedicube.co.kr/age-r/main.html",
       deviceClass: "unknown",
     },
@@ -713,6 +721,8 @@ export const products: Product[] = [
       sourceUrl: "https://prod.danawa.com/info/?pcode=5519389",
       pricedAt: "2026-07-30",
       priceNote: "다나와 최저가",
+      imageUrl: "/images/product/real/d-lg-ledmask.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=5519389",
       officialUrl: "https://lgpralofficial.co.kr/",
       deviceClass: "non-medical",
     },
@@ -748,6 +758,8 @@ export const products: Product[] = [
       sourceUrl: "https://prod.danawa.com/info/?pcode=8365023",
       pricedAt: "2026-07-30",
       priceNote: "다나와 최저가",
+      imageUrl: "/images/product/real/d-cellreturn-platinum.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=8365023",
       officialUrl: "https://cellreturnmall.co.kr/",
       deviceClass: "unknown",
     },
@@ -784,6 +796,8 @@ export const products: Product[] = [
       sourceUrl: "https://prod.danawa.com/info/?pcode=8207959",
       pricedAt: "2026-07-30",
       priceNote: "다나와 최저가",
+      imageUrl: "/images/product/real/d-dualsonic-pro.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=8207959",
       officialUrl: "https://dualsonic.com/",
       deviceClass: "unknown",
     },
@@ -814,6 +828,8 @@ export const products: Product[] = [
       sourceUrl: "https://www.kurly.com/goods/1001393811",
       pricedAt: "2026-07-30",
       priceNote: "온라인 판매가",
+      imageUrl: "/images/product/real/c-anua-txa.jpg",
+      imageSource: "https://www.kurly.com/goods/1001393811",
     },
   },
   {
@@ -873,6 +889,8 @@ export const products: Product[] = [
       sourceUrl: "https://www.paulaschoice.co.kr/expert-advice/beauty-advice-015.html",
       pricedAt: "2026-07-30",
       priceNote: "공식몰 판매가",
+      imageUrl: "/images/product/real/c-paulas-b3.jpg",
+      imageSource: "https://www.paulaschoice.co.kr/expert-advice/beauty-advice-015.html",
     },
   },
   {
@@ -1004,6 +1022,8 @@ export const products: Product[] = [
       sourceUrl: "https://www.larocheposay.co.kr/product/view/4175.do",
       pricedAt: "2026-07-31",
       priceNote: "공식몰 판매가",
+      imageUrl: "/images/product/real/c-laroche-uvmune.png",
+      imageSource: "https://www.larocheposay.co.kr/product/view/4175.do",
       officialUrl: "https://www.larocheposay.co.kr",
     },
   },
@@ -1031,6 +1051,8 @@ export const products: Product[] = [
         "https://roundlab.co.kr/product/%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4-%EC%88%98%EB%B6%84-%EC%84%A0%ED%81%AC%EB%A6%BC-50ml/138/",
       pricedAt: "2026-07-31",
       priceNote: "공식몰 판매가",
+      imageUrl: "/images/product/real/c-roundlab-birch-sun.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=11991947",
       officialUrl: "https://roundlab.co.kr",
     },
   },
@@ -1082,6 +1104,8 @@ export const products: Product[] = [
       sourceUrl: "https://www.drforhair.co.kr/goods/goods_view.php?goodsNo=18",
       pricedAt: "2026-07-31",
       priceNote: "공식몰 판매가",
+      imageUrl: "/images/product/real/c-drforhair-bio3.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=30395810",
       officialUrl: "https://www.drforhair.co.kr",
     },
   },
@@ -1110,6 +1134,8 @@ export const products: Product[] = [
         "https://medihealshop.com/product/%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C-%EC%97%90%EC%84%BC%EC%85%9C-%EB%A7%88%EC%8A%A4%ED%81%AC-%ED%9D%94%EC%A0%81-%EB%A6%AC%ED%8E%98%EC%96%B4-10%EB%A7%A4/1035/",
       pricedAt: "2026-07-31",
       priceNote: "공식몰 판매가",
+      imageUrl: "/images/product/real/c-mediheal-madeca.jpg",
+      imageSource: "https://medihealshop.com/product/search.html?keyword=%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%EC%97%90%EC%84%BC%EC%85%9C",
       officialUrl: "https://medihealshop.com",
     },
   },
@@ -1138,6 +1164,8 @@ export const products: Product[] = [
         "https://www.amoremall.com/kr/ko/product/detail?onlineProdSn=58764&onlineProdCode=111130001346",
       pricedAt: "2026-07-31",
       priceNote: "공식몰 판매가",
+      imageUrl: "/images/product/real/c-iope-aircushion.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=116003702",
       officialUrl: "https://www.iope.com",
     },
   },
@@ -1199,6 +1227,8 @@ export const products: Product[] = [
         "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000144042",
       pricedAt: "2026-08-02",
       priceNote: "올리브영 판매가",
+      imageUrl: "/images/product/real/c-paulas-bha.jpg",
+      imageSource: "https://www.paulaschoice.co.kr",
       officialUrl: "https://www.paulaschoice.co.kr",
     },
   },
@@ -1231,6 +1261,8 @@ export const products: Product[] = [
       sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
       pricedAt: "2026-08-02",
       priceNote: "공식몰 판매가 (정가 15,000원)",
+      imageUrl: "/images/product/real/c-roundlab-dokdo-toner.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=4926856",
       officialUrl: "https://roundlab.co.kr",
     },
   },
@@ -1258,6 +1290,8 @@ export const products: Product[] = [
       sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
       pricedAt: "2026-08-02",
       priceNote: "공식몰 판매가 (정가 25,000원)",
+      imageUrl: "/images/product/real/c-roundlab-dokdo-cream.jpg",
+      imageSource: "https://prod.danawa.com/info/?pcode=19019930",
       officialUrl: "https://roundlab.co.kr",
     },
   },
@@ -1466,10 +1500,20 @@ export const routines: Routine[] = [
 // ── 이미지 경로 헬퍼 ────────────────────────────────
 // public/images/ 에 배치된 실사 이미지 (docs/04-photo-brief.md 기준 21장).
 // 상품 수가 이미지 수보다 많아 유형별로 재사용한다 — 각 항목의 image 필드가 매핑 결과.
+/**
+ * 상품 이미지 한 곳. **실사진이 있으면 실사진, 없으면 유형 이미지로 폴백한다.**
+ *
+ * 카드·상세·검색이 전부 이 함수를 지나므로 여기 한 줄로 전 화면이 바뀐다.
+ * 호출부마다 분기하면 실사진이 있는 화면과 없는 화면이 갈린다.
+ */
 export const productImage = (id: string) => {
   const p = products.find((x) => x.id === id);
-  return p ? `/images/product/${p.image}` : undefined;
+  if (!p) return undefined;
+  return p.source?.imageUrl ?? `/images/product/${p.image}`;
 };
+
+/** 이 제품이 브랜드 실사진을 쓰고 있나 — 화면에 📷출처를 붙일지 판단한다 */
+export const hasRealPhoto = (p: Product) => Boolean(p.source?.imageUrl);
 export const routineImage = (id: string) => {
   const r = routines.find((x) => x.id === id);
   return r ? `/images/routine/${r.image}` : undefined;

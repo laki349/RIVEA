@@ -6,6 +6,7 @@ import {
   comparableDevices,
   concernOf,
   discountRate,
+  hasRealPhoto,
   modelLabel,
   productImage,
   products,
@@ -151,8 +152,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             src={productImage(product.id)}
             alt={`${brand.name} ${product.name}`}
           />
+          {/*
+            실사진일 때는 출처를 노출한다. 브랜드 저작물이라 협찬 오인과
+            무단 사용 인상을 동시에 줄여야 한다 (ProductSource.imageUrl 주석).
+            실사진이 아니면 유형 이미지이므로 그렇게 밝힌다 — 실제 제품 사진인 척하지 않는다.
+          */}
           <span className="absolute bottom-[10px] right-3 rounded bg-[rgba(28,24,21,0.55)] px-[9px] py-[3px] text-[12px] text-white">
-            1 / 5
+            {hasRealPhoto(product) ? "📷 브랜드·판매처 제공 이미지" : "제품 유형 이미지"}
           </span>
         </section>
 
