@@ -70,8 +70,33 @@ const readSid = (): string => {
  * 같은 이벤트가 한 세션에서 여러 번 찍히는 걸 막는다.
  * 화면 전환·리렌더로 `prescription_view`가 다섯 번 찍히면 도달률이 부풀려진다.
  * 도달률은 "몇 명이 갔나"이지 "몇 번 갔나"가 아니다.
+ *
+ * ⚠️ **메모리만으로는 부족하다.** 이 앱은 정적 export라 링크를 누르면 SPA 전환이 아니라
+ *    진짜 페이지 로드가 일어난다. 그때 이 Set이 통째로 초기화되므로 `app_open`이
+ *    페이지마다 한 번씩 찍혔다 — 실측에서 몇 초 사이에 9건이 들어왔다.
+ *    그러면 **퍼널의 분모가 「사람 수」가 아니라 「페이지뷰」가 되고, 도달률이 거짓이 된다.**
+ *    그래서 세션을 넘어 살아남아야 하는 것은 sessionStorage에 적는다.
+ *    (탭을 닫으면 사라진다 — 추적이 아니라 한 번의 방문을 묶는 용도다. sid와 같은 수명)
  */
 const seen = new Set<string>();
+
+const SEEN_KEY = "rivea_seen";
+const readSeen = (): string[] => {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(sessionStorage.getItem(SEEN_KEY) ?? "[]") as string[];
+  } catch {
+    return [];
+  }
+};
+const markSeen = (key: string) => {
+  try {
+    const list = readSeen();
+    if (!list.includes(key)) sessionStorage.setItem(SEEN_KEY, JSON.stringify([...list, key]));
+  } catch {
+    // 사파리 프라이빗 모드 등에서 막히면 메모리 Set으로만 버틴다. 계측이 앱을 막지 않는다
+  }
+};
 
 /**
  * 계측은 **절대 사용자 경험을 막지 않는다.**
@@ -83,7 +108,10 @@ export function track(name: EventName, value: EventValue = null): void {
 
   const key = `${name}:${value ?? ""}`;
   if (seen.has(key)) return;
+  // 페이지 로드를 넘어 한 번만 찍혀야 하는 것은 sessionStorage로도 막는다
+  if (readSeen().includes(key)) return;
   seen.add(key);
+  markSeen(key);
 
   void (async () => {
     try {
@@ -109,5 +137,10 @@ export function track(name: EventName, value: EventValue = null): void {
 export function trackRepeat(name: EventName, value: EventValue = null): void {
   const key = `${name}:${value ?? ""}`;
   seen.delete(key);
+  try {
+    sessionStorage.setItem(SEEN_KEY, JSON.stringify(readSeen().filter((k) => k !== key)));
+  } catch {
+    // 위와 같다. 막히면 메모리 Set만으로 간다
+  }
   track(name, value);
 }
