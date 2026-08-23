@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { brandOf, concernOf, productImage, productOf, won, type Product } from "@/data/catalog";
 import { addToCart } from "@/lib/cart";
-import { prescribe, type Slotted } from "@/lib/prescribe";
+import { pmNoteFor, prescribe, type Slotted } from "@/lib/prescribe";
 import { useProfile } from "@/lib/profile";
 import { track } from "@/lib/events";
 import { useShelfEntries } from "@/lib/shelf";
@@ -83,7 +83,7 @@ export default function RoutinePlan() {
       </section>
 
       <Day title="아침" note="바르는 순서예요" steps={plan.am} />
-      <Day title="저녁" note="색소·주름 성분은 대부분 저녁 자리예요" steps={plan.pm} />
+      <Day title="저녁" note={pmNoteFor(profile.concerns)} steps={plan.pm} />
 
       {/*
         얼굴 밖에서 매일 쓰는 것 — 두피·이너뷰티. 아침·저녁 사다리에 끼우지 않는다.
@@ -162,6 +162,8 @@ export default function RoutinePlan() {
 }
 
 function Day({ title, note, steps }: { title: string; note: string; steps: Slotted[] }) {
+  const empty = steps.filter((s) => !s.product && !s.owned).length;
+
   return (
     <section className="border-b border-hairline px-4 py-4">
       <h3 className="text-[18px] font-bold text-ink">{title}</h3>
@@ -196,14 +198,21 @@ function Day({ title, note, steps }: { title: string; note: string; steps: Slott
               ) : s.product ? (
                 <ProductRow id={s.product.id} />
               ) : (
-                <p className="text-[16px] leading-[1.55] text-meta">
-                  쓰시던 걸 그대로 쓰세요. 이 자리에 맞는 상품이 아직 없어요.
-                </p>
+                // 같은 문장을 자리마다 반복하지 않는다. 두피 고민에서 다섯 번 나오니
+                // 화면이 「없다」는 말로 도배됐다. 이유는 아래 한 줄로 한 번만 말한다.
+                <p className="text-[16px] leading-[1.55] text-meta">쓰시던 것</p>
               )}
             </div>
           </li>
         ))}
       </ol>
+
+      {empty > 0 && (
+        <p className="mt-[10px] border-t border-subtle pt-[10px] text-[15px] leading-[1.6] text-meta">
+          {empty}자리는 쓰시던 걸 그대로 쓰세요. 이 고민에 맞는 상품을 아직 못 갖춘
+          자리라, 아무거나 끼워 넣지 않았어요.
+        </p>
+      )}
     </section>
   );
 }

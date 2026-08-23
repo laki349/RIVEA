@@ -43,7 +43,9 @@ const PM_STEPS: Step[] = ["cleanse", "exfoliate", "toner", "serum", "cream"];
  * 내밀면 없던 숙제가 생긴다. **그 고민을 고른 사람에게만 자리가 열린다.**
  */
 const CONCERN_STEPS: { step: Step; concern: string; when: string }[] = [
-  { step: "scalp", concern: "scalp-hair", when: "머리 감을 때" },
+  // 샴푸는 감을 때, 토닉은 감고 난 뒤다. 한 문장으로 둘 다 맞으려면 순서 안이라고만
+  // 말한다 — 「머리 감을 때」로 고정하면 토닉을 감으면서 쓰라는 말이 된다.
+  { step: "scalp", concern: "scalp-hair", when: "머리 감는 순서 안에서" },
   { step: "inner", concern: "inner", when: "하루 한 번, 식사와 함께" },
 ];
 
@@ -212,14 +214,18 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
   // 고른 고민이 얼굴 밖이면 그 자리를 연다. 순서는 바르는 순서와 무관하므로
   // 아침·저녁에 끼우지 않고 주간 항목과 같은 「따로 하는 것」으로 낸다.
   const extra = CONCERN_STEPS.filter((c) => concerns.includes(c.concern)).flatMap((c) => {
-    const hit = products
+    // 하나만 뽑으면 샴푸는 나오고 두피 토닉은 사라진다. 이 자리는 얼굴 사다리와 달리
+    // 「한 자리에 하나」가 아니다 — 샴푸와 토닉은 같이 쓰는 것이지 둘 중 하나가 아니다.
+    // 다만 셋을 넘기면 루틴이 숙제가 되므로 둘까지만 (weeklyFor의 판단과 같다).
+    const hits = products
       .filter((p) => regimenOf(p).step === c.step && !used.has(p.id))
       .map((p) => ({ p, s: scoreFor(p, concerns) }))
       .filter((x) => x.s > 0)
-      .sort((a, b) => b.s - a.s)[0]?.p;
-    if (!hit) return [];
-    used.add(hit.id);
-    return [{ product: hit, when: c.when }];
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 2)
+      .map((x) => x.p);
+    hits.forEach((h) => used.add(h.id));
+    return hits.map((product) => ({ product, when: c.when }));
   });
 
   const weekly = weeklyFor(concerns, used);
@@ -285,6 +291,28 @@ function weeklyFor(concerns: string[], used: Set<string>) {
 
   return out;
 }
+
+/**
+ * 저녁 자리를 왜 저녁에 두는지 — **고민마다 이유가 다르다.**
+ *
+ * 전에는 「색소·주름 성분은 대부분 저녁 자리예요」가 고민과 무관하게 고정이었다.
+ * 두피 고민을 고른 사람에게 색소 이야기가 나가면, 이 화면이 내 고민을 보고
+ * 짜준 게 아니라는 걸 그 한 줄이 증명해버린다.
+ *
+ * 여러 고민을 고르면 첫 번째를 따른다 — 화면 제목도 첫 번째가 앞에 온다.
+ */
+const PM_NOTE: Record<string, string> = {
+  pigment: "색소 성분은 대부분 저녁 자리예요",
+  wrinkle: "레티놀·펩타이드는 빛을 피해 저녁에 써요",
+  dry: "장벽을 채우는 건 자는 동안이 유리해요",
+  pore: "각질과 산은 저녁에만 써요",
+  sun: "저녁은 낮에 받은 걸 씻어내고 채우는 자리예요",
+  "scalp-hair": "두피는 저녁에 감고 말리는 게 기본이에요",
+  inner: "저녁은 씻어낸 뒤 채우는 자리예요",
+};
+
+export const pmNoteFor = (concerns: string[]): string =>
+  PM_NOTE[concerns[0]] ?? "저녁은 씻어낸 뒤 채우는 자리예요";
 
 /** 순서 표시용 — 화면에서 단계를 다시 정렬할 때 */
 export const byStep = (a: { step: Step }, b: { step: Step }) =>
