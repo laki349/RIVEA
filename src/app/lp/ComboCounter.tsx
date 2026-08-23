@@ -27,7 +27,7 @@ export default function ComboCounter() {
 
   return (
     <section className="border-b border-line px-5 py-9">
-      <h2 className="text-[17px] font-bold leading-[1.45] text-ink">
+      <h2 className="text-[19px] font-bold leading-[1.45] text-ink">
         지금 얼굴에 몇 가지 바르고 계세요?
       </h2>
 
@@ -40,7 +40,7 @@ export default function ComboCounter() {
             aria-checked={n === v}
             aria-label={v === 6 ? "6개 이상" : `${v}개`}
             onClick={() => setN(v)}
-            className={`press h-11 flex-1 rounded border text-[16px] font-medium tabular-nums transition-colors duration-state ${
+            className={`press h-11 flex-1 rounded border text-[18px] font-medium tabular-nums transition-colors duration-state ${
               n === v ? "border-ink bg-ink text-on-ink" : "border-line text-body"
             }`}
           >
@@ -50,12 +50,12 @@ export default function ComboCounter() {
       </div>
 
       {/* 숫자가 바뀌는 자리 — 높이를 고정해 레이아웃이 흔들리지 않게 한다 */}
-      <p aria-live="polite" className="mt-6 text-[19px] font-bold leading-[1.5] text-ink">
+      <p aria-live="polite" className="mt-6 text-[21px] font-bold leading-[1.5] text-ink">
         확인할 조합이{" "}
         <span className="tabular-nums">{combos(n)}</span>가지입니다
         {isMax && <span className="text-meta"> (6개 기준)</span>}
       </p>
-      <p className="mt-2 text-[16px] leading-[1.7] text-body">
+      <p className="mt-2 text-[18px] leading-[1.7] text-body">
         그중에 같이 쓰면 안 되는 게 섞여 있는지, 확인해 보신 적 있으세요?
       </p>
     </section>

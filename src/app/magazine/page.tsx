@@ -14,10 +14,10 @@ import RoutineCard from "@/components/RoutineCard";
 function SectionHead({ kicker, title, sub }: { kicker: string; title: string; sub?: string }) {
   return (
     <div className="px-4 pt-6">
-      <p className="text-[12px] font-bold tracking-[0.16em] text-meta">{kicker}</p>
-      <h2 className="mt-[3px] text-[19px] font-bold text-ink">{title}</h2>
+      <p className="text-[14px] font-bold tracking-[0.16em] text-meta">{kicker}</p>
+      <h2 className="mt-[3px] text-[21px] font-bold text-ink">{title}</h2>
       <div className="mt-[10px] border-t border-ink" />
-      {sub && <p className="mt-[9px] text-[13px] text-meta">{sub}</p>}
+      {sub && <p className="mt-[9px] text-[15px] text-meta">{sub}</p>}
     </div>
   );
 }
@@ -33,8 +33,8 @@ function PosterCard({ article }: { article: Article }) {
         alt={article.title}
         position="center 35%"
       />
-      <p className="mt-[9px] text-[14px] font-bold leading-[1.4] text-ink">{article.title}</p>
-      <p className="mt-[6px] flex items-center gap-[6px] text-[12px] text-meta">
+      <p className="mt-[9px] text-[16px] font-bold leading-[1.4] text-ink">{article.title}</p>
+      <p className="mt-[6px] flex items-center gap-[6px] text-[14px] text-meta">
         <span className="rounded bg-subtle px-[6px] py-[2px] font-medium text-ink">
           {article.kind}
         </span>
@@ -61,16 +61,16 @@ function BlockCard({ article }: { article: Article }) {
           alt={article.title}
         />
         <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[rgba(28,24,21,0.78)] via-[rgba(28,24,21,0.28)] to-transparent p-[13px]">
-          <p className="text-[21px] font-bold leading-[1.2] text-white">
+          <p className="text-[23px] font-bold leading-[1.2] text-white">
             {article.block?.ko ?? article.kind}
           </p>
           {article.block?.en && (
-            <p className="mt-[4px] text-[12px] leading-[1.3] text-white/75">{article.block.en}</p>
+            <p className="mt-[4px] text-[14px] leading-[1.3] text-white/75">{article.block.en}</p>
           )}
         </div>
       </div>
-      <p className="mt-[9px] text-[14px] font-bold leading-[1.4] text-ink">{article.title}</p>
-      <p className="mt-[5px] text-[12px] leading-[1.55] text-meta">{article.dek}</p>
+      <p className="mt-[9px] text-[16px] font-bold leading-[1.4] text-ink">{article.title}</p>
+      <p className="mt-[5px] text-[14px] leading-[1.55] text-meta">{article.dek}</p>
     </Link>
   );
 }
@@ -94,13 +94,13 @@ export default function MagazinePage() {
             position="center 30%"
           />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(28,24,21,0.78)] to-transparent px-4 pb-4 pt-12">
-            <p className="text-[12px] font-bold tracking-[0.18em] text-white/80">
+            <p className="text-[14px] font-bold tracking-[0.18em] text-white/80">
               RIVEA MAGAZINE
             </p>
             <p className="mt-[5px] text-[32px] font-bold leading-[1.1] text-white">
               Vol. {issue.vol}
             </p>
-            <p className="mt-[7px] text-[14px] text-white/85">
+            <p className="mt-[7px] text-[16px] text-white/85">
               성분과 나이 · {issue.period} · {issue.cadence}
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function MagazinePage() {
 
         {/* 매거진의 역할 한 줄 */}
         <section className="border-b border-hairline px-4 py-4">
-          <p className="text-[15px] leading-[1.65] text-body">
+          <p className="text-[17px] leading-[1.65] text-body">
             성분과 나이에 따라 관리 방법이 왜 달라지는지, 근거를 정리해 두었어요.
             검색하지 않아도 되도록.
           </p>

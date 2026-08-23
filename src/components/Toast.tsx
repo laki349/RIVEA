@@ -48,7 +48,7 @@ export default function Toast({
   return (
     <div className="pointer-events-none fixed bottom-[92px] left-1/2 z-50 -translate-x-1/2">
       <div
-        className={`flex items-center gap-2 whitespace-nowrap rounded bg-ink px-4 py-[11px] text-[14px] text-on-ink shadow-[0_4px_16px_rgba(28,24,21,0.25)] ${
+        className={`flex items-center gap-2 whitespace-nowrap rounded bg-ink px-4 py-[11px] text-[16px] text-on-ink shadow-[0_4px_16px_rgba(28,24,21,0.25)] ${
           leaving ? "animate-fall" : "animate-rise"
         }`}
       >

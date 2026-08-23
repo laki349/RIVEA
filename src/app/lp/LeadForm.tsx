@@ -89,20 +89,20 @@ export default function LeadForm() {
   if (state === "done") {
     return (
       <section className="px-5 pb-12 pt-4" aria-live="polite">
-        <p className="text-[13px] font-medium tracking-[0.08em] text-meta">접수되었습니다</p>
-        <h2 className="mt-3 text-[24px] font-bold leading-[1.35] text-ink">
+        <p className="text-[15px] font-medium tracking-[0.08em] text-meta">접수되었습니다</p>
+        <h2 className="mt-3 text-[26px] font-bold leading-[1.35] text-ink">
           진단서를 {contactType === "email" ? "메일로" : "문자로"} 보내드릴게요
         </h2>
-        <p className="mt-3 text-[16px] leading-[1.65] text-body">
+        <p className="mt-3 text-[18px] leading-[1.65] text-body">
           적어주신 {filled.length}개를 하나씩 보고, 겹치는 것과 채우면 좋은 것,
           그리고 아침·저녁 순서를 정리해서 보내드립니다. <b className="font-medium text-ink">2~3일 걸립니다.</b>
         </p>
-        <p className="mt-6 text-[15px] leading-[1.6] text-meta">
+        <p className="mt-6 text-[17px] leading-[1.6] text-meta">
           답이 늦으면 잊은 게 아니라 하나씩 보고 있는 중입니다.
         </p>
         <Link
           href="/"
-          className="press mt-8 flex h-[52px] w-full items-center justify-center rounded-cta border border-line-strong text-[16px] font-medium text-ink"
+          className="press mt-8 flex h-[52px] w-full items-center justify-center rounded-cta border border-line-strong text-[18px] font-medium text-ink"
         >
           리베아 둘러보기
         </Link>
@@ -116,8 +116,8 @@ export default function LeadForm() {
       {/* 1단계 — 제품.
           히어로 바로 아래에 붙는다. 제목을 또 쓰면 같은 말이 두 번이라
           첫 화면에서 입력칸이 밀려난다. 단계 표시와 안내 한 줄만 남긴다. */}
-      <p className="text-[13px] font-medium tracking-[0.08em] text-meta">1 / 2</p>
-      <p className="mt-2 text-[16px] leading-[1.6] text-body">
+      <p className="text-[15px] font-medium tracking-[0.08em] text-meta">1 / 2</p>
+      <p className="mt-2 text-[18px] leading-[1.6] text-body">
         브랜드와 제품명을 아는 만큼만요. <b className="font-medium text-ink">하나만 적으셔도 됩니다.</b>
       </p>
 
@@ -126,7 +126,7 @@ export default function LeadForm() {
           <div key={i}>
             <label
               htmlFor={`lp-product-${i}`}
-              className="mb-1.5 block text-[13px] font-medium text-body"
+              className="mb-1.5 block text-[15px] font-medium text-body"
             >
               제품 {i + 1}
               {i === 0 && <span className="ml-1 text-rose">*</span>}
@@ -142,20 +142,20 @@ export default function LeadForm() {
               placeholder={
                 ["예) 아누아 나이아신아마이드 세럼", "예) 토리든 다이브인", "예) 레티놀 크림"][i]
               }
-              className="h-[52px] w-full rounded border border-line bg-surface px-4 text-[16px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/15"
+              className="h-[52px] w-full rounded border border-line bg-surface px-4 text-[18px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/15"
             />
           </div>
         ))}
       </div>
 
-      <p className="mt-3 text-[14px] leading-[1.6] text-meta">
+      <p className="mt-3 text-[16px] leading-[1.6] text-meta">
         기기(LED 마스크·갈바닉 등)를 쓰신다면 그것도 같이 적어주세요. 순서가 달라집니다.
       </p>
 
       {/* 2단계 — 연락처. 노력을 이미 들인 뒤에 묻는다 */}
       <div className="mt-10 border-t border-hairline pt-8">
-        <p className="text-[13px] font-medium tracking-[0.08em] text-meta">2 / 2</p>
-        <h2 className="mt-2 text-[22px] font-bold leading-[1.4] text-ink">
+        <p className="text-[15px] font-medium tracking-[0.08em] text-meta">2 / 2</p>
+        <h2 className="mt-2 text-[24px] font-bold leading-[1.4] text-ink">
           결과를 어디로 보내드릴까요
         </h2>
 
@@ -179,7 +179,7 @@ export default function LeadForm() {
                 setContactType(type);
                 setTouchedContact(false);
               }}
-              className={`press h-11 flex-1 rounded border text-[15px] font-medium ${
+              className={`press h-11 flex-1 rounded border text-[17px] font-medium ${
                 contactType === type
                   ? "border-ink bg-ink text-on-ink"
                   : "border-line text-body"
@@ -193,7 +193,7 @@ export default function LeadForm() {
         <div className="mt-4">
           <label
             htmlFor="lp-contact"
-            className="mb-1.5 block text-[13px] font-medium text-body"
+            className="mb-1.5 block text-[15px] font-medium text-body"
           >
             {contactType === "email" ? "이메일 주소" : "휴대폰 번호"}
             <span className="ml-1 text-rose">*</span>
@@ -209,12 +209,12 @@ export default function LeadForm() {
             aria-invalid={contactError || undefined}
             aria-describedby={contactError ? "lp-contact-err" : undefined}
             placeholder={contactType === "email" ? "name@example.com" : "010-0000-0000"}
-            className={`h-[52px] w-full rounded border bg-surface px-4 text-[16px] text-ink placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-ink/15 ${
+            className={`h-[52px] w-full rounded border bg-surface px-4 text-[18px] text-ink placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-ink/15 ${
               contactError ? "border-rose" : "border-line focus:border-ink"
             }`}
           />
           {contactError && (
-            <p id="lp-contact-err" role="alert" className="mt-2 text-[14px] text-rose">
+            <p id="lp-contact-err" role="alert" className="mt-2 text-[16px] text-rose">
               {contactType === "email"
                 ? "메일 주소를 다시 확인해 주세요."
                 : "휴대폰 번호 10~11자리를 입력해 주세요."}
@@ -235,11 +235,11 @@ export default function LeadForm() {
           className="flex w-full items-start gap-3 py-[11px] text-left"
         >
           <Check on={agreed} />
-          <span className="text-[14px] leading-[1.6] text-body">
+          <span className="text-[16px] leading-[1.6] text-body">
             개인정보 수집·이용에 동의합니다.
           </span>
         </button>
-        <p className="mt-2 pl-8 text-[13px] leading-[1.7] text-meta">
+        <p className="mt-2 pl-8 text-[15px] leading-[1.7] text-meta">
           수집 항목: 사용 중인 제품명, {contactType === "email" ? "이메일 주소" : "휴대폰 번호"}
           <br />
           이용 목적: 진단 결과 회신
@@ -251,7 +251,7 @@ export default function LeadForm() {
       </div>
 
       {state === "error" && (
-        <p role="alert" className="mt-6 text-[15px] leading-[1.6] text-rose">
+        <p role="alert" className="mt-6 text-[17px] leading-[1.6] text-rose">
           전송에 실패했어요. 잠시 뒤 다시 눌러주시겠어요? 계속 안 되면 인스타그램 DM으로 보내주셔도 됩니다.
         </p>
       )}
@@ -259,12 +259,12 @@ export default function LeadForm() {
       <button
         type="submit"
         disabled={!canSubmit}
-        className="press mt-8 h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink disabled:opacity-40"
+        className="press mt-8 h-[52px] w-full rounded-cta bg-ink text-[18px] font-medium text-on-ink disabled:opacity-40"
       >
         {state === "sending" ? "보내는 중…" : "진단서 받기"}
       </button>
 
-      <p className="mt-3 text-center text-[14px] leading-[1.6] text-meta">
+      <p className="mt-3 text-center text-[16px] leading-[1.6] text-meta">
         무료입니다. 아무것도 판매하지 않습니다.
         <br />
         받기까지 2~3일 걸립니다.

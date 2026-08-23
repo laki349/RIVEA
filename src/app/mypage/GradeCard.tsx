@@ -18,19 +18,19 @@ export default function GradeCard() {
   return (
     <div className="mx-4 mb-4 overflow-hidden rounded border border-line">
       <div className="flex items-center gap-[11px] p-[14px]">
-        <span className="flex h-10 w-10 items-center justify-center rounded bg-ink text-[13px] font-bold text-on-ink">
+        <span className="flex h-10 w-10 items-center justify-center rounded bg-ink text-[15px] font-bold text-on-ink">
           {grade === "GOLD" ? "G" : "S"}
         </span>
         <div className="flex-1">
-          <p className="text-[15px] font-bold text-ink">{grade}</p>
-          <p className="mt-[2px] text-[13px] text-meta">
+          <p className="text-[17px] font-bold text-ink">{grade}</p>
+          <p className="mt-[2px] text-[15px] text-meta">
             구매 적립{" "}
             <b className="font-medium text-ink">{(earnRate(grade) * 100).toFixed(1)}% 적립</b> ·
             포인트 <b className="font-medium text-ink">{won(wallet.points)}P</b>
           </p>
         </div>
       </div>
-      <p className="border-t border-subtle bg-bg-tint px-[14px] py-[11px] text-[13px] text-body">
+      <p className="border-t border-subtle bg-bg-tint px-[14px] py-[11px] text-[15px] text-body">
         {grade === "GOLD" ? (
           <>
             누적 구매 <b className="font-bold text-ink">{won(spent)}원</b> · 최고 등급이에요

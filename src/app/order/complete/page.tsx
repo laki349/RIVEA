@@ -6,7 +6,7 @@ export default function OrderCompletePage() {
   return (
     <>
       <header className="flex items-center justify-center border-b border-hairline bg-surface px-4 py-[13px]">
-        <h1 className="text-[15px] font-bold text-ink">주문 완료</h1>
+        <h1 className="text-[17px] font-bold text-ink">주문 완료</h1>
       </header>
       <Suspense fallback={<main className="flex-1" />}>
         <OrderComplete />

@@ -21,16 +21,16 @@ export default function MyReview({ productId }: { productId: string }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <StarRating value={r.rating} size={14} />
-              <span className="text-[13px] font-medium text-ink">내가 쓴 리뷰</span>
+              <span className="text-[15px] font-medium text-ink">내가 쓴 리뷰</span>
             </div>
             <Link
               href={`/orders/detail?no=${r.orderNo}`}
-              className="press py-1 pl-3 text-[13px] text-meta"
+              className="press py-1 pl-3 text-[15px] text-meta"
             >
               수정
             </Link>
           </div>
-          <p className="mt-[5px] whitespace-pre-line text-[13px] leading-[1.6] text-body">
+          <p className="mt-[5px] whitespace-pre-line text-[15px] leading-[1.6] text-body">
             {r.text}
           </p>
         </div>

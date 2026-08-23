@@ -44,10 +44,10 @@ export default function ShelfConflict({ productId }: { productId: string }) {
             <Icon name="info" size={17} />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-[14px] font-medium text-ink">
+            <span className="block text-[16px] font-medium text-ink">
               쓰고 있는 걸 등록해 두셨어요?
             </span>
-            <span className="mt-[2px] block text-[13px] leading-[1.5] text-meta">
+            <span className="mt-[2px] block text-[15px] leading-[1.5] text-meta">
               이 제품과 같이 써도 되는지 알려드려요.
             </span>
           </span>
@@ -62,7 +62,7 @@ export default function ShelfConflict({ productId }: { productId: string }) {
   if (notes.length === 0) {
     return (
       <section className="border-b border-hairline px-4 py-4">
-        <p className="flex items-center gap-[6px] text-[14px] text-body">
+        <p className="flex items-center gap-[6px] text-[16px] text-body">
           <span className="text-ink">
             <Icon name="check" size={15} />
           </span>
@@ -75,7 +75,7 @@ export default function ShelfConflict({ productId }: { productId: string }) {
 
   return (
     <section className="border-b border-hairline px-4 py-4">
-      <h3 className="text-[15px] font-bold text-ink">화장대에 있는 것과 함께 쓸 때</h3>
+      <h3 className="text-[17px] font-bold text-ink">화장대에 있는 것과 함께 쓸 때</h3>
       <div className="mt-[10px] space-y-2">
         {notes.map((n) => {
           // 화장대 쪽 성분이 어느 물건인지 — 사용자가 자기 물건을 뒤지지 않게
@@ -87,17 +87,17 @@ export default function ShelfConflict({ productId }: { productId: string }) {
                 <span className="text-ink">
                   <Icon name="info" size={14} />
                 </span>
-                <span className="text-[13px] font-medium text-meta">
+                <span className="text-[15px] font-medium text-meta">
                   {n.kind === "caution" ? "나눠 쓰기" : "같이 챙기기"}
                 </span>
               </div>
-              <p className="mt-[5px] text-[15px] font-medium leading-[1.45] text-ink">
+              <p className="mt-[5px] text-[17px] font-medium leading-[1.45] text-ink">
                 {n.title}
               </p>
-              <p className="mt-[4px] text-[14px] leading-[1.6] text-body">{n.why}</p>
-              <p className="mt-[6px] text-[14px] leading-[1.6] text-ink">{n.how}</p>
+              <p className="mt-[4px] text-[16px] leading-[1.6] text-body">{n.why}</p>
+              <p className="mt-[6px] text-[16px] leading-[1.6] text-ink">{n.how}</p>
               {from.length > 0 && (
-                <p className="mt-[9px] border-t border-hairline pt-[8px] text-[13px] leading-[1.6] text-meta">
+                <p className="mt-[9px] border-t border-hairline pt-[8px] text-[15px] leading-[1.6] text-meta">
                   <b className="font-medium text-body">
                     {theirs.map((k) => activeInfo[k]?.name ?? k).join(" · ")}
                   </b>{" "}
@@ -118,7 +118,7 @@ function ShelfToggle({ productId, on }: { productId: string; on: boolean }) {
   return (
     <button
       onClick={() => toggleShelfProduct(productId)}
-      className="press mt-3 flex h-11 w-full items-center justify-center gap-[6px] rounded border border-line text-[14px] font-medium text-body"
+      className="press mt-3 flex h-11 w-full items-center justify-center gap-[6px] rounded border border-line text-[16px] font-medium text-body"
     >
       <span className={on ? "text-ink" : "text-disabled"}>
         <Icon name={on ? "check" : "plus"} size={15} />

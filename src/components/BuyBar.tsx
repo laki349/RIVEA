@@ -59,13 +59,13 @@ export default function BuyBar({
           <>
             <button
               onClick={add}
-              className="press h-[50px] flex-1 rounded-cta border border-ink text-[15px] font-medium text-ink"
+              className="press h-[50px] flex-1 rounded-cta border border-ink text-[17px] font-medium text-ink"
             >
               장바구니
             </button>
             <button
               onClick={buyNow}
-              className="press h-[50px] flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
+              className="press h-[50px] flex-1 rounded-cta bg-ink text-[17px] font-medium text-on-ink"
             >
               바로구매
             </button>
@@ -73,12 +73,12 @@ export default function BuyBar({
         ) : (
           <>
             <div className="flex-shrink-0">
-              <p className="text-[12px] text-meta">세트가</p>
-              <p className="text-[17px] font-bold leading-[1.1] text-ink">{won(price)}</p>
+              <p className="text-[14px] text-meta">세트가</p>
+              <p className="text-[19px] font-bold leading-[1.1] text-ink">{won(price)}</p>
             </div>
             <button
               onClick={add}
-              className="press h-[52px] flex-1 rounded-cta bg-ink text-[16px] font-medium text-on-ink"
+              className="press h-[52px] flex-1 rounded-cta bg-ink text-[18px] font-medium text-on-ink"
             >
               세트 담기
             </button>

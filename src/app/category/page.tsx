@@ -17,7 +17,7 @@ export default function CategoryPage() {
   return (
     <>
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-hairline bg-surface px-4 py-[13px]">
-        <h1 className="text-[17px] font-bold text-ink">카테고리</h1>
+        <h1 className="text-[19px] font-bold text-ink">카테고리</h1>
         <div className="flex items-center gap-4 text-ink">
           <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
             <Icon name="search" size={21} />
@@ -35,7 +35,7 @@ export default function CategoryPage() {
               <button
                 key={c.slug}
                 onClick={() => setSelected(c.slug)}
-                className={`block w-full py-[14px] text-left text-[14px] ${
+                className={`block w-full py-[14px] text-left text-[16px] ${
                   active
                     ? "border-l-[3px] border-ink bg-surface pl-[12px] font-bold text-ink"
                     : "pl-[15px] text-soft"
@@ -51,13 +51,13 @@ export default function CategoryPage() {
         <div className="flex-1 overflow-y-auto">
           <div className="flex items-center gap-[9px] px-[14px] pb-[10px] pt-[14px]">
             <div className="h-[38px] w-[38px] rounded bg-subtle" />
-            <span className="text-[15px] font-bold text-ink">{current.name}</span>
+            <span className="text-[17px] font-bold text-ink">{current.name}</span>
           </div>
 
           <div className="border-b border-hairline px-[14px] pb-3">
             <Link
               href={`/category/${current.slug}`}
-              className="block py-[7px] text-[13px] font-bold text-ink"
+              className="block py-[7px] text-[15px] font-bold text-ink"
             >
               전체보기
             </Link>
@@ -66,7 +66,7 @@ export default function CategoryPage() {
                 <Link
                   key={s}
                   href={`/category/${current.slug}?sub=${encodeURIComponent(s)}`}
-                  className="py-[9px] text-[13px] text-body"
+                  className="py-[9px] text-[15px] text-body"
                 >
                   {s}
                 </Link>
@@ -77,14 +77,14 @@ export default function CategoryPage() {
           {/* 고민별 바로가기 */}
           <div className="flex items-center gap-[9px] px-[14px] pb-[10px] pt-[14px]">
             <div className="h-[38px] w-[38px] rounded bg-subtle" />
-            <span className="text-[15px] font-bold text-ink">고민별</span>
+            <span className="text-[17px] font-bold text-ink">고민별</span>
           </div>
           <div className="grid grid-cols-2 gap-x-[10px] px-[14px] pb-4">
             {concerns.map((c) => (
               <Link
                 key={c.slug}
                 href={`/concern/${c.slug}`}
-                className="py-[9px] text-[13px] text-body"
+                className="py-[9px] text-[15px] text-body"
               >
                 {c.name}
               </Link>

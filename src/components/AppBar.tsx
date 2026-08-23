@@ -42,7 +42,7 @@ export default function AppBar({
           </button>
         )}
       </div>
-      <h1 className={`text-[15px] text-ink ${bold ? "font-bold" : "font-medium"}`}>{title}</h1>
+      <h1 className={`text-[17px] text-ink ${bold ? "font-bold" : "font-medium"}`}>{title}</h1>
       <div className={`flex ${side} items-center justify-end`}>
         {share && <ShareButton title={share.title} text={share.text} />}
         {search && (

@@ -49,15 +49,15 @@ export default function RoutinePlan() {
         <span className="text-disabled">
           <Icon name="sparkle" size={44} />
         </span>
-        <p className="mt-4 text-[16px] font-bold text-ink">고민을 먼저 골라주세요</p>
-        <p className="mt-2 text-[15px] leading-[1.6] text-meta">
+        <p className="mt-4 text-[18px] font-bold text-ink">고민을 먼저 골라주세요</p>
+        <p className="mt-2 text-[17px] leading-[1.6] text-meta">
           고민을 고르면 아침·저녁에
           <br />
           무엇을 어떤 순서로 쓰면 되는지 짜드려요.
         </p>
         <Link
           href="/profile"
-          className="press mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[15px] font-medium text-on-ink"
+          className="press mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[17px] font-medium text-on-ink"
         >
           내 피부 고민 고르기
         </Link>
@@ -72,11 +72,11 @@ export default function RoutinePlan() {
     <main className="flex-1">
       {/* 무엇으로 짠 루틴인지 — 개인화는 근거를 보여줘야 개인화가 된다 */}
       <section className="border-b border-hairline px-4 py-4">
-        <p className="text-[13px] text-meta">고른 고민으로 짰어요</p>
-        <h2 className="mt-[3px] text-[19px] font-bold leading-[1.35] text-ink">
+        <p className="text-[15px] text-meta">고른 고민으로 짰어요</p>
+        <h2 className="mt-[3px] text-[21px] font-bold leading-[1.35] text-ink">
           {names.join(" · ")} 루틴
         </h2>
-        <Link href="/profile" className="press mt-2 inline-flex items-center text-[14px] text-body">
+        <Link href="/profile" className="press mt-2 inline-flex items-center text-[16px] text-body">
           고민 바꾸기
           <Icon name="chevron-right" size={14} />
         </Link>
@@ -87,15 +87,15 @@ export default function RoutinePlan() {
 
       {plan.weekly.length > 0 && (
         <section className="border-b border-hairline px-4 py-4">
-          <h3 className="text-[16px] font-bold text-ink">주 2~3회</h3>
-          <p className="mt-[3px] text-[13px] leading-[1.5] text-meta">
+          <h3 className="text-[18px] font-bold text-ink">주 2~3회</h3>
+          <p className="mt-[3px] text-[15px] leading-[1.5] text-meta">
             매일 하지 않아도 돼요. 위 순서에 끼워 넣는 날만 쓰세요.
           </p>
           <div className="mt-3 space-y-3">
             {plan.weekly.map((w) => (
               <div key={w.product.id}>
                 <ProductRow id={w.product.id} />
-                <p className="mt-[5px] text-[14px] leading-[1.55] text-body">{w.when}</p>
+                <p className="mt-[5px] text-[16px] leading-[1.55] text-body">{w.when}</p>
               </div>
             ))}
           </div>
@@ -115,13 +115,13 @@ export default function RoutinePlan() {
               setAdded(buyable.length);
             })
           }
-          className="press h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink"
+          className="press h-[52px] w-full rounded-cta bg-ink text-[18px] font-medium text-on-ink"
         >
           루틴 {buyable.length}개 전부 담기
         </button>
         <Link
           href="/shelf"
-          className="press mt-2 flex h-11 items-center justify-center text-[14px] text-body"
+          className="press mt-2 flex h-11 items-center justify-center text-[16px] text-body"
         >
           이미 쓰는 게 있으면 화장대에 등록하세요
           <Icon name="chevron-right" size={15} />
@@ -143,20 +143,20 @@ export default function RoutinePlan() {
 function Day({ title, note, steps }: { title: string; note: string; steps: Slotted[] }) {
   return (
     <section className="border-b border-hairline px-4 py-4">
-      <h3 className="text-[16px] font-bold text-ink">{title}</h3>
-      <p className="mt-[3px] text-[13px] leading-[1.5] text-meta">{note}</p>
+      <h3 className="text-[18px] font-bold text-ink">{title}</h3>
+      <p className="mt-[3px] text-[15px] leading-[1.5] text-meta">{note}</p>
 
       <ol className="mt-3">
         {steps.map((s, i) => (
           <li key={s.step} className={i < steps.length - 1 ? "pb-[14px]" : ""}>
             <div className="flex items-center gap-2">
               {/* 번호는 순서 그 자체라 자리가 비어도 매긴다 */}
-              <span className="flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-full bg-ink text-[13px] font-bold text-on-ink">
+              <span className="flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-full bg-ink text-[15px] font-bold text-on-ink">
                 {i + 1}
               </span>
-              <span className="text-[15px] font-medium text-ink">{s.label}</span>
+              <span className="text-[17px] font-medium text-ink">{s.label}</span>
               {s.reason && (
-                <span className="text-[13px] text-meta">
+                <span className="text-[15px] text-meta">
                   · {concernOf(s.reason)?.name}
                 </span>
               )}
@@ -166,16 +166,16 @@ function Day({ title, note, steps }: { title: string; note: string; steps: Slott
               {s.owned ? (
                 // 갖고 계신 것 — 살 것에서 빠졌다는 걸 이 자리에서 말해준다
                 <div className="rounded border border-hairline px-3 py-[9px]">
-                  <p className="flex items-center gap-[5px] text-[13px] text-meta">
+                  <p className="flex items-center gap-[5px] text-[15px] text-meta">
                     <Icon name="check" size={13} />
                     갖고 계신 것
                   </p>
-                  <p className="mt-[3px] text-[14px] text-ink">{s.owned.name}</p>
+                  <p className="mt-[3px] text-[16px] text-ink">{s.owned.name}</p>
                 </div>
               ) : s.product ? (
                 <ProductRow id={s.product.id} />
               ) : (
-                <p className="text-[14px] leading-[1.55] text-meta">
+                <p className="text-[16px] leading-[1.55] text-meta">
                   쓰시던 걸 그대로 쓰세요. 이 자리에 맞는 상품이 아직 없어요.
                 </p>
               )}
@@ -201,9 +201,9 @@ function ProductRow({ id }: { id: string }) {
         alt={p.name}
       />
       <div className="min-w-0 flex-1">
-        <p className="text-[13px] text-meta">{brandOf(p.brand).name}</p>
-        <p className="truncate text-[14px] text-ink">{p.name}</p>
-        <p className="mt-[2px] text-[13px] text-meta">
+        <p className="text-[15px] text-meta">{brandOf(p.brand).name}</p>
+        <p className="truncate text-[16px] text-ink">{p.name}</p>
+        <p className="mt-[2px] text-[15px] text-meta">
           {won(p.price)}원
           {r.lifespanDays !== null && ` · 약 ${r.lifespanDays}일분`}
         </p>

@@ -12,7 +12,7 @@ export default function RecentPage() {
   return (
     <>
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-hairline bg-surface px-4 py-[13px]">
-        <h1 className="text-[17px] font-bold text-ink">최근 본 상품</h1>
+        <h1 className="text-[19px] font-bold text-ink">최근 본 상품</h1>
         <CartLink />
       </header>
       <RecentList />

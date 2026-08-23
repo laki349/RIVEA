@@ -44,42 +44,42 @@ export default function VerdictCard({
 
   return (
     <div className="border border-ink bg-surface p-4">
-      <p className="mb-[6px] inline-block bg-ink px-[7px] py-[2px] text-[12px] font-medium text-on-ink">
+      <p className="mb-[6px] inline-block bg-ink px-[7px] py-[2px] text-[14px] font-medium text-on-ink">
         {day}일째 · 판정
       </p>
-      <h3 className="text-[17px] font-bold leading-[1.4] text-ink">{q.title}</h3>
-      <p className="mt-[6px] text-[14px] leading-[1.6] text-body">{q.note}</p>
+      <h3 className="text-[19px] font-bold leading-[1.4] text-ink">{q.title}</h3>
+      <p className="mt-[6px] text-[16px] leading-[1.6] text-body">{q.note}</p>
 
       {!asking ? (
         <div className="mt-[14px] flex gap-[6px]">
           <button
             onClick={() => answer("continue")}
-            className="press h-[46px] flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
+            className="press h-[46px] flex-1 rounded-cta bg-ink text-[17px] font-medium text-on-ink"
           >
             계속 쓸게요
           </button>
           <button
             onClick={() => setAsking(true)}
-            className="press h-[46px] flex-1 rounded-cta border border-ink text-[15px] font-medium text-ink"
+            className="press h-[46px] flex-1 rounded-cta border border-ink text-[17px] font-medium text-ink"
           >
             그만할게요
           </button>
           <button
             onClick={() => answer("unsure")}
-            className="press h-[46px] flex-1 rounded-cta border border-line text-[15px] text-body"
+            className="press h-[46px] flex-1 rounded-cta border border-line text-[17px] text-body"
           >
             모르겠어요
           </button>
         </div>
       ) : (
         <div className="mt-[14px]">
-          <p className="mb-[8px] text-[14px] font-medium text-ink">어떤 이유였어요?</p>
+          <p className="mb-[8px] text-[16px] font-medium text-ink">어떤 이유였어요?</p>
           <div className="flex flex-wrap gap-[6px]">
             {STOP_REASONS.map((r) => (
               <button
                 key={r.key}
                 onClick={() => stop(r.key)}
-                className="press min-h-[44px] rounded-cta border border-ink px-[14px] text-[15px] text-ink"
+                className="press min-h-[44px] rounded-cta border border-ink px-[14px] text-[17px] text-ink"
               >
                 {r.label}
               </button>
@@ -87,7 +87,7 @@ export default function VerdictCard({
           </div>
           <button
             onClick={() => setAsking(false)}
-            className="press mt-[8px] min-h-[44px] text-[14px] text-meta underline"
+            className="press mt-[8px] min-h-[44px] text-[16px] text-meta underline"
           >
             뒤로
           </button>

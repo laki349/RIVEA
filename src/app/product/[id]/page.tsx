@@ -158,38 +158,38 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             무단 사용 인상을 동시에 줄여야 한다 (ProductSource.imageUrl 주석).
             실사진이 아니면 유형 이미지이므로 그렇게 밝힌다 — 실제 제품 사진인 척하지 않는다.
           */}
-          <span className="absolute bottom-[10px] right-3 rounded bg-[rgba(28,24,21,0.55)] px-[9px] py-[3px] text-[12px] text-white">
+          <span className="absolute bottom-[10px] right-3 rounded bg-[rgba(28,24,21,0.55)] px-[9px] py-[3px] text-[14px] text-white">
             {hasRealPhoto(product) ? "📷 브랜드·판매처 제공 이미지" : "제품 유형 이미지"}
           </span>
         </section>
 
         {/* 기본 정보 */}
         <section className="border-b border-hairline px-4 pb-[14px] pt-4">
-          <Link href={`/brand/${brand.slug}`} className="flex items-center gap-1 text-[13px] text-meta">
+          <Link href={`/brand/${brand.slug}`} className="flex items-center gap-1 text-[15px] text-meta">
             {brand.name} <Icon name="chevron-right" size={14} />
           </Link>
-          <h2 className="mb-[7px] mt-[5px] text-[18px] font-bold leading-[1.4] text-ink">
+          <h2 className="mb-[7px] mt-[5px] text-[20px] font-bold leading-[1.4] text-ink">
             {product.name}
           </h2>
           <div className="mb-2 flex items-baseline gap-[7px]">
             {product.listPrice && (
-              <span className="text-[15px] text-disabled line-through">{won(product.listPrice)}</span>
+              <span className="text-[17px] text-disabled line-through">{won(product.listPrice)}</span>
             )}
-            {rate !== null && <span className="text-[18px] font-bold text-rose">{rate}%</span>}
-            <span className="text-[22px] font-bold text-ink">{won(product.price)}</span>
+            {rate !== null && <span className="text-[20px] font-bold text-rose">{rate}%</span>}
+            <span className="text-[24px] font-bold text-ink">{won(product.price)}</span>
           </div>
-          <p className="mb-[5px] flex items-center gap-1 text-[13px] text-meta">
+          <p className="mb-[5px] flex items-center gap-1 text-[15px] text-meta">
             <span className="text-ink">
               <Icon name="star" size={13} />
             </span>
             {product.rating} · 리뷰 {won(product.reviewCount)}건
           </p>
-          <p className="text-[13px] text-meta">
+          <p className="text-[15px] text-meta">
             {won(Math.round(product.likes / 22))}명이 보고 있어요
           </p>
           <div className="mt-[11px] flex flex-wrap gap-[6px]">
             {product.tags.map((t) => (
-              <span key={t} className="rounded border border-line px-[9px] py-1 text-[12px] text-body">
+              <span key={t} className="rounded border border-line px-[9px] py-1 text-[14px] text-body">
                 # {t}
               </span>
             ))}
@@ -226,7 +226,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                       · <b className="font-bold">{won(brand.freeShippingOver)}원 이상 무료</b>
                     </>
                   )}
-                  <span className="block text-[13px] text-meta">평균 2~3일 이내 도착</span>
+                  <span className="block text-[15px] text-meta">평균 2~3일 이내 도착</span>
                 </>
               ),
             },
@@ -247,8 +247,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               key={row.label}
               className={`flex gap-3 py-[13px] ${i < arr.length - 1 ? "border-b border-subtle" : ""}`}
             >
-              <span className="w-[56px] flex-shrink-0 text-[13px] text-meta">{row.label}</span>
-              <span className="flex-1 text-[14px] leading-[1.5] text-ink">{row.value}</span>
+              <span className="w-[56px] flex-shrink-0 text-[15px] text-meta">{row.label}</span>
+              <span className="flex-1 text-[16px] leading-[1.5] text-ink">{row.value}</span>
               <span className="text-disabled">
                 <Icon name="chevron-right" size={17} />
               </span>
@@ -269,7 +269,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               href={(real?.officialUrl ?? brand.officialUrl)!}
               brandName={brand.name}
             />
-            <p className="mt-[9px] text-[13px] leading-[1.6] text-meta">
+            <p className="mt-[9px] text-[15px] leading-[1.6] text-meta">
               브랜드 공식몰로 이동해요. 결제와 배송은 그쪽에서 진행되고, 최종 가격·재고는
               공식몰 표시를 따릅니다. 리베아는 판매 수수료를 받지 않아요.
             </p>
@@ -278,8 +278,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
         {real && product.specs && (
           <section className="border-b border-hairline px-4 py-4">
-            <h3 className="mb-[9px] text-[16px] font-bold text-ink">제품 사양</h3>
-            <dl className="text-[14px]">
+            <h3 className="mb-[9px] text-[18px] font-bold text-ink">제품 사양</h3>
+            <dl className="text-[16px]">
               {product.specs.map((s, i, arr) => (
                 <div
                   key={s.label}
@@ -292,7 +292,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 </div>
               ))}
             </dl>
-            <p className="mt-3 text-[13px] leading-[1.6] text-meta">
+            <p className="mt-3 text-[15px] leading-[1.6] text-meta">
               브랜드가 공개한 사양이에요. 효능·효과에 관한 내용은 담지 않았어요.
             </p>
           </section>
@@ -307,13 +307,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         {rivals.length > 0 && (
           <section className="border-b border-hairline pb-4">
             <div className="px-4 pb-3 pt-4">
-              <h3 className="text-[16px] font-bold text-ink">다른 기기와 나란히 보기</h3>
-              <p className="mt-[3px] text-[13px] leading-[1.6] text-meta">
+              <h3 className="text-[18px] font-bold text-ink">다른 기기와 나란히 보기</h3>
+              <p className="mt-[3px] text-[15px] leading-[1.6] text-meta">
                 작동 방식과 무게 기준 · 가격은 {real!.pricedAt} 확인
               </p>
             </div>
             <div className="px-4">
-              <table className="w-full table-fixed border-collapse text-[13px]">
+              <table className="w-full table-fixed border-collapse text-[15px]">
                 <thead>
                   <tr>
                     <td className="w-[68px]" />
@@ -356,7 +356,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   </tr>
                 </tbody>
               </table>
-              <p className="mt-3 text-[13px] leading-[1.6] text-meta">
+              <p className="mt-3 text-[15px] leading-[1.6] text-meta">
                 공개된 사양과 판매가만 비교했어요. 어느 쪽이 더 낫다는 판단은 담지 않았고,
                 효능·효과는 비교 대상이 아니에요.
               </p>
@@ -371,9 +371,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             실제 시판 제품의 사용법은 만들지 않는다. 기기 오사용은 안전 문제라
             브랜드 공식 안내로 넘긴다. */}
         <section className="border-b border-hairline px-4 py-4">
-          <h3 className="mb-[9px] text-[16px] font-bold text-ink">성분·용법</h3>
-          <p className="text-[14px] leading-[1.6] text-body">{product.usage}</p>
-          <p className="mt-2 text-[13px] leading-[1.6] text-meta">
+          <h3 className="mb-[9px] text-[18px] font-bold text-ink">성분·용법</h3>
+          <p className="text-[16px] leading-[1.6] text-body">{product.usage}</p>
+          <p className="mt-2 text-[15px] leading-[1.6] text-meta">
             핵심성분: {product.keyIngredient} · 용량: {product.volume}
           </p>
 
@@ -391,8 +391,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         {/* 리뷰 */}
         <section className="border-b border-hairline px-4 py-4">
           <div className="mb-[11px] flex items-baseline justify-between">
-            <h3 className="text-[16px] font-bold text-ink">리뷰 {won(product.reviewCount)}</h3>
-            <span className="text-[13px] text-meta">전체보기</span>
+            <h3 className="text-[18px] font-bold text-ink">리뷰 {won(product.reviewCount)}</h3>
+            <span className="text-[15px] text-meta">전체보기</span>
           </div>
           <div className="mb-3 flex items-center gap-2">
             <span className="text-[26px] font-bold text-ink">{product.rating}</span>
@@ -404,10 +404,10 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
           <MyReview productId={product.id} />
           <div className="rounded border border-hairline px-3 py-[11px]">
-            <p className="flex items-center gap-1 text-[13px] text-ink">
+            <p className="flex items-center gap-1 text-[15px] text-ink">
               <Icon name="star" size={12} /> {review.meta}
             </p>
-            <p className="mt-[5px] text-[13px] leading-[1.6] text-body">{review.text}</p>
+            <p className="mt-[5px] text-[15px] leading-[1.6] text-body">{review.text}</p>
           </div>
         </section>
 
@@ -415,7 +415,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         {relatedRoutines.length > 0 && (
           <section className="pb-4">
             <div className="px-4 pb-3 pt-4">
-              <h3 className="text-[16px] font-bold text-ink">이 상품이 담긴 루틴</h3>
+              <h3 className="text-[18px] font-bold text-ink">이 상품이 담긴 루틴</h3>
             </div>
             <div className="rail flex gap-[11px] pl-4 pr-4">
               {relatedRoutines.map((r) => (

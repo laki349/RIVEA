@@ -58,11 +58,11 @@ export default function LandingPage() {
         {/* -ml-2 px-2: 시각적 위치는 그대로 두고 탭 영역만 44px로 넓힌다 */}
         <Link
           href="/"
-          className="press -ml-2 flex h-11 items-center px-2 text-[19px] font-bold tracking-[-0.02em] text-rose"
+          className="press -ml-2 flex h-11 items-center px-2 text-[21px] font-bold tracking-[-0.02em] text-rose"
         >
           RIVEA
         </Link>
-        <span className="text-[13px] text-meta">40대 이후의 홈케어</span>
+        <span className="text-[15px] text-meta">40대 이후의 홈케어</span>
       </header>
 
       {/* 히어로는 짧게. 인스타 카드뉴스가 이미 설명(M-R-C)을 했으므로 랜딩이 또 설명하면
@@ -74,10 +74,10 @@ export default function LandingPage() {
           <br />
           진단서를 보내드립니다
         </h1>
-        <p className="mt-4 text-[17px] leading-[1.7] text-body">
+        <p className="mt-4 text-[19px] leading-[1.7] text-body">
           겹치는 것 · 채우면 좋은 것 · 아침저녁 순서를 정리해서 보내드려요.
         </p>
-        <p className="mt-3 text-[15px] leading-[1.6] text-meta">
+        <p className="mt-3 text-[17px] leading-[1.6] text-meta">
           무료입니다 · 받기까지 2~3일 걸립니다
         </p>
       </section>
@@ -89,27 +89,27 @@ export default function LandingPage() {
 
       {/* 왜 이걸 적어야 하는지. 첫 항목만 크게 세워 위계를 준다 */}
       <section className="border-t border-line px-5 pb-2 pt-9">
-        <p className="text-[13px] font-medium tracking-[0.08em] text-meta">
+        <p className="text-[15px] font-medium tracking-[0.08em] text-meta">
           이런 것들을 봅니다
         </p>
         <ul className="mt-5">
           {RULES.map((r, i) => (
             <li key={r.tag} className="border-b border-hairline py-6 first:pt-0 last:border-b-0">
-              <p className="text-[12px] font-medium tracking-[0.08em] text-meta">{r.tag}</p>
+              <p className="text-[14px] font-medium tracking-[0.08em] text-meta">{r.tag}</p>
               <h3
                 className={`mt-2 font-bold text-ink ${
                   i === 0
-                    ? "text-[21px] leading-[1.4] tracking-[-0.01em]"
-                    : "text-[18px] leading-[1.45]"
+                    ? "text-[23px] leading-[1.4] tracking-[-0.01em]"
+                    : "text-[20px] leading-[1.45]"
                 }`}
               >
                 {r.head}
               </h3>
-              <p className="mt-2 text-[16px] leading-[1.7] text-body">{r.body}</p>
+              <p className="mt-2 text-[18px] leading-[1.7] text-body">{r.body}</p>
             </li>
           ))}
         </ul>
-        <p className="pb-1 pt-6 text-[16px] leading-[1.7] text-meta">
+        <p className="pb-1 pt-6 text-[18px] leading-[1.7] text-meta">
           이런 규칙이 <b className="font-medium text-body">13가지</b> 있습니다. 제품이 늘수록
           겹칠 자리도 늘어납니다.
         </p>
@@ -121,7 +121,7 @@ export default function LandingPage() {
       {/* 진단서에 정확히 뭐가 들어가는지. ②「채우면 좋은 것」이 있어야
           진단으로 끝나지 않고 커머스의 입구가 된다 */}
       <section className="border-b border-line bg-bg-tint px-5 py-9">
-        <h2 className="text-[20px] font-bold leading-[1.4] tracking-[-0.01em] text-ink">
+        <h2 className="text-[22px] font-bold leading-[1.4] tracking-[-0.01em] text-ink">
           진단서에 들어가는 것
         </h2>
         <ol className="mt-5 flex flex-col gap-5">
@@ -131,23 +131,23 @@ export default function LandingPage() {
             ["03", "아침·저녁 순서", "무엇을 언제 쓰는지, 기기가 있다면 어디에 들어가는지"],
           ].map(([n, k, v]) => (
             <li key={n} className="flex gap-4">
-              <span className="w-[22px] shrink-0 pt-[3px] text-[13px] font-bold tabular-nums text-meta">
+              <span className="w-[22px] shrink-0 pt-[3px] text-[15px] font-bold tabular-nums text-meta">
                 {n}
               </span>
               <div>
-                <p className="text-[16px] font-bold leading-[1.5] text-ink">{k}</p>
-                <p className="mt-1 text-[16px] leading-[1.65] text-body">{v}</p>
+                <p className="text-[18px] font-bold leading-[1.5] text-ink">{k}</p>
+                <p className="mt-1 text-[18px] leading-[1.65] text-body">{v}</p>
               </div>
             </li>
           ))}
         </ol>
-        <p className="mt-7 border-t border-line pt-5 text-[15px] leading-[1.7] text-meta">
+        <p className="mt-7 border-t border-line pt-5 text-[17px] leading-[1.7] text-meta">
           리베아는 여러 브랜드를 함께 다룹니다. 특정 브랜드를 밀 이유가 없어서
           <b className="font-medium text-body"> &ldquo;그건 빼셔도 됩니다&rdquo;</b>라고 말할 수 있습니다.
         </p>
       </section>
 
-      <footer className="border-t border-line px-5 pt-8 text-[13px] leading-[1.8] text-meta">
+      <footer className="border-t border-line px-5 pt-8 text-[15px] leading-[1.8] text-meta">
         <p>
           개인차가 있으며, 제품의 효능·효과를 보증하지 않습니다. 피부 이상이 있으시면
           전문의와 상담하세요.

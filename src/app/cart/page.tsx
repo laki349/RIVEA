@@ -84,13 +84,13 @@ export default function CartPage() {
           <span className="text-disabled">
             <Icon name="bag" size={44} />
           </span>
-          <p className="mt-4 text-[16px] font-bold text-ink">아직 담은 상품이 없어요</p>
-          <p className="mt-2 text-center text-[14px] leading-[1.6] text-meta">
+          <p className="mt-4 text-[18px] font-bold text-ink">아직 담은 상품이 없어요</p>
+          <p className="mt-2 text-center text-[16px] leading-[1.6] text-meta">
             고민에 맞는 루틴부터 둘러보실래요?
           </p>
           <Link
             href="/pick"
-            className="mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[15px] font-medium text-on-ink"
+            className="mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[17px] font-medium text-on-ink"
           >
             리베아&apos;s Pick 보러가기
           </Link>
@@ -107,12 +107,12 @@ export default function CartPage() {
       <div className="flex items-center gap-2 border-b border-hairline px-4 py-[11px]">
         <button onClick={toggleAll} className="flex items-center gap-2">
           <Check on={allChecked} />
-          <span className="text-[13px] text-ink">
+          <span className="text-[15px] text-ink">
             전체선택 ({selectedLines.length}/{lines.length})
           </span>
         </button>
         <span className="flex-1" />
-        <button onClick={removeSelected} className="py-1 text-[13px] text-meta">
+        <button onClick={removeSelected} className="py-1 text-[15px] text-meta">
           선택삭제
         </button>
       </div>
@@ -123,8 +123,8 @@ export default function CartPage() {
           return (
             <section key={group} className="border-b border-hairline pb-4">
               <div className="flex items-center gap-[7px] px-4 pb-1 pt-[14px]">
-                <span className="text-[14px] font-bold text-ink">{label.name}</span>
-                <span className="text-[12px] text-meta">· {label.ship}</span>
+                <span className="text-[16px] font-bold text-ink">{label.name}</span>
+                <span className="text-[14px] text-meta">· {label.ship}</span>
               </div>
               {gl.map((l) => (
                 <div key={l.key} className="flex gap-[11px] px-4 pt-3">
@@ -143,7 +143,7 @@ export default function CartPage() {
                   />
                   <div className="flex-1">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="text-[13px] leading-[1.4] text-ink">{l.name}</p>
+                      <p className="text-[15px] leading-[1.4] text-ink">{l.name}</p>
                       <button
                         onClick={() => removeFromCart(l.kind, l.id)}
                         aria-label="삭제"
@@ -152,7 +152,7 @@ export default function CartPage() {
                         <Icon name="plus" size={15} className="rotate-45" />
                       </button>
                     </div>
-                    <p className="mt-[2px] text-[12px] text-meta">{l.option}</p>
+                    <p className="mt-[2px] text-[14px] text-meta">{l.option}</p>
                     <div className="mt-2 flex items-center justify-between">
                       <div className="flex items-center rounded border border-line">
                         <button
@@ -162,7 +162,7 @@ export default function CartPage() {
                         >
                           <Icon name="minus" size={15} />
                         </button>
-                        <span className="flex h-[30px] w-[32px] items-center justify-center border-x border-line text-[13px] text-ink">
+                        <span className="flex h-[30px] w-[32px] items-center justify-center border-x border-line text-[15px] text-ink">
                           {l.qty}
                         </span>
                         <button
@@ -173,7 +173,7 @@ export default function CartPage() {
                           <Icon name="plus" size={15} />
                         </button>
                       </div>
-                      <span className="text-[15px] font-bold text-ink">
+                      <span className="text-[17px] font-bold text-ink">
                         {won(lineAmount(l))}
                       </span>
                     </div>
@@ -189,17 +189,17 @@ export default function CartPage() {
 
         {/* 금액 요약 */}
         <section className="border-b border-hairline px-4 py-4">
-          <div className="flex justify-between py-[5px] text-[13px]">
+          <div className="flex justify-between py-[5px] text-[15px]">
             <span className="text-meta">상품금액</span>
             <span className="text-ink">{won(itemTotal)}</span>
           </div>
-          <div className="flex justify-between py-[5px] text-[13px]">
+          <div className="flex justify-between py-[5px] text-[15px]">
             <span className="text-meta">배송비</span>
             <span className="text-ink">{shipTotal === 0 ? "무료" : won(shipTotal)}</span>
           </div>
           <div className="mt-[6px] flex justify-between border-t border-hairline pt-[9px]">
-            <span className="text-[14px] font-bold text-ink">결제예정금액</span>
-            <span className="text-[18px] font-bold text-ink">{won(total)}</span>
+            <span className="text-[16px] font-bold text-ink">결제예정금액</span>
+            <span className="text-[20px] font-bold text-ink">{won(total)}</span>
           </div>
         </section>
       </main>
@@ -209,7 +209,7 @@ export default function CartPage() {
         <button
           onClick={() => router.push("/checkout")}
           disabled={selectedLines.length === 0}
-          className="press h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink disabled:opacity-40"
+          className="press h-[52px] w-full rounded-cta bg-ink text-[18px] font-medium text-on-ink disabled:opacity-40"
         >
           {won(total)}원 주문하기
         </button>

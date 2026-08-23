@@ -29,10 +29,10 @@ export default function PickPage() {
     <>
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-hairline bg-surface px-4 py-3">
         <div>
-          <h1 className="text-[18px] font-bold tracking-[0.02em] text-ink">
+          <h1 className="text-[20px] font-bold tracking-[0.02em] text-ink">
             리베아&apos;s <span className="text-rose">Pick</span>
           </h1>
-          <p className="mt-[2px] text-[12px] text-meta">에디터가 고른 홈케어 루틴</p>
+          <p className="mt-[2px] text-[14px] text-meta">에디터가 고른 홈케어 루틴</p>
         </div>
         <div className="flex items-center gap-4 text-ink">
           <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
@@ -48,7 +48,7 @@ export default function PickPage() {
           <button
             key={l}
             onClick={() => setLevel(l)}
-            className={`min-h-[36px] rounded border px-[11px] text-[13px] ${
+            className={`min-h-[36px] rounded border px-[11px] text-[15px] ${
               level === l ? "border-ink text-ink" : "border-line text-body"
             }`}
           >
@@ -70,32 +70,32 @@ export default function PickPage() {
                   src={routineImage(r.id)}
                   alt={r.title}
                 />
-                <span className="absolute left-3 top-[10px] rounded-badge bg-ink px-2 py-1 text-[12px] font-medium text-on-ink">
+                <span className="absolute left-3 top-[10px] rounded-badge bg-ink px-2 py-1 text-[14px] font-medium text-on-ink">
                   {r.badge}
                 </span>
               </div>
               <div className="px-4 pb-4 pt-[14px]">
-                <p className="text-[12px] font-bold tracking-[0.03em] text-rose">
+                <p className="text-[14px] font-bold tracking-[0.03em] text-rose">
                   리베아&apos;s PICK · {r.label}
                 </p>
-                <h2 className="mb-[6px] mt-[5px] text-[18px] font-bold leading-[1.4] text-ink">
+                <h2 className="mb-[6px] mt-[5px] text-[20px] font-bold leading-[1.4] text-ink">
                   {r.title}
                 </h2>
-                <p className="text-[13px] leading-[1.55] text-soft">{r.description}</p>
+                <p className="text-[15px] leading-[1.55] text-soft">{r.description}</p>
                 <div className="mb-3 mt-[11px] flex flex-wrap gap-[6px]">
                   {r.steps.map((s) => (
                     <span
                       key={s.productId}
-                      className="rounded border border-line px-2 py-[3px] text-[12px] text-body"
+                      className="rounded border border-line px-2 py-[3px] text-[14px] text-body"
                     >
                       {categoryLabel(productOf(s.productId).category)}
                     </span>
                   ))}
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-[14px] text-disabled line-through">{won(listPrice)}</span>
-                  {rate !== null && <span className="text-[16px] font-bold text-rose">{rate}%</span>}
-                  <span className="text-[19px] font-bold text-ink">{won(r.price)}</span>
+                  <span className="text-[16px] text-disabled line-through">{won(listPrice)}</span>
+                  {rate !== null && <span className="text-[18px] font-bold text-rose">{rate}%</span>}
+                  <span className="text-[21px] font-bold text-ink">{won(r.price)}</span>
                 </div>
               </div>
             </Link>

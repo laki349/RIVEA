@@ -23,13 +23,13 @@ export default function WalletQuickActions() {
         {wallet.coupons > 0 && (
           <span className="absolute left-[calc(50%+10px)] top-3 h-[5px] w-[5px] rounded-full bg-rose" />
         )}
-        <p className="mt-[5px] text-[12px] text-body">쿠폰 {wallet.coupons}</p>
+        <p className="mt-[5px] text-[14px] text-body">쿠폰 {wallet.coupons}</p>
       </div>
       <div className="flex-1 py-[15px] text-center">
         <span className="text-ink">
           <Icon name="coin" size={20} className="mx-auto" />
         </span>
-        <p className="mt-[5px] text-[12px] text-body">{won(wallet.points)}P</p>
+        <p className="mt-[5px] text-[14px] text-body">{won(wallet.points)}P</p>
       </div>
     </>
   );

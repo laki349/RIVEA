@@ -32,10 +32,10 @@ export default function ProfileEntry() {
         <Icon name="sparkle" size={18} />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[15px] font-medium text-ink">
+        <span className="block text-[17px] font-medium text-ink">
           {set ? "내 루틴 보기" : "내 피부 고민 설정하기"}
         </span>
-        <span className="mt-[2px] block truncate text-[14px] text-meta">
+        <span className="mt-[2px] block truncate text-[16px] text-meta">
           {set ? `${summary} · 아침·저녁 순서` : "고민을 고르면 아침·저녁 순서를 짜드려요"}
         </span>
       </span>

@@ -81,7 +81,7 @@ export default function SearchPage() {
               if (e.key === "Enter" && query) saveRecent(query);
             }}
             placeholder="고민·상품·브랜드 검색"
-            className="w-full bg-transparent text-[15px] text-ink outline-none placeholder:text-disabled"
+            className="w-full bg-transparent text-[17px] text-ink outline-none placeholder:text-disabled"
           />
           {q && (
             <button onClick={() => setQ("")} aria-label="지우기" className="flex-shrink-0 p-1 text-disabled">
@@ -99,8 +99,8 @@ export default function SearchPage() {
             {recent.length > 0 && (
               <section className="border-b border-hairline px-4 pb-4 pt-4">
                 <div className="mb-[10px] flex items-baseline justify-between">
-                  <h2 className="text-[14px] font-bold text-ink">최근 검색어</h2>
-                  <button onClick={clearRecent} className="text-[12px] text-meta">
+                  <h2 className="text-[16px] font-bold text-ink">최근 검색어</h2>
+                  <button onClick={clearRecent} className="text-[14px] text-meta">
                     전체삭제
                   </button>
                 </div>
@@ -109,7 +109,7 @@ export default function SearchPage() {
                     <button
                       key={r}
                       onClick={() => setQ(r)}
-                      className="min-h-[34px] rounded border border-line px-[11px] text-[13px] text-body"
+                      className="min-h-[34px] rounded border border-line px-[11px] text-[15px] text-body"
                     >
                       {r}
                     </button>
@@ -120,13 +120,13 @@ export default function SearchPage() {
 
             {/* 인기 고민 */}
             <section className="px-4 pb-4 pt-4">
-              <h2 className="mb-[10px] text-[14px] font-bold text-ink">인기 고민</h2>
+              <h2 className="mb-[10px] text-[16px] font-bold text-ink">인기 고민</h2>
               <div className="flex flex-wrap gap-[6px]">
                 {concerns.map((c) => (
                   <Link
                     key={c.slug}
                     href={`/concern/${c.slug}`}
-                    className="flex min-h-[34px] items-center rounded border border-line px-[11px] text-[13px] text-body"
+                    className="flex min-h-[34px] items-center rounded border border-line px-[11px] text-[15px] text-body"
                   >
                     # {c.name}
                   </Link>
@@ -145,11 +145,11 @@ export default function SearchPage() {
                 onClick={() => saveRecent(query)}
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded border border-line">
-                  <span className="text-[14px] font-bold text-ink">{b.name.slice(0, 1)}</span>
+                  <span className="text-[16px] font-bold text-ink">{b.name.slice(0, 1)}</span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-[14px] font-bold text-ink">{b.name}</p>
-                  <p className="text-[12px] text-meta">브랜드관 바로가기</p>
+                  <p className="text-[16px] font-bold text-ink">{b.name}</p>
+                  <p className="text-[14px] text-meta">브랜드관 바로가기</p>
                 </div>
                 <Icon name="chevron-right" size={17} className="text-disabled" />
               </Link>
@@ -158,16 +158,16 @@ export default function SearchPage() {
             {/* 상품 결과 */}
             {results.length === 0 ? (
               <div className="px-4 py-16 text-center">
-                <p className="text-[15px] font-bold text-ink">
+                <p className="text-[17px] font-bold text-ink">
                   &lsquo;{query}&rsquo; 검색 결과가 없어요
                 </p>
-                <p className="mt-2 text-[13px] leading-[1.6] text-meta">
+                <p className="mt-2 text-[15px] leading-[1.6] text-meta">
                   고민 이름(기미, 주름)이나 브랜드로 검색해 보세요.
                 </p>
               </div>
             ) : (
               <>
-                <p className="border-b border-hairline px-4 py-[9px] text-[13px] text-meta">
+                <p className="border-b border-hairline px-4 py-[9px] text-[15px] text-meta">
                   상품 {results.length}
                 </p>
                 <div className="grid grid-cols-2 gap-[3px]" onClick={() => saveRecent(query)}>

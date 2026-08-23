@@ -85,10 +85,10 @@ export default function GiftClient() {
   return (
     <main className="flex-1">
       <section className="border-b border-hairline px-4 pb-4 pt-4">
-        <h2 className="text-[18px] font-bold leading-[1.4] text-ink">
+        <h2 className="text-[20px] font-bold leading-[1.4] text-ink">
           어머니께 드릴 홈케어, 대신 골라드려요
         </h2>
-        <p className="mt-[6px] text-[14px] leading-[1.6] text-soft">
+        <p className="mt-[6px] text-[16px] leading-[1.6] text-soft">
           고민을 모르셔도 괜찮아요. 연령대 조사 데이터로 시작해서, 순서까지 맞춰진 세트로
           정리해 드립니다.
         </p>
@@ -96,7 +96,7 @@ export default function GiftClient() {
 
       {/* 1. 연령대 */}
       <section className="border-b border-hairline px-4 py-4">
-        <p className="mb-[10px] text-[15px] font-bold text-ink">
+        <p className="mb-[10px] text-[17px] font-bold text-ink">
           <span className="text-rose">1</span> 어머니 연령대가 어떻게 되세요?
         </p>
         <div className="flex gap-[7px]">
@@ -108,7 +108,7 @@ export default function GiftClient() {
                 setKnows(null);
                 setConcern(null);
               }}
-              className={`min-h-[48px] flex-1 rounded px-4 text-[15px] ${
+              className={`min-h-[48px] flex-1 rounded px-4 text-[17px] ${
                 age === a
                   ? "bg-ink font-medium text-on-ink"
                   : "border border-line bg-surface text-body"
@@ -123,13 +123,13 @@ export default function GiftClient() {
       {/* 2. 고민을 아는지 */}
       {age && (
         <section className="animate-rise border-b border-hairline px-4 py-4">
-          <p className="mb-[10px] text-[15px] font-bold text-ink">
+          <p className="mb-[10px] text-[17px] font-bold text-ink">
             <span className="text-rose">2</span> 어머니 피부 고민을 아시나요?
           </p>
           <div className="flex gap-[7px]">
             <button
               onClick={() => setKnows(true)}
-              className={`min-h-[48px] flex-1 rounded px-4 text-[15px] ${
+              className={`min-h-[48px] flex-1 rounded px-4 text-[17px] ${
                 knows === true
                   ? "bg-ink font-medium text-on-ink"
                   : "border border-line bg-surface text-body"
@@ -143,7 +143,7 @@ export default function GiftClient() {
                 // 조사에서 1위인 고민으로 시작하되, 아래에서 바꿀 수 있게 둔다
                 setConcern(age ? cohortTop[age][0].concern : null);
               }}
-              className={`min-h-[48px] flex-1 rounded px-4 text-[15px] ${
+              className={`min-h-[48px] flex-1 rounded px-4 text-[17px] ${
                 knows === false
                   ? "bg-ink font-medium text-on-ink"
                   : "border border-line bg-surface text-body"
@@ -159,7 +159,7 @@ export default function GiftClient() {
                 <button
                   key={c.slug}
                   onClick={() => setConcern(c.slug)}
-                  className={`min-h-[44px] rounded border px-[14px] text-[14px] ${
+                  className={`min-h-[44px] rounded border px-[14px] text-[16px] ${
                     concern === c.slug ? "border-ink bg-ink text-on-ink" : "border-line text-body"
                   }`}
                 >
@@ -172,10 +172,10 @@ export default function GiftClient() {
           {/* 모를 때 — 막다른 길 대신 조사 데이터로 답한다 */}
           {knows === false && (
             <div className="animate-rise mt-3 border border-hairline px-3 py-[13px]">
-              <p className="text-[14px] font-bold leading-[1.45] text-ink">
+              <p className="text-[16px] font-bold leading-[1.45] text-ink">
                 {ageLabel[age]} 여성이 가장 많이 답한 고민이에요
               </p>
-              <p className="mt-[3px] text-[13px] leading-[1.6] text-meta">
+              <p className="mt-[3px] text-[15px] leading-[1.6] text-meta">
                 눌러서 기준을 바꿀 수 있어요
               </p>
               <div className="mt-[10px]">
@@ -188,7 +188,7 @@ export default function GiftClient() {
                       className="flex w-full items-center gap-3 border-b border-subtle py-[11px] text-left last:border-0"
                     >
                       <span
-                        className={`w-[74px] flex-shrink-0 text-[14px] ${
+                        className={`w-[74px] flex-shrink-0 text-[16px] ${
                           on ? "font-bold text-ink" : "text-body"
                         }`}
                       >
@@ -202,7 +202,7 @@ export default function GiftClient() {
                         />
                       </span>
                       <span
-                        className={`w-[46px] flex-shrink-0 text-right text-[14px] font-bold ${
+                        className={`w-[46px] flex-shrink-0 text-right text-[16px] font-bold ${
                           on ? "text-rose" : "text-ink"
                         }`}
                       >
@@ -212,10 +212,10 @@ export default function GiftClient() {
                   );
                 })}
               </div>
-              <p className="mt-[10px] text-[13px] leading-[1.6] text-body">
+              <p className="mt-[10px] text-[15px] leading-[1.6] text-body">
                 {cohortInsight[age]}
               </p>
-              <p className="mt-2 text-[13px] leading-[1.6] text-meta">
+              <p className="mt-2 text-[15px] leading-[1.6] text-meta">
                 엠브레인 트렌드모니터 「2022 피부 관리 및 홈뷰티 관련 인식 조사」 · 전국 만 19~59세
                 여성 1,000명 · 2022.4
               </p>
@@ -227,7 +227,7 @@ export default function GiftClient() {
       {/* 3. 예산 */}
       {effectiveConcern && (
         <section className="animate-rise border-b border-hairline px-4 py-4">
-          <p className="mb-[10px] text-[15px] font-bold text-ink">
+          <p className="mb-[10px] text-[17px] font-bold text-ink">
             <span className="text-rose">3</span> 예산은 어느 정도 생각하세요?
           </p>
           <div className="flex gap-[7px]">
@@ -235,7 +235,7 @@ export default function GiftClient() {
               <button
                 key={b.key}
                 onClick={() => setBudget(b.key)}
-                className={`min-h-[48px] flex-1 rounded px-2 text-[14px] ${
+                className={`min-h-[48px] flex-1 rounded px-2 text-[16px] ${
                   budget === b.key
                     ? "bg-ink font-medium text-on-ink"
                     : "border border-line bg-surface text-body"
@@ -251,10 +251,10 @@ export default function GiftClient() {
       {/* 결과 */}
       {done && (
         <section className="animate-rise px-4 py-4">
-          <h3 className="mb-1 text-[16px] font-bold text-ink">
+          <h3 className="mb-1 text-[18px] font-bold text-ink">
             {ageLabel[age!]} · {concernOf(effectiveConcern).name}
           </h3>
-          <p className="mb-3 text-[13px] leading-[1.6] text-meta">
+          <p className="mb-3 text-[15px] leading-[1.6] text-meta">
             {knows === false
               ? "연령대 조사에서 가장 많이 나온 고민을 기준으로 골랐어요."
               : "고르신 고민에 맞춰 순서까지 맞춰진 세트예요."}
@@ -262,8 +262,8 @@ export default function GiftClient() {
 
           {picks.length === 0 ? (
             <div className="border border-hairline px-3 py-[18px] text-center">
-              <p className="text-[14px] font-bold text-ink">이 예산에 맞는 세트가 아직 없어요</p>
-              <p className="mt-[6px] text-[13px] leading-[1.6] text-meta">
+              <p className="text-[16px] font-bold text-ink">이 예산에 맞는 세트가 아직 없어요</p>
+              <p className="mt-[6px] text-[15px] leading-[1.6] text-meta">
                 예산을 한 단계 올리시면 이 고민에 맞는 세트를 보여드릴 수 있어요.
               </p>
             </div>
@@ -283,21 +283,21 @@ export default function GiftClient() {
                     alt={r.title}
                   />
                   <div className="px-3 py-[13px]">
-                    <p className="text-[12px] font-bold text-rose">{r.label}</p>
-                    <p className="mt-[3px] text-[15px] font-bold leading-[1.4] text-ink">
+                    <p className="text-[14px] font-bold text-rose">{r.label}</p>
+                    <p className="mt-[3px] text-[17px] font-bold leading-[1.4] text-ink">
                       {r.title}
                     </p>
-                    <p className="mt-[5px] text-[13px] leading-[1.55] text-soft">{r.description}</p>
+                    <p className="mt-[5px] text-[15px] leading-[1.55] text-soft">{r.description}</p>
                     <div className="mt-[9px] flex items-baseline gap-2">
-                      <span className="text-[14px] text-disabled line-through">
+                      <span className="text-[16px] text-disabled line-through">
                         {won(listPrice)}
                       </span>
-                      <span className="text-[18px] font-bold text-ink">{won(r.price)}</span>
+                      <span className="text-[20px] font-bold text-ink">{won(r.price)}</span>
                     </div>
-                    <p className="mt-[7px] text-[13px] text-meta">
+                    <p className="mt-[7px] text-[15px] text-meta">
                       {r.steps.map((s) => productOf(s.productId).volume).join(" · ")}
                     </p>
-                    <span className="mt-[9px] flex items-center gap-1 text-[14px] font-medium text-ink">
+                    <span className="mt-[9px] flex items-center gap-1 text-[16px] font-medium text-ink">
                       순서와 이유 보기 <Icon name="chevron-right" size={15} />
                     </span>
                   </div>
@@ -308,8 +308,8 @@ export default function GiftClient() {
 
           {/* 선물이라는 맥락에서 실제로 걸리는 것들 */}
           <div className="mt-4 border border-hairline px-3 py-[13px]">
-            <p className="text-[14px] font-bold text-ink">선물로 보낼 때</p>
-            <ul className="mt-[8px] text-[13px] leading-[1.7] text-body">
+            <p className="text-[16px] font-bold text-ink">선물로 보낼 때</p>
+            <ul className="mt-[8px] text-[15px] leading-[1.7] text-body">
               <li>· 세트에는 사용 순서 안내가 함께 들어가요</li>
               <li>· 받는 분이 직접 교환·환불할 수 있어요</li>
               <li>· 기기는 무게를 확인하세요 — 무거우면 안 쓰게 됩니다</li>
@@ -318,7 +318,7 @@ export default function GiftClient() {
 
           <button
             onClick={reset}
-            className="mt-4 flex h-12 w-full items-center justify-center rounded-cta border border-ink text-[15px] font-medium text-ink"
+            className="mt-4 flex h-12 w-full items-center justify-center rounded-cta border border-ink text-[17px] font-medium text-ink"
           >
             다시 고르기
           </button>

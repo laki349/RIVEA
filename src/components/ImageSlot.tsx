@@ -34,7 +34,7 @@ export default function ImageSlot({
   return (
     <div className={`flex items-center justify-center ${bg} ${className}`}>
       {label && (
-        <span className={`text-[12px] ${tone === "warm" ? "text-[#A99C8B]" : "text-disabled"}`}>
+        <span className={`text-[14px] ${tone === "warm" ? "text-[#A99C8B]" : "text-disabled"}`}>
           {label}
         </span>
       )}

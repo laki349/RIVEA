@@ -22,7 +22,7 @@ export default function HomePage() {
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-hairline bg-surface px-4 py-[13px]">
         <Link
           href="/"
-          className="flex h-11 items-center text-[20px] font-bold tracking-[0.05em] text-rose"
+          className="flex h-11 items-center text-[22px] font-bold tracking-[0.05em] text-rose"
         >
           RIVEA
         </Link>
@@ -30,7 +30,7 @@ export default function HomePage() {
           {/* 텍스트 라벨 — 아이콘 단독은 40대+ 판별이 어렵고, 유틸리티(검색·장바구니)와 종류가 다름을 드러낸다 */}
           <Link
             href="/magazine"
-            className="flex h-11 items-center text-[14px] font-medium text-ink"
+            className="flex h-11 items-center text-[16px] font-medium text-ink"
           >
             매거진
           </Link>
@@ -102,9 +102,9 @@ export default function HomePage() {
             {brands.map((b) => (
               <Link key={b.slug} href={`/brand/${b.slug}`} className="w-[64px] flex-shrink-0 text-center">
                 <div className="flex h-[64px] w-[64px] items-center justify-center rounded border border-line bg-surface">
-                  <span className="text-[15px] font-bold text-ink">{b.name.slice(0, 1)}</span>
+                  <span className="text-[17px] font-bold text-ink">{b.name.slice(0, 1)}</span>
                 </div>
-                <p className="mt-[6px] whitespace-nowrap text-[12px] text-ink">{b.name}</p>
+                <p className="mt-[6px] whitespace-nowrap text-[14px] text-ink">{b.name}</p>
               </Link>
             ))}
           </div>
@@ -112,7 +112,7 @@ export default function HomePage() {
 
         {/* 데모 고지 — 실제 판매로 오인하지 않도록 */}
         <section className="border-t border-hairline px-4 py-4">
-          <p className="text-[13px] leading-[1.6] text-meta">
+          <p className="text-[15px] leading-[1.6] text-meta">
             리베아는 준비 중인 서비스예요. 이 화면은 발표용 데모이고 실제 판매·결제는 이뤄지지
             않아요. 리뷰·평점·조회수는 예시 수치입니다.
           </p>

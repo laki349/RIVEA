@@ -25,8 +25,8 @@ export default function AccountBlock() {
         className="flex items-center justify-between px-4 pb-[14px] pt-[18px]"
       >
         <div>
-          <p className="text-[19px] font-bold text-ink">로그인하기</p>
-          <p className="mt-[3px] text-[13px] leading-[1.5] text-meta">
+          <p className="text-[21px] font-bold text-ink">로그인하기</p>
+          <p className="mt-[3px] text-[15px] leading-[1.5] text-meta">
             지금은 게스트예요 · 담아둔 장바구니·찜·주문은 그대로 옮겨져요
           </p>
         </div>
@@ -40,10 +40,10 @@ export default function AccountBlock() {
   return (
     <div className="flex items-center justify-between px-4 pb-[14px] pt-[18px]">
       <div className="min-w-0">
-        <p className="truncate text-[19px] font-bold text-ink">
+        <p className="truncate text-[21px] font-bold text-ink">
           {displayNameOf(user)}님 안녕하세요
         </p>
-        <p className="mt-[3px] text-[13px] text-meta">{maskEmail(user.email)}</p>
+        <p className="mt-[3px] text-[15px] text-meta">{maskEmail(user.email)}</p>
       </div>
       {/*
         로그아웃은 Firebase 응답을 기다린다. 예전엔 await 없이 호출해서
@@ -61,7 +61,7 @@ export default function AccountBlock() {
           }
         }}
         disabled={signingOut}
-        className="press ml-3 min-h-[44px] flex-shrink-0 rounded border border-line px-[11px] text-[13px] font-medium text-soft transition-opacity duration-tap disabled:opacity-55"
+        className="press ml-3 min-h-[44px] flex-shrink-0 rounded border border-line px-[11px] text-[15px] font-medium text-soft transition-opacity duration-tap disabled:opacity-55"
       >
         {signingOut ? "로그아웃 중…" : "로그아웃"}
       </button>

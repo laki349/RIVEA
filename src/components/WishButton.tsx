@@ -102,7 +102,7 @@ export default function WishButton({
       <span className={popClass}>
         <Icon name={wished ? "heart-fill" : "heart"} size={23} />
       </span>
-      <span className="mt-[2px] text-[12px] font-medium">
+      <span className="mt-[2px] text-[14px] font-medium">
         {won(baseLikes + (wished ? 1 : 0))}
       </span>
     </button>

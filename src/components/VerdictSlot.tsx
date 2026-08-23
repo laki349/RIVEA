@@ -33,7 +33,7 @@ export default function VerdictSlot() {
     <section className="border-b border-hairline px-4 py-4">
       <VerdictCard entry={due[0].entry} day={due[0].day} />
       {due.length > 1 && (
-        <p className="mt-[8px] text-[13px] text-meta">
+        <p className="mt-[8px] text-[15px] text-meta">
           판정할 게 {due.length - 1}건 더 있어요. 화장대에서 이어서 답할 수 있어요.
         </p>
       )}

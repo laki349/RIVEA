@@ -38,15 +38,15 @@ export default function RepurchaseList() {
         <span className="text-disabled">
           <Icon name="truck" size={44} />
         </span>
-        <p className="mt-4 text-[16px] font-bold text-ink">아직 볼 게 없어요</p>
-        <p className="mt-2 text-[15px] leading-[1.6] text-meta">
+        <p className="mt-4 text-[18px] font-bold text-ink">아직 볼 게 없어요</p>
+        <p className="mt-2 text-[17px] leading-[1.6] text-meta">
           배송이 끝난 주문이 있으면
           <br />
           다 쓸 때쯤을 여기서 알려드려요.
         </p>
         <Link
           href="/orders"
-          className="press mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[15px] font-medium text-ink"
+          className="press mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[17px] font-medium text-ink"
         >
           주문 내역 보기
         </Link>
@@ -60,7 +60,7 @@ export default function RepurchaseList() {
   return (
     <main className="flex-1">
       <section className="border-b border-hairline px-4 py-4">
-        <p className="text-[15px] leading-[1.6] text-body">
+        <p className="text-[17px] leading-[1.6] text-body">
           받으신 날과 용량으로 <b className="font-bold text-ink">다 쓰실 때쯤</b>을 잡아
           알려드려요. 쓰시는 양에 따라 달라질 수 있어요.
         </p>
@@ -68,7 +68,7 @@ export default function RepurchaseList() {
 
       {due.length > 0 && (
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="text-[16px] font-bold text-ink">지금 챙기실 것 {due.length}</h2>
+          <h2 className="text-[18px] font-bold text-ink">지금 챙기실 것 {due.length}</h2>
           <div className="mt-3 space-y-[14px]">
             {due.map((r) => (
               <Row key={r.product.id} r={r} onAdd={setAdded} guard={guard} />
@@ -79,7 +79,7 @@ export default function RepurchaseList() {
 
       {later.length > 0 && (
         <section className="px-4 py-4">
-          <h2 className="text-[16px] font-bold text-ink">아직 여유 있어요</h2>
+          <h2 className="text-[18px] font-bold text-ink">아직 여유 있어요</h2>
           <div className="mt-3 space-y-[14px]">
             {later.map((r) => (
               <Row key={r.product.id} r={r} onAdd={setAdded} guard={guard} />
@@ -116,9 +116,9 @@ function Row({
           alt={p.name}
         />
         <div className="min-w-0 flex-1">
-          <p className="text-[13px] text-meta">{brandOf(p.brand).name}</p>
-          <p className="truncate text-[14px] text-ink">{p.name}</p>
-          <p className="mt-[2px] text-[13px] text-meta">
+          <p className="text-[15px] text-meta">{brandOf(p.brand).name}</p>
+          <p className="truncate text-[16px] text-ink">{p.name}</p>
+          <p className="mt-[2px] text-[15px] text-meta">
             {won(p.price)}원
             {r.timesBought > 1 && ` · ${r.timesBought}번째 구매`}
           </p>
@@ -136,7 +136,7 @@ function Row({
         />
       </div>
       <div className="mt-[6px] flex items-center justify-between gap-2">
-        <span className={`text-[14px] ${out ? "font-medium text-ink" : "text-body"}`}>
+        <span className={`text-[16px] ${out ? "font-medium text-ink" : "text-body"}`}>
           {dueLabel(r)}
         </span>
         <button
@@ -146,7 +146,7 @@ function Row({
               onAdd(p.name);
             })
           }
-          className="press flex h-11 items-center rounded border border-ink px-4 text-[14px] font-medium text-ink"
+          className="press flex h-11 items-center rounded border border-ink px-4 text-[16px] font-medium text-ink"
         >
           다시 담기
         </button>

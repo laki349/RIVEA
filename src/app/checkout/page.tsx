@@ -113,27 +113,27 @@ export default function CheckoutPage() {
         {/* 배송지 */}
         <section className="border-b border-hairline px-4 py-4">
           <div className="mb-[9px] flex items-center justify-between">
-            <h2 className="text-[15px] font-bold text-ink">배송지</h2>
-            <button className="text-[13px] text-meta">변경 ›</button>
+            <h2 className="text-[17px] font-bold text-ink">배송지</h2>
+            <button className="text-[15px] text-meta">변경 ›</button>
           </div>
-          <p className="text-[14px] font-medium text-ink">
+          <p className="text-[16px] font-medium text-ink">
             {receiver.name} · {receiver.phone}
           </p>
-          <p className="mt-[3px] text-[13px] leading-[1.5] text-body">{receiver.address}</p>
-          <button className="mt-[9px] rounded border border-line px-[10px] py-[5px] text-[12px] text-body">
+          <p className="mt-[3px] text-[15px] leading-[1.5] text-body">{receiver.address}</p>
+          <button className="mt-[9px] rounded border border-line px-[10px] py-[5px] text-[14px] text-body">
             배송 요청사항 선택 ›
           </button>
         </section>
 
         {/* 주문상품 */}
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="mb-[11px] text-[15px] font-bold text-ink">주문상품 {lines.length}</h2>
+          <h2 className="mb-[11px] text-[17px] font-bold text-ink">주문상품 {lines.length}</h2>
           {lines.length === 0 ? (
-            <p className="text-[13px] text-meta">주문할 상품이 없어요. 장바구니에서 담아주세요.</p>
+            <p className="text-[15px] text-meta">주문할 상품이 없어요. 장바구니에서 담아주세요.</p>
           ) : (
             groups.map((g, gi) => (
               <div key={g.group} className={gi < groups.length - 1 ? "mb-[14px]" : ""}>
-                <p className="mb-2 text-[13px] font-bold text-ink">{groupLabel(g.group).name}</p>
+                <p className="mb-2 text-[15px] font-bold text-ink">{groupLabel(g.group).name}</p>
                 {g.lines.map((l) => (
                   <div key={l.key} className="flex gap-[11px] pb-2">
                     <ImageSlot
@@ -143,12 +143,12 @@ export default function CheckoutPage() {
                       alt={l.name}
                     />
                     <div className="flex-1">
-                      <p className="text-[13px] text-ink">{l.name}</p>
-                      <p className="mt-[2px] text-[12px] text-meta">
+                      <p className="text-[15px] text-ink">{l.name}</p>
+                      <p className="mt-[2px] text-[14px] text-meta">
                         {l.option} · {l.qty}개
                       </p>
                     </div>
-                    <span className="text-[13px] font-bold text-ink">{won(lineAmount(l))}</span>
+                    <span className="text-[15px] font-bold text-ink">{won(lineAmount(l))}</span>
                   </div>
                 ))}
               </div>
@@ -163,10 +163,10 @@ export default function CheckoutPage() {
             disabled={wallet.coupons === 0}
             className="flex w-full items-center justify-between border-b border-subtle py-[14px] disabled:opacity-45"
           >
-            <span className="flex items-center gap-2 text-[14px] text-ink">
+            <span className="flex items-center gap-2 text-[16px] text-ink">
               <Check on={couponCut > 0} /> 신규가입 쿠폰 {won(COUPON_AMOUNT)}원
             </span>
-            <span className="text-[13px] text-meta">
+            <span className="text-[15px] text-meta">
               {wallet.coupons === 0 ? "보유한 쿠폰 없음" : `보유 ${wallet.coupons}장`}
             </span>
           </button>
@@ -175,16 +175,16 @@ export default function CheckoutPage() {
             disabled={wallet.points === 0}
             className="flex w-full items-center justify-between py-[14px] disabled:opacity-45"
           >
-            <span className="flex items-center gap-2 text-[14px] text-ink">
+            <span className="flex items-center gap-2 text-[16px] text-ink">
               <Check on={pointCut > 0} /> 리베아 포인트 전액 사용
             </span>
-            <span className="text-[13px] text-meta">보유 {won(wallet.points)}P</span>
+            <span className="text-[15px] text-meta">보유 {won(wallet.points)}P</span>
           </button>
         </section>
 
         {/* 결제수단 */}
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="mb-[11px] text-[15px] font-bold text-ink">결제수단</h2>
+          <h2 className="mb-[11px] text-[17px] font-bold text-ink">결제수단</h2>
           {payments.map((p, i) => (
             <button key={p} onClick={() => setPayment(i)} className="flex w-full items-center gap-[9px] py-[6px]">
               <span
@@ -192,26 +192,26 @@ export default function CheckoutPage() {
                   payment === i ? "border-[5px] border-ink" : "border-[1.5px] border-line-strong"
                 }`}
               />
-              <span className={`text-[14px] ${payment === i ? "text-ink" : "text-body"}`}>{p}</span>
+              <span className={`text-[16px] ${payment === i ? "text-ink" : "text-body"}`}>{p}</span>
             </button>
           ))}
-          <p className="mt-2 text-[12px] text-meta">
+          <p className="mt-2 text-[14px] text-meta">
             지금은 시연 단계라 실제 결제는 일어나지 않아요.
           </p>
         </section>
 
         {/* 결제금액 */}
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="mb-[10px] text-[15px] font-bold text-ink">결제금액</h2>
+          <h2 className="mb-[10px] text-[17px] font-bold text-ink">결제금액</h2>
           <Row label="상품금액" value={won(itemTotal)} />
           <Row label="배송비" value={shipping === 0 ? "무료" : won(shipping)} />
           {couponCut > 0 && <Row label="쿠폰 할인" value={`-${won(couponCut)}`} rose />}
           {pointCut > 0 && <Row label="포인트 사용" value={`-${won(pointCut)}`} rose />}
           <div className="mt-[6px] flex justify-between border-t border-hairline pt-[10px]">
-            <span className="text-[15px] font-bold text-ink">최종 결제금액</span>
-            <span className="text-[19px] font-bold text-ink">{won(total)}</span>
+            <span className="text-[17px] font-bold text-ink">최종 결제금액</span>
+            <span className="text-[21px] font-bold text-ink">{won(total)}</span>
           </div>
-          <p className="mt-2 text-[13px] text-meta">
+          <p className="mt-2 text-[15px] text-meta">
             {grade} 적립 {(earnRate(grade) * 100).toFixed(1)}% ·{" "}
             <b className="font-medium text-ink">{won(Math.floor(total * earnRate(grade)))}P</b> 적립
             예정
@@ -221,7 +221,7 @@ export default function CheckoutPage() {
         {/* 동의 — 기본 해제 */}
         <button onClick={() => setAgreed((v) => !v)} className="flex w-full items-start gap-2 px-4 py-[14px] text-left">
           <Check on={agreed} />
-          <span className="text-[12px] leading-[1.5] text-meta">
+          <span className="text-[14px] leading-[1.5] text-meta">
             주문 내용을 확인했으며, 결제·개인정보 제공에 동의합니다.
           </span>
         </button>
@@ -231,7 +231,7 @@ export default function CheckoutPage() {
         <button
           onClick={pay}
           disabled={!agreed || lines.length === 0}
-          className="press h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink disabled:opacity-40"
+          className="press h-[52px] w-full rounded-cta bg-ink text-[18px] font-medium text-on-ink disabled:opacity-40"
         >
           {won(total)}원 결제하기
         </button>
@@ -242,7 +242,7 @@ export default function CheckoutPage() {
 
 function Row({ label, value, rose }: { label: string; value: string; rose?: boolean }) {
   return (
-    <div className="flex justify-between py-1 text-[13px]">
+    <div className="flex justify-between py-1 text-[15px]">
       <span className="text-meta">{label}</span>
       <span className={rose ? "text-rose" : "text-ink"}>{value}</span>
     </div>

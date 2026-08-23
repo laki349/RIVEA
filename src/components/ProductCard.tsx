@@ -30,30 +30,30 @@ export default function ProductCard({
           alt={`${brandOf(product.brand).name} ${product.name}`}
         />
         {rank !== undefined && (
-          <span className="absolute left-0 top-0 flex h-[22px] min-w-[22px] items-center justify-center bg-ink px-[6px] text-[12px] font-medium text-on-ink">
+          <span className="absolute left-0 top-0 flex h-[22px] min-w-[22px] items-center justify-center bg-ink px-[6px] text-[14px] font-medium text-on-ink">
             {rank}
           </span>
         )}
         {badge && (
-          <span className="absolute bottom-2 left-2 rounded-badge bg-ink px-[6px] py-[3px] text-[12px] font-medium text-on-ink">
+          <span className="absolute bottom-2 left-2 rounded-badge bg-ink px-[6px] py-[3px] text-[14px] font-medium text-on-ink">
             {badge}
           </span>
         )}
         <WishButton kind="product" id={product.id} variant="overlay" />
       </div>
       <div className="px-1 pb-[14px] pt-2">
-        <p className="text-[13px] font-bold text-ink">{brandOf(product.brand).name}</p>
-        <p className="mb-[5px] mt-[2px] truncate text-[13px] leading-[1.35] text-soft">
+        <p className="text-[15px] font-bold text-ink">{brandOf(product.brand).name}</p>
+        <p className="mb-[5px] mt-[2px] truncate text-[15px] leading-[1.35] text-soft">
           {modelLabel(product)}
         </p>
         <div className="mb-[6px] flex items-baseline gap-[5px]">
           {rate !== null && (
-            <span className="text-[15px] font-bold text-rose">{rate}%</span>
+            <span className="text-[17px] font-bold text-rose">{rate}%</span>
           )}
-          <span className="text-[15px] font-bold text-ink">{won(product.price)}</span>
+          <span className="text-[17px] font-bold text-ink">{won(product.price)}</span>
         </div>
         {showRating && (
-          <p className="flex items-center gap-1 text-[12px] text-meta">
+          <p className="flex items-center gap-1 text-[14px] text-meta">
             <span className="text-ink">
               <Icon name="star" size={12} />
             </span>

@@ -19,13 +19,13 @@ export default function ArticleLink({
       href={`/magazine/${article.slug}`}
       className="block border border-line px-[14px] py-[13px]"
     >
-      <p className="flex items-center gap-[6px] text-[12px] font-bold text-rose">
+      <p className="flex items-center gap-[6px] text-[14px] font-bold text-rose">
         <Icon name="sparkle" size={14} />
         {heading}
       </p>
-      <p className="mt-[7px] text-[15px] font-bold leading-[1.4] text-ink">{article.title}</p>
-      <p className="mt-[5px] text-[13px] leading-[1.6] text-soft">{article.dek}</p>
-      <p className="mt-[9px] flex items-center gap-1 text-[12px] text-meta">
+      <p className="mt-[7px] text-[17px] font-bold leading-[1.4] text-ink">{article.title}</p>
+      <p className="mt-[5px] text-[15px] leading-[1.6] text-soft">{article.dek}</p>
+      <p className="mt-[9px] flex items-center gap-1 text-[14px] text-meta">
         매거진 · {article.kind} · {article.readMinutes}분
         <Icon name="chevron-right" size={13} />
       </p>

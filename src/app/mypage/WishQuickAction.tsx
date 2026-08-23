@@ -15,7 +15,7 @@ export default function WishQuickAction() {
       <span className="text-ink">
         <Icon name="heart" size={20} className="mx-auto" />
       </span>
-      <p className="mt-[5px] text-[12px] text-body">찜 {count}</p>
+      <p className="mt-[5px] text-[14px] text-body">찜 {count}</p>
     </Link>
   );
 }

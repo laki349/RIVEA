@@ -16,7 +16,7 @@ export default function ReviewQuickAction() {
       <span className="text-ink">
         <Icon name="message" size={20} className="mx-auto" />
       </span>
-      <p className="mt-[5px] text-[12px] text-body">리뷰 {count}</p>
+      <p className="mt-[5px] text-[14px] text-body">리뷰 {count}</p>
     </Link>
   );
 }

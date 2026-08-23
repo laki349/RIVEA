@@ -32,8 +32,8 @@ export default function ActiveBars({ product }: { product: Product }) {
   if (actives.length === 0) {
     return (
       <section className="border-b border-hairline px-4 py-4">
-        <h3 className="mb-[10px] text-[16px] font-bold text-ink">성분이 하는 일</h3>
-        <p className="text-[14px] leading-[1.6] text-meta">
+        <h3 className="mb-[10px] text-[18px] font-bold text-ink">성분이 하는 일</h3>
+        <p className="text-[16px] leading-[1.6] text-meta">
           이 제품은 브랜드가 주요 성분과 함량을 공개하지 않았어요.
           <br />
           공개된 제품은 이 자리에 성분별 역할이 표시돼요.
@@ -45,8 +45,8 @@ export default function ActiveBars({ product }: { product: Product }) {
   return (
     <section className="border-b border-hairline px-4 py-4">
       <div className="mb-[10px] flex items-baseline justify-between">
-        <h3 className="text-[16px] font-bold text-ink">성분이 하는 일</h3>
-        <span className="text-[13px] text-meta">함량은 공개된 값만</span>
+        <h3 className="text-[18px] font-bold text-ink">성분이 하는 일</h3>
+        <span className="text-[15px] text-meta">함량은 공개된 값만</span>
       </div>
 
       {actives.map((a) => {
@@ -58,14 +58,14 @@ export default function ActiveBars({ product }: { product: Product }) {
           <div key={a.key} className="mb-[10px] last:mb-0">
             {/* 성분명 + 함량 + 고민 태그 한 줄 */}
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span className="flex items-center gap-[5px] text-[15px] font-bold text-ink">
+              <span className="flex items-center gap-[5px] text-[17px] font-bold text-ink">
                 <span className="text-ink">
                   <Icon name="check" size={15} />
                 </span>
                 {info.name}
               </span>
               {pct && (
-                <span className="rounded bg-subtle px-[7px] py-[2px] text-[13px] font-medium text-ink">
+                <span className="rounded bg-subtle px-[7px] py-[2px] text-[15px] font-medium text-ink">
                   {pct}
                 </span>
               )}
@@ -73,13 +73,13 @@ export default function ActiveBars({ product }: { product: Product }) {
                 <Link
                   key={slug}
                   href={`/concern/${slug}`}
-                  className="press rounded border border-line px-[8px] py-[2px] text-[13px] text-body"
+                  className="press rounded border border-line px-[8px] py-[2px] text-[15px] text-body"
                 >
                   {concernOf(slug).name}
                 </Link>
               ))}
             </div>
-            <p className="ml-[20px] mt-[2px] text-[14px] leading-[1.55] text-soft">{info.role}</p>
+            <p className="ml-[20px] mt-[2px] text-[16px] leading-[1.55] text-soft">{info.role}</p>
 
             {/*
               근거. 「효과 모르겠다」가 설문 최대 신호(72%)였고, 그 답은 더 센 카피가 아니라
@@ -89,23 +89,23 @@ export default function ActiveBars({ product }: { product: Product }) {
             {info.evidence && (
               <div className="ml-[20px] mt-[6px] border-l-2 border-subtle pl-[10px]">
                 <p className="mb-[3px] flex flex-wrap items-center gap-[6px]">
-                  <span className="rounded bg-ink px-[6px] py-[2px] text-[12px] font-medium text-on-ink">
+                  <span className="rounded bg-ink px-[6px] py-[2px] text-[14px] font-medium text-on-ink">
                     근거 {info.evidence.grade}
                   </span>
-                  <span className="text-[13px] text-meta">{gradeLabel[info.evidence.grade]}</span>
+                  <span className="text-[15px] text-meta">{gradeLabel[info.evidence.grade]}</span>
                   {info.verdictWeeks && (
-                    <span className="rounded border border-line px-[7px] py-[1px] text-[13px] text-body">
+                    <span className="rounded border border-line px-[7px] py-[1px] text-[15px] text-body">
                       {info.verdictWeeks}주쯤 판정
                     </span>
                   )}
                 </p>
-                <p className="text-[14px] leading-[1.55] text-body">{info.evidence.claim}</p>
+                <p className="text-[16px] leading-[1.55] text-body">{info.evidence.claim}</p>
                 {info.evidence.caveat && (
-                  <p className="mt-[3px] text-[13px] leading-[1.55] text-meta">
+                  <p className="mt-[3px] text-[15px] leading-[1.55] text-meta">
                     같이 알아둘 것 — {info.evidence.caveat}
                   </p>
                 )}
-                <p className="mt-[3px] text-[12px] leading-[1.5] text-meta">
+                <p className="mt-[3px] text-[14px] leading-[1.5] text-meta">
                   출처 · {info.evidence.source}
                 </p>
               </div>
@@ -114,7 +114,7 @@ export default function ActiveBars({ product }: { product: Product }) {
         );
       })}
 
-      <p className="mt-3 border-t border-subtle pt-[10px] text-[13px] leading-[1.6] text-meta">
+      <p className="mt-3 border-t border-subtle pt-[10px] text-[15px] leading-[1.6] text-meta">
         성분이 어디서 작용하는지만 적었어요. 효과는 사람마다 달라요.
         <br />
         근거는 브랜드 자체 시험을 빼고 동료심사 논문만 씁니다. 정리가 안 끝난 성분은 비워뒀어요.

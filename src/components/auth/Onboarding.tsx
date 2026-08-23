@@ -93,7 +93,7 @@ export default function Onboarding() {
             onClick={skipAhead}
             className="flex h-full w-1/3 flex-col justify-center px-8"
           >
-            <p className="text-[13px] font-bold tracking-[0.16em] text-meta">RIVEA</p>
+            <p className="text-[15px] font-bold tracking-[0.16em] text-meta">RIVEA</p>
             <h2 className="mt-3 text-[30px] font-bold leading-[1.35] text-ink">
               <b className="font-bold">매거진 커머스</b>
               <br />
@@ -101,12 +101,12 @@ export default function Onboarding() {
               <br />
               한자리에
             </h2>
-            <p className="mt-[18px] text-[16px] leading-[1.7] text-soft">
+            <p className="mt-[18px] text-[18px] leading-[1.7] text-soft">
               성분과 나이에 맞는 관리법을 읽고,
               <br />
               그에 맞는 상품을 바로 고르세요.
             </p>
-            <p className="mt-8 text-[14px] text-disabled">화면을 누르면 넘어가요</p>
+            <p className="mt-8 text-[16px] text-disabled">화면을 누르면 넘어가요</p>
           </section>
 
           {/* 3 — 로그인 */}

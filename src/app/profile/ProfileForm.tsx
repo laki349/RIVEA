@@ -42,8 +42,8 @@ export default function ProfileForm() {
     <>
       <main className="flex-1 pb-2">
       <section className="border-b border-hairline px-4 pb-5 pt-[18px]">
-        <h2 className="text-[19px] font-bold text-ink">어떤 점이 가장 신경 쓰이세요?</h2>
-        <p className="mt-2 text-[15px] leading-[1.6] text-body">
+        <h2 className="text-[21px] font-bold text-ink">어떤 점이 가장 신경 쓰이세요?</h2>
+        <p className="mt-2 text-[17px] leading-[1.6] text-body">
           고르신 고민을 홈 맨 앞에 두고, 맞는 루틴을 먼저 보여드려요.
           <br />
           여러 개 고르셔도 되고, 먼저 고른 순서대로 반영돼요.
@@ -69,13 +69,13 @@ export default function ProfileForm() {
                     alt={c.name}
                   />
                   {on && (
-                    <span className="animate-pop absolute -right-[5px] -top-[5px] flex h-[20px] w-[20px] items-center justify-center rounded-full bg-ink text-[12px] font-bold text-on-ink">
+                    <span className="animate-pop absolute -right-[5px] -top-[5px] flex h-[20px] w-[20px] items-center justify-center rounded-full bg-ink text-[14px] font-bold text-on-ink">
                       {order}
                     </span>
                   )}
                 </span>
                 <span
-                  className={`mt-[7px] text-center text-[14px] leading-[1.3] ${
+                  className={`mt-[7px] text-center text-[16px] leading-[1.3] ${
                     on ? "font-bold text-ink" : "text-body"
                   }`}
                 >
@@ -88,8 +88,8 @@ export default function ProfileForm() {
       </section>
 
       <section className="border-b border-hairline px-4 pb-5 pt-[18px]">
-        <h2 className="text-[19px] font-bold text-ink">연령대를 알려주세요</h2>
-        <p className="mt-2 text-[15px] leading-[1.6] text-body">
+        <h2 className="text-[21px] font-bold text-ink">연령대를 알려주세요</h2>
+        <p className="mt-2 text-[17px] leading-[1.6] text-body">
           같은 연령대에서 많이 보는 상품을 기본으로 보여드려요.
         </p>
         <div className="mt-4 flex gap-2">
@@ -100,7 +100,7 @@ export default function ProfileForm() {
                 key={a.key}
                 onClick={() => setCohort(on ? null : a.key)}
                 aria-pressed={on}
-                className={`press h-12 flex-1 rounded border text-[15px] ${
+                className={`press h-12 flex-1 rounded border text-[17px] ${
                   on
                     ? "border-ink bg-ink font-medium text-on-ink"
                     : "border-line bg-surface text-body"
@@ -117,7 +117,7 @@ export default function ProfileForm() {
       <section className="px-4 py-5">
         {hasProfile(profile) ? (
           <>
-            <p className="text-[15px] leading-[1.7] text-ink">
+            <p className="text-[17px] leading-[1.7] text-ink">
               {picked.length > 0 && (
                 <>
                   홈에서{" "}
@@ -144,13 +144,13 @@ export default function ProfileForm() {
                 실수로 눌리지 않게 스크롤 끝에 두는 게 맞다 */}
             <button
               onClick={clearProfile}
-              className="press mt-5 h-12 w-full rounded-cta border border-line text-[15px] font-medium text-body"
+              className="press mt-5 h-12 w-full rounded-cta border border-line text-[17px] font-medium text-body"
             >
               설정 지우기
             </button>
           </>
         ) : (
-          <p className="text-[15px] leading-[1.7] text-meta">
+          <p className="text-[17px] leading-[1.7] text-meta">
             아직 고른 고민이 없어요. 하나만 골라도 홈이 달라져요.
           </p>
         )}
@@ -163,13 +163,13 @@ export default function ProfileForm() {
           <div className="flex gap-2">
             <button
               onClick={() => router.push("/")}
-              className="press h-[52px] flex-1 rounded-cta border border-ink text-[15px] font-medium text-ink"
+              className="press h-[52px] flex-1 rounded-cta border border-ink text-[17px] font-medium text-ink"
             >
               설정 완료
             </button>
             <button
               onClick={() => router.push("/my-routine")}
-              className="press flex h-[52px] flex-1 items-center justify-center gap-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
+              className="press flex h-[52px] flex-1 items-center justify-center gap-1 rounded-cta bg-ink text-[17px] font-medium text-on-ink"
             >
               내 루틴 보기
               <Icon name="chevron-right" size={17} />
@@ -178,12 +178,12 @@ export default function ProfileForm() {
         ) : (
           <button
             disabled
-            className="h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink opacity-40"
+            className="h-[52px] w-full rounded-cta bg-ink text-[18px] font-medium text-on-ink opacity-40"
           >
             고민을 하나 이상 골라주세요
           </button>
         )}
-        <p className="mt-2 text-center text-[13px] text-meta">
+        <p className="mt-2 text-center text-[15px] text-meta">
           {done ? `고민 ${picked.length}개가 저장됐어요` : "고르는 즉시 저장돼요"}
         </p>
       </div>

@@ -49,11 +49,11 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
 
         {/* 인트로 + 관리 포인트 */}
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="text-[18px] font-bold leading-[1.4] text-ink">{concern.question}</h2>
-          <p className="mt-2 text-[14px] leading-[1.65] text-body">{concern.intro}</p>
+          <h2 className="text-[20px] font-bold leading-[1.4] text-ink">{concern.question}</h2>
+          <p className="mt-2 text-[16px] leading-[1.65] text-body">{concern.intro}</p>
           <div className="mt-3">
             {concern.tips.map((t) => (
-              <p key={t.bold} className="flex items-start gap-[9px] py-[6px] text-[14px] leading-[1.5] text-ink">
+              <p key={t.bold} className="flex items-start gap-[9px] py-[6px] text-[16px] leading-[1.5] text-ink">
                 <span className="mt-[1px] flex-shrink-0">
                   <Icon name="check" size={17} />
                 </span>
@@ -75,11 +75,11 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
           ⚠️ 진단이 아니다. 증상을 단정하지 않고 관찰 가능한 상황으로만 쓴다.
         */}
         <section className="border-b border-hairline bg-subtle px-4 py-4">
-          <h3 className="mb-[9px] text-[16px] font-bold text-ink">이런 경우예요</h3>
+          <h3 className="mb-[9px] text-[18px] font-bold text-ink">이런 경우예요</h3>
           {concern.youIf.map((line) => (
             <p
               key={line}
-              className="flex items-start gap-[9px] py-[5px] text-[14px] leading-[1.55] text-body"
+              className="flex items-start gap-[9px] py-[5px] text-[16px] leading-[1.55] text-body"
             >
               <span className="mt-[1px] flex-shrink-0 text-ink">
                 <Icon name="check" size={17} />
@@ -87,7 +87,7 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
               <span>{line}</span>
             </p>
           ))}
-          <p className="mt-[8px] text-[13px] leading-[1.55] text-meta">
+          <p className="mt-[8px] text-[15px] leading-[1.55] text-meta">
             해당하는 게 하나도 없으면 다른 고민일 수 있어요. 진단이 아니라 방향을 잡는 문장입니다.
           </p>
         </section>
@@ -99,12 +99,12 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
         */}
         <section className="border-b border-hairline px-4 py-4">
           <div className="mb-[7px] flex flex-wrap items-center gap-2">
-            <h3 className="text-[16px] font-bold text-ink">언제 판정하나</h3>
-            <span className="rounded bg-ink px-[7px] py-[2px] text-[13px] font-medium text-on-ink">
+            <h3 className="text-[18px] font-bold text-ink">언제 판정하나</h3>
+            <span className="rounded bg-ink px-[7px] py-[2px] text-[15px] font-medium text-on-ink">
               {concern.verdictAt.weeks}주
             </span>
           </div>
-          <p className="text-[14px] leading-[1.6] text-body">{concern.verdictAt.what}</p>
+          <p className="text-[16px] leading-[1.6] text-body">{concern.verdictAt.what}</p>
         </section>
 
         {/*
@@ -113,18 +113,18 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
         */}
         {concern.knownWords.length > 0 && (
           <section className="border-b border-hairline px-4 py-4">
-            <h3 className="mb-[9px] text-[16px] font-bold text-ink">이 고민에서 자주 듣는 성분</h3>
+            <h3 className="mb-[9px] text-[18px] font-bold text-ink">이 고민에서 자주 듣는 성분</h3>
             <div className="flex flex-wrap gap-[6px]">
               {concern.knownWords.map((w) => (
                 <span
                   key={w}
-                  className="rounded border border-line px-[10px] py-[5px] text-[14px] text-body"
+                  className="rounded border border-line px-[10px] py-[5px] text-[16px] text-body"
                 >
                   {w}
                 </span>
               ))}
             </div>
-            <p className="mt-[9px] text-[13px] leading-[1.55] text-meta">
+            <p className="mt-[9px] text-[15px] leading-[1.55] text-meta">
               성분별 근거와 판정 시점은 각 상품 상세의 「성분이 하는 일」에 있어요.
             </p>
           </section>
@@ -143,10 +143,10 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
         {concernRoutines.length > 0 && (
           <section className="border-b border-hairline">
             <div className="flex items-baseline justify-between px-4 pb-3 pt-4">
-              <h3 className="text-[16px] font-bold text-ink">
+              <h3 className="text-[18px] font-bold text-ink">
                 이 고민엔, 이 루틴 <span className="text-rose">{concernRoutines.length}</span>
               </h3>
-              <span className="text-[13px] text-meta">전체보기 ›</span>
+              <span className="text-[15px] text-meta">전체보기 ›</span>
             </div>
             <div className="rail flex gap-[11px] pb-4 pl-4 pr-4">
               {concernRoutines.map((r) => (
@@ -158,13 +158,13 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
 
         {/* 관련 단품 */}
         <section>
-          <h3 className="px-4 pb-[10px] pt-4 text-[16px] font-bold text-ink">
+          <h3 className="px-4 pb-[10px] pt-4 text-[18px] font-bold text-ink">
             {concern.name} 단품
           </h3>
           <div className="rail flex gap-[6px] whitespace-nowrap px-4 pb-3">
             <button
               onClick={() => setCat(null)}
-              className={`min-h-[34px] rounded border px-[11px] text-[13px] ${
+              className={`min-h-[34px] rounded border px-[11px] text-[15px] ${
                 cat === null ? "border-ink text-ink" : "border-line text-body"
               }`}
             >
@@ -174,7 +174,7 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
               <button
                 key={c.slug}
                 onClick={() => setCat(c.slug)}
-                className={`min-h-[34px] rounded border px-[11px] text-[13px] ${
+                className={`min-h-[34px] rounded border px-[11px] text-[15px] ${
                   cat === c.slug ? "border-ink text-ink" : "border-line text-body"
                 }`}
               >

@@ -134,7 +134,7 @@ export default function ProductList({ slug }: { slug: Category }) {
             <span
               key={c.slug}
               ref={activeRef}
-              className="border-l-2 border-ink pl-3 text-[14px] font-bold text-ink"
+              className="border-l-2 border-ink pl-3 text-[16px] font-bold text-ink"
             >
               {c.name}
             </span>
@@ -142,7 +142,7 @@ export default function ProductList({ slug }: { slug: Category }) {
             <Link
               key={c.slug}
               href={`/category/${c.slug}`}
-              className="border-l-2 border-transparent pl-3 text-[14px] text-meta"
+              className="border-l-2 border-transparent pl-3 text-[16px] text-meta"
             >
               {c.name}
             </Link>
@@ -156,7 +156,7 @@ export default function ProductList({ slug }: { slug: Category }) {
           <button
             key={s}
             onClick={() => setSub(s)}
-            className={`text-[13px] ${sub === s ? "font-bold text-ink" : "text-meta"}`}
+            className={`text-[15px] ${sub === s ? "font-bold text-ink" : "text-meta"}`}
           >
             {s}
           </button>
@@ -168,29 +168,29 @@ export default function ProductList({ slug }: { slug: Category }) {
         <div className="flex gap-[6px]">
           <button
             onClick={() => setSheet("concern")}
-            className={`flex min-h-[34px] items-center gap-[3px] rounded border px-[10px] text-[12px] ${
+            className={`flex min-h-[34px] items-center gap-[3px] rounded border px-[10px] text-[14px] ${
               concern ? "border-ink font-medium text-ink" : "border-line text-body"
             }`}
           >
             {concernName ?? "고민"} <Icon name="chevron-down" size={13} />
           </button>
-          <button className="flex min-h-[34px] items-center gap-[3px] rounded border border-line px-[10px] text-[12px] text-body">
+          <button className="flex min-h-[34px] items-center gap-[3px] rounded border border-line px-[10px] text-[14px] text-body">
             성분 <Icon name="chevron-down" size={13} />
           </button>
-          <button className="flex min-h-[34px] items-center gap-[3px] rounded border border-line px-[10px] text-[12px] text-body">
+          <button className="flex min-h-[34px] items-center gap-[3px] rounded border border-line px-[10px] text-[14px] text-body">
             가격 <Icon name="chevron-down" size={13} />
           </button>
         </div>
         <button
           onClick={() => setSheet("sort")}
-          className="flex min-h-[34px] items-center gap-[2px] text-[13px] font-medium text-ink"
+          className="flex min-h-[34px] items-center gap-[2px] text-[15px] font-medium text-ink"
         >
           {sorts.find((s) => s.key === sort)!.label} <Icon name="chevron-down" size={14} />
         </button>
       </div>
 
       {/* 개수 */}
-      <p className="border-b border-hairline px-[14px] py-[9px] text-[13px] text-meta">
+      <p className="border-b border-hairline px-[14px] py-[9px] text-[15px] text-meta">
         총 {won(list.length)}개
       </p>
 
@@ -198,11 +198,11 @@ export default function ProductList({ slug }: { slug: Category }) {
       <main className="flex-1">
         {list.length === 0 ? (
           <div className="px-4 py-16 text-center">
-            <p className="text-[15px] font-bold text-ink">조건에 맞는 상품이 아직 없어요</p>
-            <p className="mt-2 text-[13px] text-meta">필터를 바꾸거나 다른 고민을 선택해 보세요.</p>
+            <p className="text-[17px] font-bold text-ink">조건에 맞는 상품이 아직 없어요</p>
+            <p className="mt-2 text-[15px] text-meta">필터를 바꾸거나 다른 고민을 선택해 보세요.</p>
             <button
               onClick={() => setConcern(null)}
-              className="mt-5 h-11 rounded border border-ink px-5 text-[14px] font-medium text-ink"
+              className="mt-5 h-11 rounded border border-ink px-5 text-[16px] font-medium text-ink"
             >
               필터 초기화
             </button>
@@ -239,7 +239,7 @@ export default function ProductList({ slug }: { slug: Category }) {
               closing ? "animate-sheet-down" : "animate-sheet-up"
             }`}
           >
-            <p className="pb-3 text-[15px] font-bold text-ink">
+            <p className="pb-3 text-[17px] font-bold text-ink">
               {sheet === "concern" ? "고민 선택" : "정렬"}
             </p>
             {sheet === "concern" ? (
@@ -249,7 +249,7 @@ export default function ProductList({ slug }: { slug: Category }) {
                     setConcern(null);
                     closeSheet();
                   }}
-                  className={`min-h-[40px] rounded border px-[14px] text-[13px] ${
+                  className={`min-h-[40px] rounded border px-[14px] text-[15px] ${
                     concern === null ? "border-ink bg-ink text-on-ink" : "border-line text-body"
                   }`}
                 >
@@ -262,7 +262,7 @@ export default function ProductList({ slug }: { slug: Category }) {
                       setConcern(c.slug);
                       closeSheet();
                     }}
-                    className={`min-h-[40px] rounded border px-[14px] text-[13px] ${
+                    className={`min-h-[40px] rounded border px-[14px] text-[15px] ${
                       concern === c.slug ? "border-ink bg-ink text-on-ink" : "border-line text-body"
                     }`}
                   >
@@ -279,7 +279,7 @@ export default function ProductList({ slug }: { slug: Category }) {
                       setSort(s.key);
                       closeSheet();
                     }}
-                    className={`flex min-h-[46px] w-full items-center justify-between text-[14px] ${
+                    className={`flex min-h-[46px] w-full items-center justify-between text-[16px] ${
                       sort === s.key ? "font-bold text-ink" : "text-body"
                     }`}
                   >

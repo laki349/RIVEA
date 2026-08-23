@@ -31,13 +31,13 @@ export default function RecentList() {
         <span className="text-disabled">
           <Icon name="eye" size={44} />
         </span>
-        <p className="mt-4 text-[16px] font-bold text-ink">최근 본 상품이 없어요</p>
-        <p className="mt-2 text-center text-[15px] leading-[1.6] text-meta">
+        <p className="mt-4 text-[18px] font-bold text-ink">최근 본 상품이 없어요</p>
+        <p className="mt-2 text-center text-[17px] leading-[1.6] text-meta">
           둘러본 상품이 여기에 순서대로 쌓여요.
         </p>
         <Link
           href="/"
-          className="press mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[15px] font-medium text-ink"
+          className="press mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[17px] font-medium text-ink"
         >
           홈에서 둘러보기
         </Link>
@@ -48,8 +48,8 @@ export default function RecentList() {
   return (
     <main className="flex-1">
       <div className="flex items-center justify-between px-4 pb-1 pt-4">
-        <p className="text-[15px] font-bold text-ink">최근 본 순서예요</p>
-        <button onClick={clearRecent} className="press py-1 pl-3 text-[14px] text-meta">
+        <p className="text-[17px] font-bold text-ink">최근 본 순서예요</p>
+        <button onClick={clearRecent} className="press py-1 pl-3 text-[16px] text-meta">
           전체 삭제
         </button>
       </div>
@@ -86,17 +86,17 @@ function RoutineTile({ id }: { id: string }) {
             src={routineImage(r.id)}
             alt={r.title}
           />
-          <span className="absolute left-2 top-2 rounded bg-ink px-[7px] py-[3px] text-[12px] font-medium text-on-ink">
+          <span className="absolute left-2 top-2 rounded bg-ink px-[7px] py-[3px] text-[14px] font-medium text-on-ink">
             {r.badge}
           </span>
         </div>
-        <p className="mt-[7px] text-[12px] font-bold text-rose">{r.label}</p>
-        <p className="mt-[2px] line-clamp-2 text-[14px] font-medium leading-[1.35] text-ink">
+        <p className="mt-[7px] text-[14px] font-bold text-rose">{r.label}</p>
+        <p className="mt-[2px] line-clamp-2 text-[16px] font-medium leading-[1.35] text-ink">
           {r.title}
         </p>
         <div className="mt-1 flex items-baseline gap-[5px]">
-          {rate !== null && <span className="text-[14px] font-bold text-rose">{rate}%</span>}
-          <span className="text-[15px] font-bold text-ink">{won(r.price)}</span>
+          {rate !== null && <span className="text-[16px] font-bold text-rose">{rate}%</span>}
+          <span className="text-[17px] font-bold text-ink">{won(r.price)}</span>
         </div>
       </Link>
       <div className="absolute bottom-[76px] right-1">

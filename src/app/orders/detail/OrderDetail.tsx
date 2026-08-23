@@ -56,15 +56,15 @@ export default function OrderDetail() {
           <span className="text-disabled">
             <Icon name="truck" size={44} />
           </span>
-          <p className="mt-4 text-[16px] font-bold text-ink">주문을 찾을 수 없어요</p>
-          <p className="mt-2 text-[15px] leading-[1.6] text-meta">
+          <p className="mt-4 text-[18px] font-bold text-ink">주문을 찾을 수 없어요</p>
+          <p className="mt-2 text-[17px] leading-[1.6] text-meta">
             주문은 주문하신 기기에만 저장돼요.
             <br />
             다른 기기나 시크릿 창에서는 보이지 않아요.
           </p>
           <Link
             href="/orders"
-            className="mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[15px] font-medium text-ink"
+            className="mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[17px] font-medium text-ink"
           >
             주문 내역으로
           </Link>
@@ -86,10 +86,10 @@ export default function OrderDetail() {
       <main className="flex-1">
         {/* 상태 */}
         <section className="border-b border-hairline px-4 py-4">
-          <p className={`text-[19px] font-bold ${cancelled ? "text-meta" : "text-ink"}`}>
+          <p className={`text-[21px] font-bold ${cancelled ? "text-meta" : "text-ink"}`}>
             {statusLabel[status]}
           </p>
-          <p className="mt-[3px] text-[14px] text-body">
+          <p className="mt-[3px] text-[16px] text-body">
             {cancelled
               ? "취소가 접수됐어요. 결제 취소는 카드사에 따라 3~5일 걸려요."
               : status === "delivered"
@@ -114,7 +114,7 @@ export default function OrderDetail() {
                     )}
                   </div>
                   <p
-                    className={`mt-[6px] text-[12px] ${
+                    className={`mt-[6px] text-[14px] ${
                       i <= stepIndex ? "font-medium text-ink" : "text-meta"
                     }`}
                   >
@@ -135,12 +135,12 @@ export default function OrderDetail() {
 
         {/* 주문상품 */}
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="mb-[11px] text-[15px] font-bold text-ink">
+          <h2 className="mb-[11px] text-[17px] font-bold text-ink">
             주문상품 {order.lines.length}
           </h2>
           {groups.map((g, gi) => (
             <div key={g.group} className={gi < groups.length - 1 ? "mb-[14px]" : ""}>
-              <p className="mb-2 text-[13px] font-bold text-ink">{groupLabel(g.group).name}</p>
+              <p className="mb-2 text-[15px] font-bold text-ink">{groupLabel(g.group).name}</p>
               {g.lines.map((l) => (
                 <div key={l.key} className="pb-2">
                   <Link
@@ -154,12 +154,12 @@ export default function OrderDetail() {
                       alt={l.name}
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="text-[14px] text-ink">{l.name}</p>
-                      <p className="mt-[2px] text-[13px] text-meta">
+                      <p className="text-[16px] text-ink">{l.name}</p>
+                      <p className="mt-[2px] text-[15px] text-meta">
                         {l.option} · {l.qty}개
                       </p>
                     </div>
-                    <span className="text-[14px] font-bold text-ink">{won(l.amount)}</span>
+                    <span className="text-[16px] font-bold text-ink">{won(l.amount)}</span>
                   </Link>
 
                   {/*
@@ -178,16 +178,16 @@ export default function OrderDetail() {
 
         {/* 배송지 */}
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="mb-[9px] text-[15px] font-bold text-ink">배송지</h2>
-          <p className="text-[14px] font-medium text-ink">
+          <h2 className="mb-[9px] text-[17px] font-bold text-ink">배송지</h2>
+          <p className="text-[16px] font-medium text-ink">
             {order.receiver.name} · {order.receiver.phone}
           </p>
-          <p className="mt-[3px] text-[14px] leading-[1.5] text-body">{order.receiver.address}</p>
+          <p className="mt-[3px] text-[16px] leading-[1.5] text-body">{order.receiver.address}</p>
         </section>
 
         {/* 결제금액 */}
         <section className="border-b border-hairline px-4 py-4">
-          <h2 className="mb-[10px] text-[15px] font-bold text-ink">결제금액</h2>
+          <h2 className="mb-[10px] text-[17px] font-bold text-ink">결제금액</h2>
           <Row label="상품금액" value={`${won(order.itemTotal)}원`} />
           <Row label="배송비" value={order.shipping === 0 ? "무료" : `${won(order.shipping)}원`} />
           {order.couponCut > 0 && (
@@ -200,10 +200,10 @@ export default function OrderDetail() {
             <Row label="포인트 적립" value={`+${won(order.earned)}P`} />
           )}
           <div className="mt-[6px] flex justify-between border-t border-hairline pt-[10px]">
-            <span className="text-[15px] font-bold text-ink">
+            <span className="text-[17px] font-bold text-ink">
               {cancelled ? "취소 금액" : "총 결제금액"}
             </span>
-            <span className="text-[19px] font-bold text-ink">{won(order.total)}원</span>
+            <span className="text-[21px] font-bold text-ink">{won(order.total)}원</span>
           </div>
         </section>
 
@@ -212,14 +212,14 @@ export default function OrderDetail() {
           <div className="px-4 py-4">
             {asking ? (
               <div className="animate-rise rounded border border-line p-[14px]">
-                <p className="text-[15px] font-medium text-ink">이 주문을 취소할까요?</p>
-                <p className="mt-1 text-[14px] leading-[1.5] text-body">
+                <p className="text-[17px] font-medium text-ink">이 주문을 취소할까요?</p>
+                <p className="mt-1 text-[16px] leading-[1.5] text-body">
                   브랜드가 상품을 넘기기 전까지만 바로 취소할 수 있어요.
                 </p>
                 <div className="mt-3 flex gap-2">
                   <button
                     onClick={() => setAsking(false)}
-                    className="press h-12 flex-1 rounded-cta border border-line text-[15px] font-medium text-body"
+                    className="press h-12 flex-1 rounded-cta border border-line text-[17px] font-medium text-body"
                   >
                     유지하기
                   </button>
@@ -234,7 +234,7 @@ export default function OrderDetail() {
                       });
                       setAsking(false);
                     }}
-                    className="press h-12 flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink"
+                    className="press h-12 flex-1 rounded-cta bg-ink text-[17px] font-medium text-on-ink"
                   >
                     주문 취소
                   </button>
@@ -243,7 +243,7 @@ export default function OrderDetail() {
             ) : (
               <button
                 onClick={() => setAsking(true)}
-                className="press h-12 w-full rounded-cta border border-line text-[15px] font-medium text-body"
+                className="press h-12 w-full rounded-cta border border-line text-[17px] font-medium text-body"
               >
                 주문 취소
               </button>
@@ -258,7 +258,7 @@ export default function OrderDetail() {
 
 function Row({ label, value, rose }: { label: string; value: string; rose?: boolean }) {
   return (
-    <div className="flex justify-between gap-4 py-1 text-[14px]">
+    <div className="flex justify-between gap-4 py-1 text-[16px]">
       <span className="text-meta">{label}</span>
       <span className={rose ? "text-rose" : "text-ink"}>{value}</span>
     </div>

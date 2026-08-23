@@ -170,10 +170,10 @@ export default function HeroCarousel() {
               position={s.position ?? "center"}
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(28,24,21,0.74)] to-transparent px-4 pb-4 pt-10">
-              <p className="whitespace-pre-line text-[22px] font-bold leading-[1.3] text-white">
+              <p className="whitespace-pre-line text-[24px] font-bold leading-[1.3] text-white">
                 {s.title}
               </p>
-              <p className="mt-[6px] text-[14px] text-[#EDE7DF]">{s.sub}</p>
+              <p className="mt-[6px] text-[16px] text-[#EDE7DF]">{s.sub}</p>
             </div>
           </Link>
         ))}
@@ -194,7 +194,7 @@ export default function HeroCarousel() {
         */
         className="press absolute right-1 top-0 flex h-11 items-center px-2"
       >
-        <span className="flex h-[20px] items-center gap-[3px] rounded bg-[rgba(28,24,21,0.42)] px-[6px] text-[12px] font-medium text-white/90">
+        <span className="flex h-[20px] items-center gap-[3px] rounded bg-[rgba(28,24,21,0.42)] px-[6px] text-[14px] font-medium text-white/90">
           <Icon name={paused ? "play" : "pause"} size={10} />
           {index + 1} / {slides.length}
         </span>

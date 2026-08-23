@@ -41,12 +41,12 @@ export default function ReviewForm({
               setText(existing.text);
               setOpen(true);
             }}
-            className="press py-1 pl-3 text-[14px] text-meta"
+            className="press py-1 pl-3 text-[16px] text-meta"
           >
             수정
           </button>
         </div>
-        <p className="mt-[6px] whitespace-pre-line text-[14px] leading-[1.55] text-body">
+        <p className="mt-[6px] whitespace-pre-line text-[16px] leading-[1.55] text-body">
           {existing.text}
         </p>
       </div>
@@ -57,7 +57,7 @@ export default function ReviewForm({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="press mt-2 h-11 w-full rounded border border-ink text-[15px] font-medium text-ink"
+        className="press mt-2 h-11 w-full rounded border border-ink text-[17px] font-medium text-ink"
       >
         리뷰 쓰기
       </button>
@@ -68,14 +68,14 @@ export default function ReviewForm({
 
   return (
     <div className="animate-rise mt-2 rounded border border-line p-[14px]">
-      <p className="text-[15px] font-medium text-ink">{productName}</p>
+      <p className="text-[17px] font-medium text-ink">{productName}</p>
 
       <div className="mt-2 flex items-center gap-2">
         {/* 음수 마진 — 별 버튼의 44px 여백이 카드 안쪽 정렬을 밀어내지 않게 */}
         <span className="-ml-[11px]">
           <StarRating value={rating} onChange={setRating} />
         </span>
-        <span className="text-[14px] text-meta">{rating}점</span>
+        <span className="text-[16px] text-meta">{rating}점</span>
       </div>
 
       <textarea
@@ -84,16 +84,16 @@ export default function ReviewForm({
         rows={4}
         placeholder="어떻게 쓰셨는지, 어떤 점이 좋고 아쉬웠는지 적어주세요."
         aria-label="리뷰 내용"
-        className="mt-2 w-full resize-none rounded border border-line px-3 py-[10px] text-[15px] leading-[1.6] text-ink placeholder:text-meta"
+        className="mt-2 w-full resize-none rounded border border-line px-3 py-[10px] text-[17px] leading-[1.6] text-ink placeholder:text-meta"
       />
-      <p className="mt-1 text-[13px] text-meta">
+      <p className="mt-1 text-[15px] text-meta">
         {tooShort ? `${10 - text.trim().length}자 더 쓰면 등록할 수 있어요` : `${text.trim().length}자`}
       </p>
 
       <div className="mt-3 flex gap-2">
         <button
           onClick={() => setOpen(false)}
-          className="press h-12 flex-1 rounded-cta border border-line text-[15px] font-medium text-body"
+          className="press h-12 flex-1 rounded-cta border border-line text-[17px] font-medium text-body"
         >
           취소
         </button>
@@ -103,7 +103,7 @@ export default function ReviewForm({
             saveReview({ productId, orderNo, rating, text: text.trim() });
             setOpen(false);
           }}
-          className="press h-12 flex-1 rounded-cta bg-ink text-[15px] font-medium text-on-ink disabled:opacity-40"
+          className="press h-12 flex-1 rounded-cta bg-ink text-[17px] font-medium text-on-ink disabled:opacity-40"
         >
           {existing ? "수정하기" : "등록하기"}
         </button>
@@ -116,7 +116,7 @@ export default function ReviewForm({
             setOpen(false);
             setText("");
           }}
-          className="press mt-2 h-11 w-full text-[14px] text-meta"
+          className="press mt-2 h-11 w-full text-[16px] text-meta"
         >
           리뷰 삭제
         </button>

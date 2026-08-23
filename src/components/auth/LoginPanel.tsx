@@ -62,10 +62,10 @@ export default function LoginPanel({
   return (
     <div className={`flex flex-col px-6 ${compact ? "pt-8" : "pt-12"} pb-8`}>
       <p className="text-[26px] font-bold tracking-[0.05em] text-rose">RIVEA</p>
-      <h1 className="mt-4 text-[22px] font-bold leading-[1.35] text-ink">
+      <h1 className="mt-4 text-[24px] font-bold leading-[1.35] text-ink">
         {mode === "signin" ? "다시 오셨네요" : "리베아 시작하기"}
       </h1>
-      <p className="mt-[7px] text-[15px] leading-[1.6] text-soft">
+      <p className="mt-[7px] text-[17px] leading-[1.6] text-soft">
         {mode === "signin"
           ? "주문내역과 찜한 상품을 이어서 볼 수 있어요."
           : "이메일만 있으면 바로 시작할 수 있어요."}
@@ -82,7 +82,7 @@ export default function LoginPanel({
               setError("");
             }}
             aria-selected={mode === m}
-            className={`min-h-[44px] pb-[9px] text-[15px] ${
+            className={`min-h-[44px] pb-[9px] text-[17px] ${
               mode === m ? "border-b-2 border-ink font-bold text-ink" : "text-meta"
             }`}
           >
@@ -94,7 +94,7 @@ export default function LoginPanel({
       <form onSubmit={submit} className="mt-5">
         {mode === "signup" && (
           <div className="mb-4">
-            <label htmlFor="auth-name" className="block text-[14px] font-medium text-ink">
+            <label htmlFor="auth-name" className="block text-[16px] font-medium text-ink">
               이름 <span className="font-normal text-meta">(선택)</span>
             </label>
             <input
@@ -104,13 +104,13 @@ export default function LoginPanel({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="김서연"
-              className="mt-[7px] h-[52px] w-full rounded border border-line px-[13px] text-[16px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none"
+              className="mt-[7px] h-[52px] w-full rounded border border-line px-[13px] text-[18px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none"
             />
           </div>
         )}
 
         <div className="mb-4">
-          <label htmlFor="auth-email" className="block text-[14px] font-medium text-ink">
+          <label htmlFor="auth-email" className="block text-[16px] font-medium text-ink">
             이메일
           </label>
           <input
@@ -122,12 +122,12 @@ export default function LoginPanel({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="rivea@example.com"
-            className="mt-[7px] h-[52px] w-full rounded border border-line px-[13px] text-[16px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none"
+            className="mt-[7px] h-[52px] w-full rounded border border-line px-[13px] text-[18px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none"
           />
         </div>
 
         <div>
-          <label htmlFor="auth-pw" className="block text-[14px] font-medium text-ink">
+          <label htmlFor="auth-pw" className="block text-[16px] font-medium text-ink">
             비밀번호
           </label>
           <div className="relative mt-[7px]">
@@ -139,7 +139,7 @@ export default function LoginPanel({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={mode === "signup" ? "6자 이상" : ""}
-              className="h-[52px] w-full rounded border border-line pl-[13px] pr-[52px] text-[16px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none"
+              className="h-[52px] w-full rounded border border-line pl-[13px] pr-[52px] text-[18px] text-ink placeholder:text-disabled focus:border-ink focus:outline-none"
             />
             <button
               type="button"
@@ -151,7 +151,7 @@ export default function LoginPanel({
             </button>
           </div>
           {mode === "signup" && (
-            <p className="mt-[6px] text-[13px] text-meta">6자 이상으로 정해 주세요.</p>
+            <p className="mt-[6px] text-[15px] text-meta">6자 이상으로 정해 주세요.</p>
           )}
         </div>
 
@@ -160,7 +160,7 @@ export default function LoginPanel({
           <p
             role="alert"
             aria-live="polite"
-            className="mt-4 flex items-start gap-[7px] rounded bg-subtle px-[12px] py-[10px] text-[14px] leading-[1.55] text-ink"
+            className="mt-4 flex items-start gap-[7px] rounded bg-subtle px-[12px] py-[10px] text-[16px] leading-[1.55] text-ink"
           >
             <span className="mt-[2px] flex-shrink-0 text-rose">
               <Icon name="bell" size={15} />
@@ -172,7 +172,7 @@ export default function LoginPanel({
         <button
           type="submit"
           disabled={disabled}
-          className="mt-6 h-[52px] w-full rounded-cta bg-ink text-[16px] font-medium text-on-ink disabled:opacity-50"
+          className="mt-6 h-[52px] w-full rounded-cta bg-ink text-[18px] font-medium text-on-ink disabled:opacity-50"
         >
           {busy === "email" ? "확인 중…" : mode === "signin" ? "로그인" : "가입하고 시작하기"}
         </button>
@@ -181,7 +181,7 @@ export default function LoginPanel({
       {/* 구분 */}
       <div className="my-5 flex items-center gap-3">
         <span className="h-px flex-1 bg-line" />
-        <span className="text-[13px] text-meta">또는</span>
+        <span className="text-[15px] text-meta">또는</span>
         <span className="h-px flex-1 bg-line" />
       </div>
 
@@ -189,7 +189,7 @@ export default function LoginPanel({
         type="button"
         onClick={() => run("google", signInWithGoogle)}
         disabled={disabled}
-        className="flex h-[52px] w-full items-center justify-center gap-[9px] rounded-cta border border-line-strong text-[15px] font-medium text-ink disabled:opacity-50"
+        className="flex h-[52px] w-full items-center justify-center gap-[9px] rounded-cta border border-line-strong text-[17px] font-medium text-ink disabled:opacity-50"
       >
         <GoogleMark />
         {busy === "google" ? "확인 중…" : "구글로 계속하기"}
@@ -199,11 +199,11 @@ export default function LoginPanel({
         type="button"
         onClick={() => run("guest", signInAsGuest)}
         disabled={disabled}
-        className="mt-3 min-h-[48px] w-full text-[15px] text-soft underline underline-offset-[3px] disabled:opacity-50"
+        className="mt-3 min-h-[48px] w-full text-[17px] text-soft underline underline-offset-[3px] disabled:opacity-50"
       >
         {busy === "guest" ? "들어가는 중…" : "게스트로 둘러보기"}
       </button>
-      <p className="mt-[7px] text-center text-[13px] leading-[1.55] text-meta">
+      <p className="mt-[7px] text-center text-[15px] leading-[1.55] text-meta">
         게스트로 둘러본 뒤 마이페이지에서 로그인할 수 있어요.
       </p>
     </div>

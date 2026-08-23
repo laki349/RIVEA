@@ -17,13 +17,13 @@ export default function ReviewList() {
         <span className="text-disabled">
           <Icon name="message" size={44} />
         </span>
-        <p className="mt-4 text-[16px] font-bold text-ink">아직 쓴 리뷰가 없어요</p>
-        <p className="mt-2 text-center text-[15px] leading-[1.6] text-meta">
+        <p className="mt-4 text-[18px] font-bold text-ink">아직 쓴 리뷰가 없어요</p>
+        <p className="mt-2 text-center text-[17px] leading-[1.6] text-meta">
           배송이 끝난 주문에서 리뷰를 쓸 수 있어요.
         </p>
         <Link
           href="/orders"
-          className="press mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[15px] font-medium text-ink"
+          className="press mt-6 flex h-12 items-center justify-center rounded-cta border border-ink px-7 text-[17px] font-medium text-ink"
         >
           주문 내역 보기
         </Link>
@@ -46,19 +46,19 @@ export default function ReviewList() {
                 alt={p.name}
               />
               <div className="min-w-0 flex-1">
-                <p className="text-[13px] text-meta">{brandOf(p.brand).name}</p>
-                <p className="truncate text-[14px] text-ink">{p.name}</p>
+                <p className="text-[15px] text-meta">{brandOf(p.brand).name}</p>
+                <p className="truncate text-[16px] text-ink">{p.name}</p>
               </div>
             </Link>
 
             <div className="mt-[10px] flex items-center gap-2">
               <StarRating value={r.rating} size={15} />
-              <span className="text-[13px] text-meta">
+              <span className="text-[15px] text-meta">
                 {d.getFullYear()}.{String(d.getMonth() + 1).padStart(2, "0")}.
                 {String(d.getDate()).padStart(2, "0")}
               </span>
             </div>
-            <p className="mt-[6px] whitespace-pre-line text-[15px] leading-[1.6] text-body">
+            <p className="mt-[6px] whitespace-pre-line text-[17px] leading-[1.6] text-body">
               {r.text}
             </p>
 
@@ -66,13 +66,13 @@ export default function ReviewList() {
               {/* 수정은 주문 상세에서 — 어떤 주문의 리뷰인지 함께 보여야 맥락이 산다 */}
               <Link
                 href={`/orders/detail?no=${r.orderNo}`}
-                className="press py-1 pl-3 text-[14px] text-meta"
+                className="press py-1 pl-3 text-[16px] text-meta"
               >
                 수정
               </Link>
               <button
                 onClick={() => deleteReview(r.id)}
-                className="press py-1 pl-4 text-[14px] text-meta"
+                className="press py-1 pl-4 text-[16px] text-meta"
               >
                 삭제
               </button>

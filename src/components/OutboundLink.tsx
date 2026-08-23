@@ -33,7 +33,7 @@ export default function OutboundLink({
       target="_blank"
       rel="nofollow sponsored noopener noreferrer"
       onClick={() => trackRepeat("outbound_click", productId)}
-      className="press flex h-[50px] w-full items-center justify-center rounded-cta border border-ink text-[15px] font-medium text-ink"
+      className="press flex h-[50px] w-full items-center justify-center rounded-cta border border-ink text-[17px] font-medium text-ink"
     >
       {brandName} 공식몰에서 보기
     </a>

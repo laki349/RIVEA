@@ -55,10 +55,10 @@ export function LoginSheet({ onClose, what }: { onClose: () => void; what: strin
         <span className="text-ink">
           <Icon name="bag" size={26} />
         </span>
-        <h2 className="mt-3 text-[19px] font-bold leading-[1.35] text-ink">
+        <h2 className="mt-3 text-[21px] font-bold leading-[1.35] text-ink">
           로그인하고 {what}
         </h2>
-        <p className="mt-2 text-[15px] leading-[1.6] text-body">
+        <p className="mt-2 text-[17px] leading-[1.6] text-body">
           주문 내역·배송 조회·재구매를 이어서 보려면 계정이 필요해요. 지금까지 보신
           것과 찜·화장대는 그대로 남아 있어요.
         </p>
@@ -66,13 +66,13 @@ export function LoginSheet({ onClose, what }: { onClose: () => void; what: strin
         <div className="mt-5 flex flex-col gap-[10px]">
           <Link
             href={`/login?next=${encodeURIComponent(pathname)}`}
-            className="press flex h-[52px] items-center justify-center rounded-cta bg-ink text-[16px] font-medium text-on-ink"
+            className="press flex h-[52px] items-center justify-center rounded-cta bg-ink text-[18px] font-medium text-on-ink"
           >
             로그인 · 회원가입
           </Link>
           <button
             onClick={onClose}
-            className="press h-12 rounded-cta border border-line text-[15px] font-medium text-body"
+            className="press h-12 rounded-cta border border-line text-[17px] font-medium text-body"
           >
             더 둘러볼게요
           </button>
@@ -101,15 +101,15 @@ export function MemberOnlyScreen({
       <span className="text-disabled">
         <Icon name="bag" size={44} />
       </span>
-      <p className="mt-4 text-[16px] font-bold text-ink">{title}</p>
-      <p className="mt-2 text-[15px] leading-[1.6] text-meta">{body}</p>
+      <p className="mt-4 text-[18px] font-bold text-ink">{title}</p>
+      <p className="mt-2 text-[17px] leading-[1.6] text-meta">{body}</p>
       <Link
         href={`/login?next=${encodeURIComponent(next)}`}
-        className="press mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[15px] font-medium text-on-ink"
+        className="press mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[17px] font-medium text-on-ink"
       >
         로그인 · 회원가입
       </Link>
-      <Link href="/" className="press mt-2 flex h-11 items-center text-[15px] text-body">
+      <Link href="/" className="press mt-2 flex h-11 items-center text-[17px] text-body">
         더 둘러볼게요
       </Link>
     </main>

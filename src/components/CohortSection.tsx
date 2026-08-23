@@ -59,15 +59,15 @@ export default function CohortSection({ userName }: { userName?: string }) {
     <section className="border-b border-hairline bg-bg-tint">
       <div className="px-4 pb-3 pt-4">
         <div className="flex items-baseline justify-between">
-          <h2 className="text-[17px] font-bold text-ink">{current.title}</h2>
+          <h2 className="text-[19px] font-bold text-ink">{current.title}</h2>
           <Link
             href="/pick"
-            className="press -my-[8px] flex min-h-[44px] items-center pl-3 text-[13px] text-meta"
+            className="press -my-[8px] flex min-h-[44px] items-center pl-3 text-[15px] text-meta"
           >
             전체보기
           </Link>
         </div>
-        <p className="mt-[3px] text-[12px] text-meta">
+        <p className="mt-[3px] text-[14px] text-meta">
           {who}님과 비슷한 연령대 · 이번 주 기준
         </p>
       </div>
@@ -81,7 +81,7 @@ export default function CohortSection({ userName }: { userName?: string }) {
               setTouched(true);
               setAge(a.key);
             }}
-            className={`press min-h-[44px] rounded px-[14px] text-[14px] ${
+            className={`press min-h-[44px] rounded px-[14px] text-[16px] ${
               age === a.key
                 ? "bg-ink font-medium text-on-ink"
                 : "border border-line bg-surface text-body"
@@ -99,7 +99,7 @@ export default function CohortSection({ userName }: { userName?: string }) {
             key={m}
             onClick={() => setMode(m)}
             /* 밑줄은 텍스트 바로 아래 유지하고, 위쪽 여백으로 44px를 채운다 */
-            className={`press flex min-h-[44px] items-end pb-[6px] text-[15px] ${
+            className={`press flex min-h-[44px] items-end pb-[6px] text-[17px] ${
               mode === m
                 ? "border-b-2 border-ink font-bold text-ink"
                 : "text-meta"
@@ -127,26 +127,26 @@ export default function CohortSection({ userName }: { userName?: string }) {
                       src={productImage(p.id)}
                       alt={p.name}
                     />
-                    <span className="absolute bottom-0 left-0 rounded-tr bg-ink px-2 py-[2px] text-[14px] font-bold text-on-ink">
+                    <span className="absolute bottom-0 left-0 rounded-tr bg-ink px-2 py-[2px] text-[16px] font-bold text-on-ink">
                       {i + 1}
                     </span>
                   </div>
                   <div className="px-[2px] pt-2">
-                    <p className="text-[12px] font-bold text-ink">
+                    <p className="text-[14px] font-bold text-ink">
                       {brandOf(p.brand).name}
                     </p>
-                    <p className="mb-1 mt-[2px] truncate text-[12px] text-soft">
+                    <p className="mb-1 mt-[2px] truncate text-[14px] text-soft">
                       {p.name}
                     </p>
                     <div className="mb-1 flex items-baseline gap-1">
                       {rate !== null && (
-                        <span className="text-[12px] font-bold text-rose">{rate}%</span>
+                        <span className="text-[14px] font-bold text-rose">{rate}%</span>
                       )}
-                      <span className="text-[14px] font-bold text-ink">
+                      <span className="text-[16px] font-bold text-ink">
                         {won(p.price)}
                       </span>
                     </div>
-                    <p className="text-[12px] text-meta">
+                    <p className="text-[14px] text-meta">
                       이번 주 {won(p.cohortViews[age])}명이 봤어요
                     </p>
                   </div>
@@ -169,27 +169,27 @@ export default function CohortSection({ userName }: { userName?: string }) {
                       src={routineImage(r.id)}
                       alt={r.title}
                     />
-                    <span className="absolute bottom-0 left-0 rounded-tr bg-ink px-2 py-[2px] text-[14px] font-bold text-on-ink">
+                    <span className="absolute bottom-0 left-0 rounded-tr bg-ink px-2 py-[2px] text-[16px] font-bold text-on-ink">
                       {i + 1}
                     </span>
-                    <span className="absolute left-2 top-2 rounded-badge bg-ink px-[6px] py-[2px] text-[12px] font-medium text-on-ink">
+                    <span className="absolute left-2 top-2 rounded-badge bg-ink px-[6px] py-[2px] text-[14px] font-medium text-on-ink">
                       {r.badge}
                     </span>
                   </div>
                   <div className="px-[2px] pt-2">
-                    <p className="text-[12px] font-bold text-rose">{r.label}</p>
-                    <p className="mb-1 mt-[2px] truncate text-[12px] font-bold text-ink">
+                    <p className="text-[14px] font-bold text-rose">{r.label}</p>
+                    <p className="mb-1 mt-[2px] truncate text-[14px] font-bold text-ink">
                       {r.title}
                     </p>
                     <div className="mb-1 flex items-baseline gap-1">
                       {rate !== null && (
-                        <span className="text-[12px] font-bold text-rose">{rate}%</span>
+                        <span className="text-[14px] font-bold text-rose">{rate}%</span>
                       )}
-                      <span className="text-[14px] font-bold text-ink">
+                      <span className="text-[16px] font-bold text-ink">
                         {won(r.price)}
                       </span>
                     </div>
-                    <p className="text-[12px] text-meta">
+                    <p className="text-[14px] text-meta">
                       이번 주 {won(r.cohortAdds[age])}명이 담았어요
                     </p>
                   </div>

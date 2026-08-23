@@ -37,7 +37,7 @@ export default function TabBar() {
             }`}
           >
             <Icon name={t.icon} size={21} />
-            <span className={`text-[13px] ${active ? "font-medium" : ""}`}>
+            <span className={`text-[15px] ${active ? "font-medium" : ""}`}>
               {t.label}
             </span>
           </Link>

@@ -70,8 +70,8 @@ export default function InteractionNotes({
 
   return (
     <section className={`border-b border-hairline px-4 py-4 ${className}`}>
-      <h2 className="text-[15px] font-bold text-ink">함께 쓸 때 알아두세요</h2>
-      <p className="mt-[3px] text-[13px] leading-[1.5] text-meta">
+      <h2 className="text-[17px] font-bold text-ink">함께 쓸 때 알아두세요</h2>
+      <p className="mt-[3px] text-[15px] leading-[1.5] text-meta">
         {usesShelf
           ? "담아두신 것과 화장대에 있는 것을 함께 봤어요. 피부 반응은 사람마다 달라요."
           : "담아두신 제품의 성분을 보고 알려드려요. 피부 반응은 사람마다 달라요."}
@@ -99,7 +99,7 @@ export default function InteractionNotes({
           ) : (
             <button
               onClick={() => setOpenFine(true)}
-              className="press flex h-11 w-full items-center justify-center gap-[6px] rounded border border-hairline text-[14px] text-body"
+              className="press flex h-11 w-full items-center justify-center gap-[6px] rounded border border-hairline text-[16px] text-body"
             >
               <span className="text-ink">
                 <Icon name="check" size={14} />
@@ -148,17 +148,17 @@ function Note({
         <span className="text-ink">
           <Icon name={tone.icon} size={14} />
         </span>
-        <span className="text-[13px] font-medium text-meta">{tone.label}</span>
+        <span className="text-[15px] font-medium text-meta">{tone.label}</span>
       </div>
-      <p className="mt-[5px] text-[15px] font-medium leading-[1.45] text-ink">{title}</p>
-      <p className="mt-[4px] text-[14px] leading-[1.6] text-body">{why}</p>
-      <p className="mt-[6px] text-[14px] leading-[1.6] text-ink">{how}</p>
+      <p className="mt-[5px] text-[17px] font-medium leading-[1.45] text-ink">{title}</p>
+      <p className="mt-[4px] text-[16px] leading-[1.6] text-body">{why}</p>
+      <p className="mt-[6px] text-[16px] leading-[1.6] text-ink">{how}</p>
 
       {/* 근거 — 어느 물건 때문인지. 이게 없으면 사용자가 자기 물건을 뒤져야 한다 */}
       {lines.some((l) => l.from.length > 0) && (
         <ul className="mt-[9px] border-t border-hairline pt-[8px]">
           {lines.map((l) => (
-            <li key={l.key} className="text-[13px] leading-[1.6] text-meta">
+            <li key={l.key} className="text-[15px] leading-[1.6] text-meta">
               <b className="font-medium text-body">{l.label}</b>{" "}
               {l.from.map((f, i) => (
                 <span key={f.name}>

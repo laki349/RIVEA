@@ -10,7 +10,7 @@ export default function BrandsPage() {
       <AppBar title="브랜드" bold />
 
       <main className="flex-1">
-        <p className="border-b border-hairline px-4 py-[11px] text-[13px] text-meta">
+        <p className="border-b border-hairline px-4 py-[11px] text-[15px] text-meta">
           입점 브랜드 {brands.length}
         </p>
         {brands.map((b) => {
@@ -22,11 +22,11 @@ export default function BrandsPage() {
               className="flex items-center gap-[13px] border-b border-subtle px-4 py-[14px]"
             >
               <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded border border-line bg-surface">
-                <span className="text-[16px] font-bold text-ink">{b.name.slice(0, 1)}</span>
+                <span className="text-[18px] font-bold text-ink">{b.name.slice(0, 1)}</span>
               </div>
               <div className="flex-1">
-                <p className="text-[15px] font-bold text-ink">{b.name}</p>
-                <p className="mt-[2px] text-[12px] text-meta">
+                <p className="text-[17px] font-bold text-ink">{b.name}</p>
+                <p className="mt-[2px] text-[14px] text-meta">
                   {b.tagline} · 평점 {b.rating} · 상품 {count}
                 </p>
               </div>

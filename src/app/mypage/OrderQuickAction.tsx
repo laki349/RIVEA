@@ -24,7 +24,7 @@ export default function OrderQuickAction() {
       {moving && (
         <span className="absolute left-[calc(50%+10px)] top-3 h-[5px] w-[5px] rounded-full bg-rose" />
       )}
-      <p className="mt-[5px] text-[12px] text-body">주문·배송 {orders.length}</p>
+      <p className="mt-[5px] text-[14px] text-body">주문·배송 {orders.length}</p>
     </Link>
   );
 }

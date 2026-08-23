@@ -25,13 +25,13 @@ export default function OrderList() {
         <span className="text-disabled">
           <Icon name="truck" size={44} />
         </span>
-        <p className="mt-4 text-[16px] font-bold text-ink">주문한 상품이 없어요</p>
-        <p className="mt-2 text-center text-[15px] leading-[1.6] text-meta">
+        <p className="mt-4 text-[18px] font-bold text-ink">주문한 상품이 없어요</p>
+        <p className="mt-2 text-center text-[17px] leading-[1.6] text-meta">
           고민에 맞는 루틴부터 둘러보실래요?
         </p>
         <Link
           href="/pick"
-          className="mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[15px] font-medium text-on-ink"
+          className="mt-6 flex h-12 items-center justify-center rounded-cta bg-ink px-7 text-[17px] font-medium text-on-ink"
         >
           리베아&apos;s Pick 보러가기
         </Link>
@@ -44,7 +44,7 @@ export default function OrderList() {
       {orders.map((o) => (
         <OrderCard key={o.no} order={o} />
       ))}
-      <p className="px-4 py-5 text-[13px] leading-[1.6] text-meta">
+      <p className="px-4 py-5 text-[15px] leading-[1.6] text-meta">
         발표용 데모라 실제 결제·배송은 이뤄지지 않아요. 주문은 이 브라우저에만 저장됩니다.
       </p>
     </main>
@@ -58,21 +58,21 @@ function OrderCard({ order }: { order: Order }) {
   return (
     <section className="border-b border-hairline px-4 py-4">
       <div className="flex items-center justify-between">
-        <span className="text-[13px] text-meta">{orderDateLabel(order)}</span>
+        <span className="text-[15px] text-meta">{orderDateLabel(order)}</span>
         <Link
           href={`/orders/detail?no=${order.no}`}
-          className="flex h-11 items-center gap-[2px] text-[13px] text-body"
+          className="flex h-11 items-center gap-[2px] text-[15px] text-body"
         >
           상세 보기
           <Icon name="chevron-right" size={15} />
         </Link>
       </div>
 
-      <p className={`text-[16px] font-bold ${cancelled ? "text-meta" : "text-ink"}`}>
+      <p className={`text-[18px] font-bold ${cancelled ? "text-meta" : "text-ink"}`}>
         {statusLabel[status]}
       </p>
       {!cancelled && status !== "delivered" && (
-        <p className="mt-[2px] text-[13px] text-body">{arrivalRange(order)} 도착 예정</p>
+        <p className="mt-[2px] text-[15px] text-body">{arrivalRange(order)} 도착 예정</p>
       )}
 
       <Link href={`/orders/detail?no=${order.no}`} className="mt-3 block">
@@ -85,8 +85,8 @@ function OrderCard({ order }: { order: Order }) {
               alt={l.name}
             />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[14px] text-ink">{l.name}</p>
-              <p className="mt-[2px] text-[13px] text-meta">
+              <p className="truncate text-[16px] text-ink">{l.name}</p>
+              <p className="mt-[2px] text-[15px] text-meta">
                 {won(l.price)}원 · {l.qty}개
               </p>
             </div>
@@ -95,10 +95,10 @@ function OrderCard({ order }: { order: Order }) {
       </Link>
 
       <div className="mt-1 flex items-baseline justify-between border-t border-subtle pt-[10px]">
-        <span className="text-[14px] text-meta">
+        <span className="text-[16px] text-meta">
           결제금액 · 주문번호 {order.no}
         </span>
-        <span className={`text-[16px] font-bold ${cancelled ? "text-meta line-through" : "text-ink"}`}>
+        <span className={`text-[18px] font-bold ${cancelled ? "text-meta line-through" : "text-ink"}`}>
           {won(order.total)}원
         </span>
       </div>

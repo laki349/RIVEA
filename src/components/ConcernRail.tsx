@@ -25,10 +25,10 @@ export default function ConcernRail() {
   return (
     <section className="border-b border-hairline pb-[14px] pt-[13px]">
       <div className="flex items-baseline justify-between px-4 pb-[11px]">
-        <h2 className="text-[17px] font-bold text-ink">고민으로 찾기</h2>
+        <h2 className="text-[19px] font-bold text-ink">고민으로 찾기</h2>
         <Link
           href="/profile"
-          className={`press flex items-center py-1 pl-3 text-[13px] ${
+          className={`press flex items-center py-1 pl-3 text-[15px] ${
             personalized ? "text-meta" : "font-medium text-ink"
           }`}
         >
@@ -49,7 +49,7 @@ export default function ConcernRail() {
               alt={c.name}
             />
             <p
-              className={`mt-[6px] whitespace-nowrap text-[13px] ${
+              className={`mt-[6px] whitespace-nowrap text-[15px] ${
                 profile.concerns.includes(c.slug) ? "font-bold text-ink" : "text-ink"
               }`}
             >
