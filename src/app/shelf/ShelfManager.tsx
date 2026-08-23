@@ -12,7 +12,9 @@ import {
   useShelf,
   useShelfEntries,
 } from "@/lib/shelf";
+import { STARTED_OPTIONS, pending, startedAtFrom, useVerdicts } from "@/lib/verdict";
 import Icon from "@/components/Icon";
+import VerdictCard from "@/components/VerdictCard";
 import ImageSlot from "@/components/ImageSlot";
 import InteractionNotes from "@/components/InteractionNotes";
 
@@ -25,11 +27,14 @@ import InteractionNotes from "@/components/InteractionNotes";
 export default function ShelfManager() {
   const items = useShelf();
   const entries = useShelfEntries();
+  const verdicts = useVerdicts();
   const [mounted, setMounted] = useState(false);
   const [adding, setAdding] = useState(false);
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return <main className="flex-1" />;
+
+  const due = pending(entries, verdicts);
 
   return (
     <main className="flex-1">
@@ -40,6 +45,23 @@ export default function ShelfManager() {
           다 쓰실 때쯤이 지나면 스스로 빠져요.
         </p>
       </section>
+
+      {/*
+        판정 — 화장대 안에서 시작하고 끝난다 (신규 라우트 0개, `docs/16` C-2 제약).
+        위에 두는 이유: 답을 받아야 하는 질문이 목록 아래에 있으면 아무도 스크롤하지 않는다.
+        한 번에 하나만 묻는다. 세 개를 한꺼번에 물으면 성의 없이 눌러버린다.
+      */}
+      {due.length > 0 && (
+        <section className="border-b border-hairline px-4 py-4">
+          <div className="mb-[10px] flex items-baseline justify-between">
+            <h2 className="text-[16px] font-bold text-ink">판정할 때가 됐어요</h2>
+            {due.length > 1 && (
+              <span className="text-[13px] text-meta">{due.length}건 중 1건</span>
+            )}
+          </div>
+          <VerdictCard entry={due[0].entry} day={due[0].day} />
+        </section>
+      )}
 
       {entries.length > 0 && (
         <section className="border-b border-hairline px-4 py-4">
@@ -258,6 +280,8 @@ function CustomForm({ onDone }: { onDone: () => void }) {
   const [name, setName] = useState("");
   const [step, setStep] = useState<Step>("serum");
   const [picked, setPicked] = useState<ActiveKey[]>([]);
+  // 기본값은 「이번에 처음」 — 모르면 0으로 두는 게 안전하다. 없는 사용 기간을 지어내지 않는다
+  const [started, setStarted] = useState(0);
 
   const toggle = (k: ActiveKey) =>
     setPicked((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]));
@@ -313,12 +337,33 @@ function CustomForm({ onDone }: { onDone: () => void }) {
         })}
       </div>
 
+      {/*
+        언제부터 쓰셨나 — 판정 시점의 분모다. 등록일로 치면 이미 오래 쓴 제품에도
+        엉뚱한 시점에 판정이 뜬다 (STARTED_OPTIONS 주석).
+      */}
+      <p className="mb-[7px] mt-4 text-[14px] font-medium text-ink">언제부터 쓰셨어요?</p>
+      <div className="flex flex-wrap gap-[6px]">
+        {STARTED_OPTIONS.map((o) => (
+          <button
+            key={o.key}
+            onClick={() => setStarted(o.daysAgo)}
+            aria-pressed={started === o.daysAgo}
+            className={`press min-h-[44px] rounded border px-3 text-[14px] ${
+              started === o.daysAgo ? "border-ink bg-ink text-on-ink" : "border-line text-body"
+            }`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+
       <button
         disabled={name.trim().length === 0}
         onClick={() => {
-          addCustom(name, picked, step);
+          addCustom(name, picked, step, startedAtFrom(started));
           setName("");
           setPicked([]);
+          setStarted(0);
           onDone();
         }}
         className="press mt-4 h-12 w-full rounded-cta bg-ink text-[15px] font-medium text-on-ink disabled:opacity-40"

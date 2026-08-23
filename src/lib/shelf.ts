@@ -22,8 +22,8 @@ import { track } from "./events";
  * 성분만 알면 규칙은 그대로 돈다.
  */
 export type ShelfItem =
-  | { kind: "product"; id: string }
-  | { kind: "custom"; id: string; name: string; actives: ActiveKey[]; step: Step };
+  | { kind: "product"; id: string; addedAt?: number }
+  | { kind: "custom"; id: string; name: string; actives: ActiveKey[]; step: Step; addedAt?: number };
 
 const KEY = "rivea-shelf";
 let items: ShelfItem[] = [];
@@ -84,16 +84,22 @@ export function toggleShelfProduct(productId: string) {
   const found = items.some((i) => i.kind === "product" && i.id === productId);
   items = found
     ? items.filter((i) => !(i.kind === "product" && i.id === productId))
-    : [{ kind: "product", id: productId }, ...items];
+    : [{ kind: "product", id: productId, addedAt: Date.now() }, ...items];
   if (!found) track("shelf_add", productId);
   emit();
 }
 
-/** 직접 입력. id는 저장 시점에 만든다 — 같은 이름을 두 번 넣어도 각자 지울 수 있게 */
-export function addCustom(name: string, actives: ActiveKey[], step: Step) {
+/**
+ * 직접 입력. id는 저장 시점에 만든다 — 같은 이름을 두 번 넣어도 각자 지울 수 있게.
+ *
+ * `startedAt`은 **등록 시각이 아니라 쓰기 시작한 시각**이다. 화장대는 정의상
+ * 「이미 쓰고 있는 것」을 넣는 곳이라, 등록일을 시작일로 치면 석 달 쓴 제품에도
+ * 「2주 됐어요」가 뜬다. 판정 시점이 통째로 틀어진다.
+ */
+export function addCustom(name: string, actives: ActiveKey[], step: Step, startedAt = Date.now()) {
   load();
   const id = `c${Date.now().toString(36)}`;
-  items = [{ kind: "custom", id, name: name.trim(), actives, step }, ...items];
+  items = [{ kind: "custom", id, name: name.trim(), actives, step, addedAt: startedAt }, ...items];
   // 직접 입력한 제품명은 자유 텍스트다 — **값으로 보내지 않는다.** 개인정보가 섞일 수 있다
   track("shelf_add", "custom");
   emit();
@@ -118,9 +124,16 @@ export type ShelfEntry = {
    * (다 쓸 때쯤이 지나면 스스로 빠진다).
    */
   source: "manual" | "order";
+  /**
+   * 언제부터 쓰기 시작했나 (판정 시점 계산의 분모).
+   * 주문에서 온 것은 주문 시각, 손으로 넣은 것은 넣은 시각.
+   * **`addedAt`이 없던 시절에 저장된 항목은 null이다** — 그런 항목엔 판정을 걸지 않는다.
+   * 모르는 시작일을 오늘로 치면 「28일 됐어요」가 거짓말이 된다.
+   */
+  startedAt: number | null;
 };
 
-function entryOfProduct(p: Product, source: ShelfEntry["source"]): ShelfEntry {
+function entryOfProduct(p: Product, source: ShelfEntry["source"], startedAt: number | null): ShelfEntry {
   return {
     id: p.id,
     name: p.name,
@@ -128,6 +141,7 @@ function entryOfProduct(p: Product, source: ShelfEntry["source"]): ShelfEntry {
     actives: (p.actives ?? []).map((a) => a.key),
     step: regimenOf(p).step,
     source,
+    startedAt,
   };
 }
 
@@ -137,6 +151,7 @@ export function entriesOf(list: ShelfItem[]): ShelfEntry[] {
       return {
         id: i.id, name: i.name, product: null,
         actives: i.actives, step: i.step, source: "manual" as const,
+        startedAt: i.addedAt ?? null,
       };
     }
     const p = productOf(i.id) as Product | undefined;
@@ -144,9 +159,10 @@ export function entriesOf(list: ShelfItem[]): ShelfEntry[] {
       return {
         id: i.id, name: i.id, product: null,
         actives: [], step: "serum" as Step, source: "manual" as const,
+        startedAt: i.addedAt ?? null,
       };
     }
-    return entryOfProduct(p, "manual");
+    return entryOfProduct(p, "manual", i.addedAt ?? null);
   });
 }
 
@@ -189,7 +205,7 @@ export function fromOrders(orders: Order[], now = Date.now()): ShelfEntry[] {
     const { lifespanDays } = regimenOf(p);
     // 기기는 다 쓰는 개념이 없으니 계속 화장대에 남는다
     if (lifespanDays !== null && now > at + lifespanDays * DAY) return;
-    out.push(entryOfProduct(p, "order"));
+    out.push(entryOfProduct(p, "order", at));
   });
   return out;
 }

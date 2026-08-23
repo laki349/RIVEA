@@ -18,6 +18,7 @@ import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import RoutineCard from "@/components/RoutineCard";
 import BuyBar from "@/components/BuyBar";
+import OutboundLink from "@/components/OutboundLink";
 import Track from "@/components/Track";
 import TrackRecent from "@/components/TrackRecent";
 import ActiveBars from "@/components/ActiveBars";
@@ -256,6 +257,25 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         </section>
 
         {/* 제품 사양 — 실제 시판 제품. 공개된 물리량만 */}
+        {/*
+          공식몰로 내보내기. 우리가 결제를 받지 않는 동안 이게 유일한 「살 수 있는 길」이고,
+          동시에 입점 협상에 들고 갈 유일한 숫자다 (OutboundLink 주석).
+          공식몰 주소가 확인된 제품에만 붙인다 — 없는 링크를 지어내지 않는다.
+        */}
+        {(real?.officialUrl ?? brand.officialUrl) && (
+          <section className="border-b border-hairline px-4 py-4">
+            <OutboundLink
+              productId={product.id}
+              href={(real?.officialUrl ?? brand.officialUrl)!}
+              brandName={brand.name}
+            />
+            <p className="mt-[9px] text-[13px] leading-[1.6] text-meta">
+              브랜드 공식몰로 이동해요. 결제와 배송은 그쪽에서 진행되고, 최종 가격·재고는
+              공식몰 표시를 따릅니다. 리베아는 판매 수수료를 받지 않아요.
+            </p>
+          </section>
+        )}
+
         {real && product.specs && (
           <section className="border-b border-hairline px-4 py-4">
             <h3 className="mb-[9px] text-[16px] font-bold text-ink">제품 사양</h3>

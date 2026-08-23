@@ -10,6 +10,7 @@ import HeroCarousel from "@/components/HeroCarousel";
 import PickRail from "@/components/PickRail";
 import CohortSection from "@/components/CohortSection";
 import CartLink from "@/components/CartLink";
+import VerdictSlot from "@/components/VerdictSlot";
 
 export default function HomePage() {
   const best = [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 4);
@@ -42,6 +43,13 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* 고민으로 찾기 — 차별화 진입. 내 고민이 앞으로 온다 (lib/profile.ts) */}
+        {/*
+          판정 대기 — 고민 레일 바로 아래. 답할 게 있을 때만 나타난다.
+          위치를 여기로 잡은 이유: 히어로 위면 광고 자리라 건너뛰고,
+          더 내려가면 스크롤하지 않는 사람에게 영영 안 보인다.
+        */}
+        <VerdictSlot />
+
         <ConcernRail />
 
         {/* 히어로 배너 — 자동 전환·스와이프·일시정지 (components/HeroCarousel) */}
