@@ -258,10 +258,24 @@ if (전환.length) {
   }
 }
 
-// 유입 경로 — ?ref=insta 처럼 붙여 보낸 것
+/**
+ * 유입 경로 — `?ref=salon` 처럼 붙여 보낸 것.
+ *
+ * ⚠️ **한 세션의 이벤트가 전부 같은 ref를 갖지 않는다.** `readRef()`는 이벤트를 찍는
+ *    순간의 주소창을 읽는데, 이 앱은 정적 export라 링크를 누르면 진짜 페이지 로드가
+ *    일어나고 `?ref=`가 주소에서 사라진다. 그래서 첫 화면 이벤트만 ref를 갖고
+ *    그 뒤로는 전부 "direct"가 된다.
+ *
+ * ⚠️ 그러므로 「그 세션의 첫 이벤트」를 봐야 하는데, **Firestore가 돌려주는 순서는
+ *    문서 id 순이지 시간 순이 아니다.** 정렬 안 하고 find로 집으면 뒤쪽 "direct"를
+ *    집어서 미용실에서 온 방문이 direct로 둔갑한다. 관찰 나가서 링크를 갈라 뿌리는
+ *    운영에서 이건 조용히 틀리는 종류의 오류다.
+ *
+ * 세션 안에서 **시간 순으로 처음 나오는 direct 아닌 값**을 그 세션의 유입으로 본다.
+ */
 const ref별 = new Map();
-for (const s of new Set(이벤트.map((e) => e.sid))) {
-  const r = 이벤트.find((e) => e.sid === s)?.ref ?? "direct";
+for (const 목록 of 세션들.values()) {
+  const r = 목록.find((e) => e.ref && e.ref !== "direct")?.ref ?? "direct";
   ref별.set(r, (ref별.get(r) ?? 0) + 1);
 }
 console.log("\n유입 경로 (세션)");
