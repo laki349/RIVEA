@@ -85,6 +85,27 @@ export default function RoutinePlan() {
       <Day title="아침" note="바르는 순서예요" steps={plan.am} />
       <Day title="저녁" note="색소·주름 성분은 대부분 저녁 자리예요" steps={plan.pm} />
 
+      {/*
+        얼굴 밖에서 매일 쓰는 것 — 두피·이너뷰티. 아침·저녁 사다리에 끼우지 않는다.
+        바르는 순서와 무관하고, 순서 안에 넣으면 「3번 다음에 4번」이 성립하지 않는다.
+      */}
+      {plan.extra.length > 0 && (
+        <section className="border-b border-hairline px-4 py-4">
+          <h3 className="text-[18px] font-bold text-ink">매일, 순서와 상관없이</h3>
+          <p className="mt-[3px] text-[15px] leading-[1.5] text-meta">
+            얼굴에 바르는 순서와 따로 가는 자리예요.
+          </p>
+          <div className="mt-3 space-y-3">
+            {plan.extra.map((w) => (
+              <div key={w.product.id}>
+                <ProductRow id={w.product.id} />
+                <p className="mt-[5px] text-[16px] leading-[1.55] text-body">{w.when}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {plan.weekly.length > 0 && (
         <section className="border-b border-hairline px-4 py-4">
           <h3 className="text-[18px] font-bold text-ink">주 2~3회</h3>

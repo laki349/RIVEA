@@ -33,6 +33,21 @@ const AM_STEPS: Step[] = ["cleanse", "toner", "serum", "cream", "sun"];
 const PM_STEPS: Step[] = ["cleanse", "exfoliate", "toner", "serum", "cream"];
 
 /**
+ * 얼굴 사다리 밖의 자리.
+ *
+ * 이걸 빼놨더니 **두피·헤어와 이너뷰티 고민이 통째로 무시됐다.** 두피를 골랐는데
+ * 아침·저녁 다섯 자리가 전부 얼굴 케어로 채워지고, 정작 두피 제품은 놓을 자리가
+ * 없어서 처방에 등장하지 못했다. 고민을 물어놓고 그 고민을 안 다루는 화면이었다.
+ *
+ * 얼굴 자리처럼 항상 보여주지는 않는다 — 두피가 고민이 아닌 사람에게 빈 두피 자리를
+ * 내밀면 없던 숙제가 생긴다. **그 고민을 고른 사람에게만 자리가 열린다.**
+ */
+const CONCERN_STEPS: { step: Step; concern: string; when: string }[] = [
+  { step: "scalp", concern: "scalp-hair", when: "머리 감을 때" },
+  { step: "inner", concern: "inner", when: "하루 한 번, 식사와 함께" },
+];
+
+/**
  * 비면 자리째 감추는 단계.
  *
  * 각질 정리는 **안 하는 게 기본**인 단계다. 세안처럼 "쓰시던 걸 쓰세요"로 남기면
@@ -59,6 +74,11 @@ export type Slotted = {
 export type Prescription = {
   am: Slotted[];
   pm: Slotted[];
+  /**
+   * 얼굴 사다리 밖에서 **매일** 쓰는 것 — 샴푸·이너뷰티.
+   * 주간 항목과 섞으면 「주 2~3회」로 읽혀서 매일 써야 할 것을 안 쓰게 된다.
+   */
+  extra: { product: Product; when: string }[];
   /** 주 몇 회로 쓰는 것들 — 기기·팩. 매일 루틴과 섞으면 매일 써야 하는 줄 안다 */
   weekly: { product: Product; when: string }[];
   /** 처방 안에서 생기는 병용 주의 */
@@ -189,6 +209,19 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
   const pm = build(PM_STEPS, "pm").filter((s) => s.product || !OPTIONAL.includes(s.step));
   const am = build(AM_STEPS, "am").filter((s) => s.product || !OPTIONAL.includes(s.step));
 
+  // 고른 고민이 얼굴 밖이면 그 자리를 연다. 순서는 바르는 순서와 무관하므로
+  // 아침·저녁에 끼우지 않고 주간 항목과 같은 「따로 하는 것」으로 낸다.
+  const extra = CONCERN_STEPS.filter((c) => concerns.includes(c.concern)).flatMap((c) => {
+    const hit = products
+      .filter((p) => regimenOf(p).step === c.step && !used.has(p.id))
+      .map((p) => ({ p, s: scoreFor(p, concerns) }))
+      .filter((x) => x.s > 0)
+      .sort((a, b) => b.s - a.s)[0]?.p;
+    if (!hit) return [];
+    used.add(hit.id);
+    return [{ product: hit, when: c.when }];
+  });
+
   const weekly = weeklyFor(concerns, used);
 
   // 갖고 계신 자리(owned)는 살 목록에서 뺀다 — 병용 판정에는 화장대가 따로 들어간다
@@ -211,13 +244,14 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
   return {
     am,
     pm,
+    extra,
     weekly,
     notes: findInteractions(keys),
     deviceNotes: findDeviceCautions(keys, all.some((p) => p.category === "device")),
     // 전체 담기는 **매일 쓰는 것만.** 기기는 10만원대 결정이라 루틴에 묶어
     // 담으면 담기 버튼 하나가 갑자기 13만원이 된다. 기기는 각자 담게 둔다.
     productIds: daily.map((p) => p.id),
-    weeklyIds: weekly.map((w) => w.product.id),
+    weeklyIds: [...extra, ...weekly].map((w) => w.product.id),
   };
 }
 
