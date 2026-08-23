@@ -123,6 +123,10 @@ export function daysUsed(entry: ShelfEntry, now = Date.now()): number | null {
  *
  * 지난 체크포인트 중 **아직 답 안 한 가장 최근 것**을 고른다.
  * 14일을 놓치고 30일에 열었으면 28일을 묻는다 — 지나간 14일을 지금 묻는 건 의미가 없다.
+ *
+ * ⚠️ **이미 답한 것보다 앞선 체크포인트는 다시 묻지 않는다.** 이걸 빼놨더니
+ *    28일에 답한 직후 14일 카드가 떴다 — 시간을 거슬러 묻는 화면이 된다.
+ *    나중 체크포인트에 답했다는 건 그 앞은 이미 지나갔다는 뜻이다.
  */
 export function dueCheckpoint(
   entry: ShelfEntry,
@@ -132,7 +136,9 @@ export function dueCheckpoint(
   const d = daysUsed(entry, now);
   if (d === null) return null;
   const mine = answers[entry.id] ?? {};
-  const passed = CHECKPOINTS.filter((c) => d >= c && !mine[c]);
+  const answered = CHECKPOINTS.filter((c) => mine[c]);
+  const latestAnswered = answered.length ? answered[answered.length - 1] : 0;
+  const passed = CHECKPOINTS.filter((c) => d >= c && c > latestAnswered && !mine[c]);
   return passed.length ? passed[passed.length - 1] : null;
 }
 
