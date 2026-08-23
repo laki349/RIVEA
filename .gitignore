@@ -30,3 +30,11 @@ cardnews/episodes/*/img/_contact.jpg
 # 앱 이미지가 조용히 커밋에서 빠진다
 /images/
 /ChatGPT Image *.png
+
+# 서비스 계정 키 — Firestore 전체 권한이다. 유출되면 DB가 통째로 열린다
+# 발급: Firebase 콘솔 → 프로젝트 설정 → 서비스 계정 (docs/fetch-events.mjs 주석)
+service-account.json
+service-account*.json
+
+# 계측 로그 원본 (node docs/fetch-events.mjs --json)
+docs/events-export.json

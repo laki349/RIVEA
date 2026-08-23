@@ -8,8 +8,10 @@
  * 설계·배포 방법은 docs/survey-api.gs 위쪽 주석에 있습니다.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
-const 루트 = new URL('..', import.meta.url).pathname;
+// pathname은 퍼센트 인코딩된다 — 경로의 공백이 %20이 돼서 .env.local 을 못 읽었다
+const 루트 = fileURLToPath(new URL('..', import.meta.url));
 
 function env() {
   try {
