@@ -2,38 +2,60 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { isLocalBrowse, useAuth } from "@/lib/auth";
-import LoginPanel from "./LoginPanel";
+import { isLocalBrowse, signInAsGuest, useAuth } from "@/lib/auth";
 
 /**
  * 공유 링크로 들어오는 경로 — 여기서는 온보딩을 띄우지 않는다.
  *
- * 이유: 카톡으로 상품 링크를 받은 사람이 열면 **상품이 아니라 스플래시·로그인을 본다.**
+ * 이유: 카톡으로 상품 링크를 받은 사람이 열면 **상품이 아니라 스플래시를 본다.**
  * 공유의 목적이 그 자리에서 깨지고, 정적 HTML에는 내용이 있어서
  * 크롤러는 읽는데 사람은 못 읽는 상태가 된다.
- *
- * 표준 패턴은 **콘텐츠는 공개, 커머스는 로그인**이다. 담기·결제 지점에서 인증을 요구하면
- * 되고(장바구니·결제 화면), 첫 화면부터 막을 필요가 없다.
  *
  * `/lp`는 이유가 하나 더 있다. 인스타·오프라인 카드에서 들어오는 랜딩이라
  * 스플래시가 뜨는 순간 광고비(와 도달)가 그대로 증발한다. 슬래시 없이 적은 건
  * `/lp` 자체를 매칭하기 위해서다.
+ *
+ * **2026-08-25 — 「내 루틴」과 「화장대」를 여기 넣었다.** 이 둘이 빠져 있어서
+ * 처방을 보러 온 사람이 스플래시와 로그인 패널을 먼저 만났다. 이 앱이 파는 게
+ * 정확히 그 두 화면인데 그 앞에 문을 세우고 있었다.
  */
-const OPEN_PREFIXES = ["/product/", "/routine/", "/magazine/", "/concern/", "/brand/", "/lp"];
+const OPEN_PREFIXES = [
+  "/product/",
+  "/routine/",
+  "/magazine/",
+  "/concern/",
+  "/brand/",
+  "/lp",
+  "/my-routine",
+  "/shelf",
+];
 
 /**
- * 앱 첫 진입 시퀀스 — 스플래시 → 매거진 커머스 소개 → 로그인.
- * 세 패널을 가로 트랙에 놓고 왼쪽으로 밀어 넘긴다.
+ * 앱 첫 진입 시퀀스 — 스플래시 → 매거진 커머스 소개 → **그대로 앱으로.**
  *
- * 노출 조건은 localStorage 플래그가 아니라 **인증 상태**다.
- * 게스트도 익명 uid가 발급되므로, 한 번 들어오면 다시 보이지 않는다.
- * 마이페이지에서 로그아웃하면 다시 보이는데, 그게 앱의 콜드스타트 경험으로 맞다.
+ * ## 2026-08-25 — 로그인 패널을 시퀀스에서 뺐다 (운영자 결정)
  *
- * 인증 상태를 확인하는 동안(ready=false)에도 1번 패널(로고)을 띄운다 —
- * 스플래시가 원래 그 용도이므로 로딩 스피너가 따로 필요 없다.
+ * 전에는 세 번째 패널이 로그인이었다. 인스타 링크로 들어온 사람이 보는 순서가
+ * **스플래시 4.4초 → 로그인 화면**이었다는 뜻이다. 「게스트로 둘러보기」 버튼이
+ * 있긴 했지만, 그건 탈출구지 입구가 아니다.
+ *
+ * 로그인을 입구에서 받지 않는 이유 셋:
+ *  ① **증명이 안 된다.** 익명 uid가 이미 고유 사용자를 센다. 피칭에서 강한 숫자는
+ *     가입자 수가 아니라 퍼널이다 — "몇 명이 처방까지 갔고 몇 명이 공식몰로 나갔나".
+ *     콜드 트래픽의 가입 수는 작을 수밖에 없고, 그건 보여주기 더 나쁜 숫자다.
+ *  ② **설문이 반대를 말한다.** 「고를 때 불편」 1위가 "이게 나한테 맞는 건지 모르겠다"
+ *     50%(`docs/15`)인데, 그 답 앞에 로그인 벽을 세우는 셈이다.
+ *  ③ **잃은 걸 셀 수 없다.** 벽에서 나간 사람은 `app_open`조차 남기지 않는다.
+ *
+ * 로그인이 값을 하는 자리는 따로 있다 — **14·28일 판정**이다. 그건 사람이 돌아와야
+ * 성립하는데 localStorage는 브라우저마다 따로고 인앱 브라우저에서 잘 날아간다.
+ * 그래서 권유는 **화장대에 무언가 등록한 뒤**로 옮겼다 (`/shelf`의 게스트 안내).
+ *
+ * 유입 링크(`?ref=`)는 스플래시도 건너뛴다. 목적이 분명한 방문이라 브랜드 소개가
+ * 그 사이에 낄 이유가 없다.
  */
-const SPLASH_MS = 1600;
-const INTRO_MS = 2800;
+const SPLASH_MS = 1400;
+const INTRO_MS = 2400;
 
 export default function Onboarding() {
   const { user, ready } = useAuth();
@@ -46,16 +68,31 @@ export default function Onboarding() {
     if (isLocalBrowse()) setDismissed(true);
   }, []);
 
+  // `?ref=`가 붙은 방문은 목적이 분명하다. 브랜드 소개를 끼우지 않는다
+  const [fromLink, setFromLink] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has("ref")) {
+      setFromLink(true);
+    }
+  }, []);
+
   const isOpenPath = OPEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
   // 인증되면(게스트 포함) 오버레이 제거. 공유로 들어온 상세 페이지는 애초에 띄우지 않는다
-  const active = !user && !dismissed && !isOpenPath;
+  const active = !user && !dismissed && !isOpenPath && !fromLink;
   const sequenceStarted = ready && active;
 
-  // 스플래시 → 소개 → 로그인 자동 전환. 로그인 패널에선 멈춘다.
+  /**
+   * 스플래시 → 소개 → **앱**. 마지막에 게스트로 들여보내고 오버레이를 걷는다.
+   * 예전엔 여기서 로그인 패널에 멈춰 섰다 — 그게 문이었다.
+   */
   useEffect(() => {
-    if (!sequenceStarted || step > 1) return;
+    if (!sequenceStarted) return;
+    if (step > 1) {
+      void signInAsGuest().finally(() => setDismissed(true));
+      return;
+    }
     const ms = step === 0 ? SPLASH_MS : INTRO_MS;
-    const t = setTimeout(() => setStep((s) => Math.min(2, s + 1)), ms);
+    const t = setTimeout(() => setStep((s) => s + 1), ms);
     return () => clearTimeout(t);
   }, [sequenceStarted, step]);
 
@@ -64,9 +101,7 @@ export default function Onboarding() {
   if (isOpenPath || (ready && !active)) return null;
 
   // 탭하면 기다리지 않고 다음으로 (자동 전환이 답답한 사용자용)
-  const skipAhead = () => {
-    if (step < 2) setStep((s) => s + 1);
-  };
+  const skipAhead = () => setStep((s) => s + 1);
 
   return (
     <div
@@ -77,13 +112,13 @@ export default function Onboarding() {
     >
       <div className="mx-auto h-full w-full max-w-app overflow-hidden">
         <div
-          className="flex h-full w-[300%] transition-transform duration-[520ms] ease-out motion-reduce:transition-none"
-          style={{ transform: `translateX(-${(step * 100) / 3}%)` }}
+          className="flex h-full w-[200%] transition-transform duration-[520ms] ease-out motion-reduce:transition-none"
+          style={{ transform: `translateX(-${(step * 100) / 2}%)` }}
         >
           {/* 1 — 스플래시: 흰 화면에 로고만 */}
           <section
             onClick={skipAhead}
-            className="flex h-full w-1/3 flex-col items-center justify-center"
+            className="flex h-full w-1/2 flex-col items-center justify-center"
           >
             <p className="text-[44px] font-bold tracking-[0.06em] text-rose">RIVEA</p>
           </section>
@@ -91,7 +126,7 @@ export default function Onboarding() {
           {/* 2 — 매거진 커머스 */}
           <section
             onClick={skipAhead}
-            className="flex h-full w-1/3 flex-col justify-center px-8"
+            className="flex h-full w-1/2 flex-col justify-center px-8"
           >
             <p className="text-[15px] font-bold tracking-[0.16em] text-meta">RIVEA</p>
             <h2 className="mt-3 text-[30px] font-bold leading-[1.35] text-ink">
@@ -106,19 +141,15 @@ export default function Onboarding() {
               <br />
               그에 맞는 상품을 바로 고르세요.
             </p>
-            <p className="mt-8 text-[16px] text-disabled">화면을 누르면 넘어가요</p>
+            <p className="mt-8 text-[16px] text-disabled">화면을 누르면 바로 시작해요</p>
           </section>
 
-          {/* 3 — 로그인 */}
-          <section className="no-scrollbar h-full w-1/3 overflow-y-auto">
-            <LoginPanel compact onAuthed={() => setDismissed(true)} />
-          </section>
         </div>
       </div>
 
       {/* 진행 표시 — 3점 */}
       <div className="pointer-events-none absolute inset-x-0 bottom-[18px] flex justify-center gap-[6px]">
-        {[0, 1, 2].map((i) => (
+        {[0, 1].map((i) => (
           /**
            * 폭이 아니라 scaleX를 애니메이션한다. `transition-all`로 width를 늘이면
            * 매 프레임 레이아웃을 다시 계산해서 저사양 기기에서 끊긴다 —

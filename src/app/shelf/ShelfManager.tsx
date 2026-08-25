@@ -14,6 +14,7 @@ import {
 } from "@/lib/shelf";
 import { STARTED_OPTIONS, pending, startedAtFrom, useVerdicts } from "@/lib/verdict";
 import Icon from "@/components/Icon";
+import KeepPrompt from "@/components/KeepPrompt";
 import VerdictCard from "@/components/VerdictCard";
 import ImageSlot from "@/components/ImageSlot";
 import InteractionNotes from "@/components/InteractionNotes";
@@ -62,6 +63,13 @@ export default function ShelfManager() {
           <VerdictCard entry={due[0].entry} day={due[0].day} />
         </section>
       )}
+
+      {/*
+        로그인을 권하는 유일한 자리. 입구가 아니라 **여기**인 이유는 Onboarding 주석 참고 —
+        화장대에 무언가 등록한 사람만 「14일 뒤에 돌아올 이유」가 생기고, 그때부터
+        계정이 사용자에게 값을 한다. 등록 전에 물으면 그냥 문이다.
+      */}
+      {entries.length > 0 && <KeepPrompt count={entries.length} />}
 
       {entries.length > 0 && (
         <section className="border-b border-hairline px-4 py-4">
