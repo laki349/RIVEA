@@ -15,6 +15,8 @@ import {
   type Step,
 } from "@/data/regimen";
 import type { ShelfEntry } from "./shelf";
+import { fitScore, weightsFrom, type FitWeights } from "./fit";
+import type { SkinSignal } from "./profile";
 
 /**
  * 고민 → **아침·저녁 루틴**.
@@ -103,7 +105,7 @@ export type Prescription = {
  * 실존 제품(source 있음)을 앞세우는 이유: 처방은 "이걸 사서 이렇게 쓰세요"라는
  * 말인데, 데모용으로 만든 상품을 그 자리에 놓으면 처방 자체가 데모가 된다.
  */
-function scoreFor(p: Product, concerns: string[]): number {
+function scoreFor(p: Product, concerns: string[], fit?: FitWeights): number {
   const hit = p.concerns.filter((c) => concerns.includes(c));
   if (hit.length === 0) return -1;
   // 첫 고민에 맞는 걸 가장 높게 — 프로필의 입력 순서가 우선순위다
@@ -111,6 +113,8 @@ function scoreFor(p: Product, concerns: string[]): number {
   let s = (concerns.length - best) * 100 + hit.length * 10;
   if (p.source) s += 40;
   s += p.rating;
+  // 적합성은 **같은 자리의 후보들 사이에서만** 순위를 바꾼다 (fit.ts 주석)
+  if (fit) s += fitScore(p, fit);
   return s;
 }
 
@@ -118,7 +122,8 @@ function pick(
   step: Step,
   slot: "am" | "pm",
   concerns: string[],
-  used: Set<string>
+  used: Set<string>,
+  fit: FitWeights
 ): { product: Product; reason: string | null } | null {
   const pool = products
     .filter((p) => p.category !== "device")
@@ -127,7 +132,7 @@ function pick(
       return r.step === step && inSlot(r, slot);
     })
     .filter((p) => !used.has(p.id))
-    .map((p) => ({ p, s: scoreFor(p, concerns) }))
+    .map((p) => ({ p, s: scoreFor(p, concerns, fit) }))
     .filter((x) => x.s > 0)
     .sort((a, b) => b.s - a.s);
 
@@ -165,7 +170,7 @@ function backedReason(p: Product, concern: string | undefined): string | null {
  * 세안·토너는 고민과 상관없이 필요한 자리다. 고민으로 못 채우면
  * 고민을 무시하고라도 채운다 — 세안 없는 루틴은 루틴이 아니다.
  */
-function fillBasic(step: Step, slot: "am" | "pm", used: Set<string>): Product | null {
+function fillBasic(step: Step, slot: "am" | "pm", used: Set<string>, fit: FitWeights): Product | null {
   const pool = products
     .filter((p) => p.category !== "device")
     .filter((p) => {
@@ -173,7 +178,12 @@ function fillBasic(step: Step, slot: "am" | "pm", used: Set<string>): Product | 
       return r.step === step && inSlot(r, slot);
     })
     .filter((p) => !used.has(p.id))
-    .sort((a, b) => (b.source ? 1 : 0) - (a.source ? 1 : 0) || b.rating - a.rating);
+    .sort(
+      (a, b) =>
+        (b.source ? 1 : 0) - (a.source ? 1 : 0) ||
+        fitScore(b, fit) - fitScore(a, fit) ||
+        b.rating - a.rating
+    );
   return pool[0] ?? null;
 }
 
@@ -190,7 +200,16 @@ const BASIC: Step[] = ["cleanse", "toner"];
  */
 const REPLACEABLE: Step[] = ["cleanse", "toner", "cream", "sun", "exfoliate", "scalp", "eye", "neck"];
 
-export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescription {
+export function prescribe(
+  concerns: string[],
+  shelf: ShelfEntry[] = [],
+  signals: SkinSignal[] = []
+): Prescription {
+  /**
+   * 피부 신호 → 조정 가중치. 비어 있으면 `fitScore`가 0을 돌려주므로
+   * **아무것도 안 고른 사람의 처방은 이 기능이 없을 때와 정확히 같다.**
+   */
+  const fit = weightsFrom(signals);
   /**
    * 이미 자리를 잡은 제품. 아침·저녁을 통틀어 관리한다.
    *
@@ -218,13 +237,13 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
         };
       }
 
-      const hit = pick(step, slot, concerns, used);
+      const hit = pick(step, slot, concerns, used, fit);
       if (hit) {
         if (regimenOf(hit.product).slot !== "both") used.add(hit.product.id);
         return { ...base, product: hit.product, reason: hit.reason, owned: null };
       }
       if (BASIC.includes(step)) {
-        const basic = fillBasic(step, slot, used);
+        const basic = fillBasic(step, slot, used, fit);
         if (basic) {
           if (regimenOf(basic).slot !== "both") used.add(basic.id);
           return { ...base, product: basic, reason: null, owned: null };
@@ -251,7 +270,7 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
     //    먹으라는 말도 마찬가지로 틀렸다.
     const ranked = products
       .filter((p) => regimenOf(p).step === c.step && !used.has(p.id))
-      .map((p) => ({ p, s: scoreFor(p, concerns) }))
+      .map((p) => ({ p, s: scoreFor(p, concerns, fit) }))
       .filter((x) => x.s > 0)
       .sort((a, b) => b.s - a.s)
       .map((x) => x.p);
@@ -268,7 +287,7 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
     return hits.map((product) => ({ product, when: c.when }));
   });
 
-  const weekly = weeklyFor(concerns, used);
+  const weekly = weeklyFor(concerns, used, fit);
 
   // 갖고 계신 자리(owned)는 살 목록에서 뺀다 — 병용 판정에는 화장대가 따로 들어간다
   const daily = Array.from(
@@ -302,12 +321,12 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
 }
 
 /** 주 2~3회 쓰는 것 — 기기 하나, 팩 하나까지. 더 넣으면 루틴이 숙제가 된다 */
-function weeklyFor(concerns: string[], used: Set<string>) {
+function weeklyFor(concerns: string[], used: Set<string>, fit: FitWeights) {
   const out: { product: Product; when: string }[] = [];
 
   const device = products
     .filter((p) => p.category === "device" && !used.has(p.id))
-    .map((p) => ({ p, s: scoreFor(p, concerns) }))
+    .map((p) => ({ p, s: scoreFor(p, concerns, fit) }))
     .filter((x) => x.s > 0)
     .sort((a, b) => b.s - a.s)[0]?.p;
   if (device) {
@@ -321,7 +340,7 @@ function weeklyFor(concerns: string[], used: Set<string>) {
 
   const mask = products
     .filter((p) => regimenOf(p).step === "mask" && !used.has(p.id))
-    .map((p) => ({ p, s: scoreFor(p, concerns) }))
+    .map((p) => ({ p, s: scoreFor(p, concerns, fit) }))
     .filter((x) => x.s > 0)
     .sort((a, b) => b.s - a.s)[0]?.p;
   if (mask) {

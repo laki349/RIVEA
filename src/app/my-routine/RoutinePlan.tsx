@@ -6,6 +6,7 @@ import { brandOf, concernOf, productImage, productOf, won, type Product } from "
 import { addToCart } from "@/lib/cart";
 import { pmNoteFor, prescribe, type Slotted } from "@/lib/prescribe";
 import { useProfile } from "@/lib/profile";
+import FitPanel from "@/components/FitPanel";
 import { track } from "@/lib/events";
 import { useShelfEntries } from "@/lib/shelf";
 import { regimenOf } from "@/data/regimen";
@@ -34,7 +35,10 @@ export default function RoutinePlan() {
   useEffect(() => setMounted(true), []);
 
   const shelf = useShelfEntries();
-  const plan = useMemo(() => prescribe(profile.concerns, shelf), [profile.concerns, shelf]);
+  const plan = useMemo(
+    () => prescribe(profile.concerns, shelf, profile.signals),
+    [profile.concerns, shelf, profile.signals]
+  );
 
   // 처방 도달 — 고민이 있어야 처방이 나온다. 빈 화면은 도달로 세지 않는다
   useEffect(() => {
@@ -148,6 +152,13 @@ export default function RoutinePlan() {
           <Icon name="chevron-right" size={15} />
         </Link>
       </div>
+
+      {/*
+        「이게 나한테 맞나」 — 처방을 **먼저 보여준 뒤**에 묻는다.
+        고민 다음에 바로 물으면 관문이 하나 더 생기고, 그건 오늘 입구에서 걷어낸 것과
+        같은 실수다. 값을 먼저 보여주고 입력을 받는다.
+      */}
+      <FitPanel />
 
       {asking && <LoginSheet onClose={close} what="루틴을 담아두세요" />}
 
