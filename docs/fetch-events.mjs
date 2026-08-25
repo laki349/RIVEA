@@ -96,6 +96,7 @@ async function 이벤트전부(액세스토큰) {
         name: f.name?.stringValue ?? null,
         value: f.value?.stringValue ?? null,
         sid: f.sid?.stringValue ?? null,
+        uid: f.uid?.stringValue ?? null,
         ref: f.ref?.stringValue ?? "direct",
         at: f.createdAt?.timestampValue ?? null,
       });
@@ -147,7 +148,22 @@ const 날짜 = (s) => new Date(s).toLocaleString("ko-KR", { dateStyle: "short", 
 const 고유 = (이름) => new Set(이벤트.filter((e) => e.name === 이름).map((e) => e.sid)).size;
 
 console.log(`\n기간   ${날짜(시각[0])} ~ ${날짜(시각.at(-1))}`);
-console.log(`이벤트 ${이벤트.length}건 · 세션 ${new Set(이벤트.map((e) => e.sid)).size}개\n`);
+/**
+ * 세션과 사람은 다른 숫자다.
+ *
+ * `sid`는 sessionStorage라 **탭을 닫으면 사라진다** — 같은 사람이 아침·저녁에 한 번씩
+ * 열면 2세션이다. `uid`는 익명 인증이 브라우저에 붙여주는 값이라 그 사람을 가로지른다.
+ * 지금까지 이 스크립트는 uid를 아예 읽지 않아서 **「몇 명이 왔나」를 답할 수 없었다.**
+ * 퍼널 도달률은 세션 기준이 맞지만(한 번의 방문 안에서 어디까지 갔나),
+ * 「고유 사용자」를 말하려면 uid가 필요하다.
+ *
+ * ⚠️ uid도 사람과 1:1은 아니다. 브라우저를 바꾸거나 저장소를 비우면 새로 발급된다.
+ *    **실제 사람 수의 상한**으로 읽는다.
+ */
+const 고유uid = new Set(이벤트.map((e) => e.uid).filter(Boolean)).size;
+console.log(
+  `이벤트 ${이벤트.length}건 · 세션 ${new Set(이벤트.map((e) => e.sid)).size}개 · 고유 사용자(uid) ${고유uid}명\n`
+);
 
 // 4단계 퍼널 — 도달률은 「몇 번」이 아니라 「몇 세션」이다
 const 분모 = 고유("app_open") || new Set(이벤트.map((e) => e.sid)).size;
