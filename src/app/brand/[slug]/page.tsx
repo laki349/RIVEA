@@ -67,7 +67,6 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
         <section>
           <div className="flex items-baseline justify-between px-4 pb-[10px] pt-4">
             <h3 className="text-[18px] font-bold text-ink">전체 상품 {list.length}</h3>
-            <span className="text-[15px] text-meta">인기순</span>
           </div>
           <div className="grid grid-cols-2 gap-[3px] border-t border-hairline">
             {list.map((p, i) => (

@@ -67,24 +67,21 @@ export function toLine(i: CartItem): Line {
   };
 }
 
-/** 배송 그룹 라벨 — 그룹명 + 배송 정책 문구 */
+/**
+ * 배송 그룹 라벨.
+ *
+ * ⚠️ 배송 정책 문구를 뺐다 (2026-08-25). 브랜드별 `freeShippingOver`·`shippingFee`가
+ *    **우리가 지어낸 값**이었고, 실존 기업의 배송 정책을 지어내는 건 리뷰수를 지어내는
+ *    것보다 성격이 나쁘다. 배송은 공식몰이 정한다.
+ */
 export function groupLabel(group: string) {
-  if (group === RIVEA_SET) return { name: "리베아 루틴 세트", ship: "무료배송" };
-  const b = brandOf(group);
-  return {
-    name: b.name,
-    ship: b.freeShippingOver
-      ? `${won(b.freeShippingOver)}원↑ 무료배송`
-      : `배송비 ${won(b.shippingFee)}원`,
-  };
+  if (group === RIVEA_SET) return { name: "리베아 루틴 세트", ship: "" };
+  return { name: brandOf(group).name, ship: "공식몰 기준" };
 }
 
-/** 그룹 소계에 따른 배송비. 루틴 세트는 리베아가 부담해 무료 */
-export function groupShippingFee(group: string, subtotal: number) {
-  if (group === RIVEA_SET) return 0;
-  const b = brandOf(group);
-  if (b.freeShippingOver && subtotal >= b.freeShippingOver) return 0;
-  return b.shippingFee;
+/** 배송비는 우리가 정하지 않는다 — 결제를 받지 않으므로 계산할 것도 없다 */
+export function groupShippingFee(_group: string, _subtotal: number) {
+  return 0;
 }
 
 /**

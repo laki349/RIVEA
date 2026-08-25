@@ -36,14 +36,12 @@ import WishButton from "./WishButton";
 export default function BuyBar({
   kind,
   id,
-  likes,
   price,
   buyHref,
   brandName,
 }: {
   kind: "product" | "routine";
   id: string;
-  likes: number;
   price: number;
   /** 이 제품을 실제로 파는 곳 (`buyUrlOf`). 없으면 구매 버튼을 그리지 않는다 */
   buyHref?: string | null;
@@ -57,7 +55,7 @@ export default function BuyBar({
 
 
       <div className="sticky bottom-0 z-40 flex items-center gap-3 border-t border-line bg-surface px-4 pb-[max(11px,env(safe-area-inset-bottom))] pt-[11px]">
-        <WishButton kind={kind} id={id} variant="bar" baseLikes={likes} />
+        <WishButton kind={kind} id={id} variant="bar" />
 
         {kind === "product" ? (
           <>

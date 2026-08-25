@@ -369,7 +369,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       <BuyBar
         kind="product"
         id={product.id}
-        likes={product.likes}
         price={product.price}
         buyHref={buyHref}
         brandName={viaOfficial ? brand.name : undefined}

@@ -170,7 +170,6 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
       <BuyBar
         kind="routine"
         id={routine.id}
-        likes={Object.values(routine.cohortAdds).reduce((a, b) => a + b, 0)}
         price={routine.price}
       />
     </>

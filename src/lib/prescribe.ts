@@ -105,6 +105,17 @@ export type Prescription = {
  * 실존 제품(source 있음)을 앞세우는 이유: 처방은 "이걸 사서 이렇게 쓰세요"라는
  * 말인데, 데모용으로 만든 상품을 그 자리에 놓으면 처방 자체가 데모가 된다.
  */
+/** 근거 등급 보너스. 창작 평점을 대신한다 */
+function evidenceBonus(p: Product): number {
+  const grades = (p.actives ?? [])
+    .map((a) => activeInfo[a.key]?.evidence?.grade)
+    .filter(Boolean) as ("A" | "B" | "C")[];
+  if (grades.includes("A")) return 6;
+  if (grades.includes("B")) return 4;
+  if (grades.includes("C")) return 2;
+  return 0;
+}
+
 function scoreFor(p: Product, concerns: string[], fit?: FitWeights): number {
   const hit = p.concerns.filter((c) => concerns.includes(c));
   if (hit.length === 0) return -1;
@@ -112,7 +123,15 @@ function scoreFor(p: Product, concerns: string[], fit?: FitWeights): number {
   const best = Math.min(...hit.map((c) => concerns.indexOf(c)));
   let s = (concerns.length - best) * 100 + hit.length * 10;
   if (p.source) s += 40;
-  s += p.rating;
+  /**
+   * ⚠️ 전에는 `p.rating`을 더했다. **그 평점은 우리가 지어낸 값**이고,
+   *    그게 같은 자리 후보들의 순위를 조용히 정하고 있었다 — 화면에서 평점을 내려도
+   *    처방 안쪽에서는 계속 창작 숫자가 결정을 하고 있었다는 뜻이다.
+   *
+   *    대신 **근거 등급**을 쓴다. A(메타분석) > B(임상) > C(기전) > 없음.
+   *    이건 실제 값이고, 이 앱이 팔겠다는 것과 정렬 기준이 같아진다.
+   */
+  s += evidenceBonus(p);
   // 적합성은 **같은 자리의 후보들 사이에서만** 순위를 바꾼다 (fit.ts 주석)
   if (fit) s += fitScore(p, fit);
   return s;
@@ -182,7 +201,7 @@ function fillBasic(step: Step, slot: "am" | "pm", used: Set<string>, fit: FitWei
       (a, b) =>
         (b.source ? 1 : 0) - (a.source ? 1 : 0) ||
         fitScore(b, fit) - fitScore(a, fit) ||
-        b.rating - a.rating
+        evidenceBonus(b) - evidenceBonus(a)
     );
   return pool[0] ?? null;
 }

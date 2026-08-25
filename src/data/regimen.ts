@@ -142,6 +142,11 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   // 500ml 샴푸
   "c-drforhair-bio3": { lifespanDays: 75 },
   "c-drforhair-thickening-shampoo": { lifespanDays: 75 },
+  "c-drforhair-phyto-shampoo": { lifespanDays: 75 },
+  // 트리트먼트·스크럽은 모발/주 1~2회라 두피 「남기는 자리」와 역할이 다르다
+  "c-drforhair-treatment": { slot: "pm", lifespanDays: 75 },
+  "c-drforhair-exfoliator": { slot: "pm", lifespanDays: 90 },
+  "c-drforhair-phyto-serum": { slot: "pm", lifespanDays: 60 },
   // 10매입 — 주 2~3회면 한 달
   "c-mediheal-madeca": { lifespanDays: 30 },
   "c-mediheal-teatree": { lifespanDays: 30 },
@@ -186,12 +191,16 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-nutree-time-biotin": { lifespanDays: 30 },
   "c-nutree-time-retinol": { lifespanDays: 30 },
   "c-nutree-skinhair": { lifespanDays: 28 },
+  "c-nutree-time-biotin-cell": { lifespanDays: 50 },
+  "c-nutree-gyno-quick": { lifespanDays: 30 },
   // 두피 토닉·세럼은 감고 난 뒤 자리다 — 샴푸(both)와 달리 저녁 한 번으로 잡는다
   "c-drforhair-tonic": { slot: "pm", lifespanDays: 60 },
   "c-drforhair-serum": { slot: "pm", lifespanDays: 50 },
   // 리필 15g 쿠션
   "c-iope-aircushion": { lifespanDays: 75 },
   "c-hera-black-cushion": { lifespanDays: 150 },
+  "c-clio-meshglow": { lifespanDays: 150 },
+  "c-iope-cushion-main": { lifespanDays: 75 },
   "c-clio-concealer": { lifespanDays: 120 },
   // 눈가·목은 쓰는 양이 적어 한 통이 오래 간다
   "c-ahc-eyecream": { slot: "both", lifespanDays: 90 },

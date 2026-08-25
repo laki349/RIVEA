@@ -8,20 +8,36 @@ import {
   concerns,
   products,
   won,
+  type ActiveKey,
   type Category,
 } from "@/data/catalog";
+import { activeInfo } from "@/data/actives";
 import Icon from "@/components/Icon";
 import ProductCard from "@/components/ProductCard";
 import TabBar from "@/components/TabBar";
 import AppBar from "@/components/AppBar";
 
-type SortKey = "popular" | "reviews" | "priceAsc" | "priceDesc";
+/**
+ * ⚠️ 「인기순」·「리뷰많은순」을 뺐다 (2026-08-25).
+ * `likes`·`reviewCount`가 전부 창작이라 그 정렬 결과 자체가 창작이었다.
+ * 라벨만 남기고 정렬을 끄면 그것도 거짓말이라, 선택지에서 통째로 지운다.
+ * 「근거순」은 우리가 실제로 아는 값이다 — 동료심사 논문 등급(A>B>C).
+ */
+type SortKey = "evidence" | "priceAsc" | "priceDesc";
 const sorts: { key: SortKey; label: string }[] = [
-  { key: "popular", label: "인기순" },
-  { key: "reviews", label: "리뷰많은순" },
+  { key: "evidence", label: "근거순" },
   { key: "priceAsc", label: "낮은가격순" },
   { key: "priceDesc", label: "높은가격순" },
 ];
+
+/** 근거 등급 점수. A(메타분석) > B(임상) > C(기전) > 없음 */
+const evidenceRank = (p: { actives?: { key: ActiveKey }[] }) => {
+  const g = (p.actives ?? []).map((a) => activeInfo[a.key]?.evidence?.grade).filter(Boolean);
+  if (g.includes("A")) return 3;
+  if (g.includes("B")) return 2;
+  if (g.includes("C")) return 1;
+  return 0;
+};
 
 export default function ProductList({ slug }: { slug: Category }) {
   // 정적 export 호환: 서버에서 searchParams를 읽지 않고 클라이언트에서 읽는다.
@@ -43,7 +59,7 @@ export default function ProductList({ slug }: { slug: Category }) {
    */
   const sub = searchParams.get("sub") ?? "전체";
   const concern = searchParams.get("concern");
-  const sort = (searchParams.get("sort") as SortKey | null) ?? "popular";
+  const sort = (searchParams.get("sort") as SortKey | null) ?? "evidence";
 
   const setParam = (key: string, value: string | null, isDefault: boolean) => {
     const next = new URLSearchParams(searchParams.toString());
@@ -56,7 +72,7 @@ export default function ProductList({ slug }: { slug: Category }) {
 
   const setSub = (v: string) => setParam("sub", v, v === "전체");
   const setConcern = (v: string | null) => setParam("concern", v, false);
-  const setSort = (v: SortKey) => setParam("sort", v, v === "popular");
+  const setSort = (v: SortKey) => setParam("sort", v, v === "evidence");
 
   const [sheet, setSheet] = useState<"concern" | "sort" | null>(null);
 
@@ -96,11 +112,8 @@ export default function ProductList({ slug }: { slug: Category }) {
     let l = products.filter((p) => p.category === slug);
     if (concern) l = l.filter((p) => p.concerns.includes(concern));
     switch (sort) {
-      case "popular":
-        l = [...l].sort((a, b) => b.likes - a.likes);
-        break;
-      case "reviews":
-        l = [...l].sort((a, b) => b.reviewCount - a.reviewCount);
+      case "evidence":
+        l = [...l].sort((a, b) => evidenceRank(b) - evidenceRank(a));
         break;
       case "priceAsc":
         l = [...l].sort((a, b) => a.price - b.price);
