@@ -124,6 +124,7 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-torriden-vita-pad": { step: "exfoliate", slot: "pm", lifespanDays: 45 },
   "c-torriden-dive-peeling": { step: "exfoliate", slot: "pm", lifespanDays: 90 },
   "c-torriden-cica-pad": { step: "exfoliate", slot: "pm", lifespanDays: 40 },
+  "c-numbuzin-pha-pack": { step: "exfoliate", slot: "pm", lifespanDays: 60 },
   // 이중세안은 저녁에만 한다. 아침 세안 자리까지 오일로 채우면 없던 숙제가 생긴다
   "c-roundlab-dokdo-cleansing-oil": { slot: "pm", lifespanDays: 60 },
   "c-anua-cleansing-oil": { slot: "pm", lifespanDays: 60 },
@@ -171,6 +172,11 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-torriden-cica-mask": { lifespanDays: 30 },
   "c-torriden-dive-milk": { slot: "pm", lifespanDays: 60 },
   "c-torriden-dive-water": { slot: "pm", lifespanDays: 70 },
+  "c-numbuzin-cleansing-oil": { slot: "pm", lifespanDays: 60 },
+  "c-numbuzin-panto-serum": { slot: "both", lifespanDays: 70 },
+  "c-numbuzin-panto-cream": { slot: "both", lifespanDays: 75 },
+  "c-numbuzin-boost-toner": { slot: "both", lifespanDays: 70 },
+  "c-numbuzin-panto-gauze": { lifespanDays: 30 },
   "c-torriden-dive-glow-serum": { slot: "both", lifespanDays: 90 },
   // 국소 도포라 한 통이 오래 간다
   "c-torriden-vita-spot": { slot: "pm", lifespanDays: 120 },
