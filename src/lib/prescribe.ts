@@ -217,13 +217,26 @@ export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescri
     // 하나만 뽑으면 샴푸는 나오고 두피 토닉은 사라진다. 이 자리는 얼굴 사다리와 달리
     // 「한 자리에 하나」가 아니다 — 샴푸와 토닉은 같이 쓰는 것이지 둘 중 하나가 아니다.
     // 다만 셋을 넘기면 루틴이 숙제가 되므로 둘까지만 (weeklyFor의 판단과 같다).
-    const hits = products
+    //
+    // ⚠️ **역할이 겹치면 하나만 쓴다** (`Regimen.sub`). 그냥 상위 둘을 뽑았더니
+    //    카탈로그에 샴푸가 둘이 되는 순간 **샴푸 두 개를 같이 쓰라고** 내밀었다.
+    //    역할이 없는 단계(이너뷰티)는 자연히 하나만 남는다 — 콜라겐 두 통을 같이
+    //    먹으라는 말도 마찬가지로 틀렸다.
+    const ranked = products
       .filter((p) => regimenOf(p).step === c.step && !used.has(p.id))
       .map((p) => ({ p, s: scoreFor(p, concerns) }))
       .filter((x) => x.s > 0)
       .sort((a, b) => b.s - a.s)
-      .slice(0, 2)
       .map((x) => x.p);
+    const roles = new Set<string>();
+    const hits: Product[] = [];
+    for (const p of ranked) {
+      if (hits.length >= 2) break;
+      const role = regimenOf(p).sub ?? "@single";
+      if (roles.has(role)) continue;
+      roles.add(role);
+      hits.push(p);
+    }
     hits.forEach((h) => used.add(h.id));
     return hits.map((product) => ({ product, when: c.when }));
   });

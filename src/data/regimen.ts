@@ -46,6 +46,15 @@ export type Regimen = {
   step: Step;
   slot: Slot;
   /**
+   * **한 단계 안에서의 역할.** 같은 역할끼리는 둘 중 하나지, 같이 쓰는 게 아니다.
+   *
+   * 왜 생겼나: 두피 제품이 샴푸 하나뿐일 땐 「자리 하나에 둘까지」로 충분했다.
+   * 샴푸가 둘이 되자 처방이 **샴푸 두 개를 같이 쓰라고** 내밀었다 —
+   * 「감는 것」과 「감고 남기는 것」이 다른 역할인데 단계 이름이 `scalp` 하나여서
+   * 구분할 수가 없었다. 역할이 없으면(undefined) 그 단계는 **하나만** 고른다.
+   */
+  sub?: "wash" | "leave-in";
+  /**
    * 표준 사용량으로 한 통을 쓰는 데 걸리는 **예상** 일수.
    * 용량과 1회 사용량에서 잡은 값이라 정확한 약속이 아니다 — 화면에서도 "쯤"으로만 말한다.
    * null이면 재구매 개념이 없다 (기기).
@@ -68,6 +77,14 @@ const BY_CATEGORY: Record<Category, Regimen> = {
   inner: { step: "inner", slot: "both", lifespanDays: 30 },
 };
 
+/**
+ * 두피 안에서의 역할 — 여기서도 제품명이 가장 정확한 신호다.
+ * 샴푸는 씻어내고, 토닉·세럼·트리트먼트는 남긴다. 순서도 그 순서다.
+ */
+function subOfScalp(name: string): "wash" | "leave-in" {
+  return /샴푸/.test(name) ? "wash" : "leave-in";
+}
+
 /** 스킨케어 안에서의 자리 — 제품명이 가장 정확한 신호다 */
 function stepOfSkincare(name: string): Step {
   if (/토너|스킨|미스트/.test(name)) return "toner";
@@ -85,8 +102,12 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   // 필링젤·토너패드도 마찬가지 — 카테고리는 클렌징인데 자리는 각질 정리다
   "c-roundlab-dokdo-peeling": { step: "exfoliate", slot: "pm", lifespanDays: 90 },
   "c-mediheal-teatree-pad": { step: "exfoliate", slot: "pm", lifespanDays: 50 },
+  "c-mediheal-pdrn-pad": { step: "exfoliate", slot: "pm", lifespanDays: 50 },
+  "c-anua-clear-pad": { step: "exfoliate", slot: "pm", lifespanDays: 45 },
+  "c-glasslike-pha-pad": { step: "exfoliate", slot: "pm", lifespanDays: 45 },
   // 이중세안은 저녁에만 한다. 아침 세안 자리까지 오일로 채우면 없던 숙제가 생긴다
   "c-roundlab-dokdo-cleansing-oil": { slot: "pm", lifespanDays: 60 },
+  "c-anua-cleansing-oil": { slot: "pm", lifespanDays: 60 },
   // 레티놀은 저녁 전용
   "c-anua-retinol": { step: "serum", slot: "pm", lifespanDays: 75 },
   // 아침·저녁 둘 다 쓰는 세럼들
@@ -99,16 +120,29 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-medicube-txa-cream": { step: "cream", lifespanDays: 75 },
   // 500ml 샴푸
   "c-drforhair-bio3": { lifespanDays: 75 },
+  "c-drforhair-thickening-shampoo": { lifespanDays: 75 },
   // 10매입 — 주 2~3회면 한 달
   "c-mediheal-madeca": { lifespanDays: 30 },
   "c-mediheal-teatree": { lifespanDays: 30 },
   "c-roundlab-dokdo-mask": { lifespanDays: 30 },
   // 미스트는 이름으로 이미 toner 자리다. 아침·저녁 둘 다 쓴다
   "c-anua-pdrn-mist": { slot: "both", lifespanDays: 60 },
+  // 아침·저녁 둘 다 쓰는 수분 라인 (아누아 자작나무 3종 · 시카플라스트 · PDRN 세럼)
+  "c-anua-birch-toner": { slot: "both", lifespanDays: 80 },
+  "c-anua-birch-serum": { slot: "both", lifespanDays: 60 },
+  "c-anua-birch-cream": { slot: "both", lifespanDays: 60 },
+  "c-laroche-cicaplast": { slot: "both", lifespanDays: 90 },
+  "c-mediheal-pdrn-serum": { slot: "both", lifespanDays: 70 },
+  // 90ml·100ml 대용량
+  "c-glasslike-pdrn-ampoule": { slot: "both", lifespanDays: 110 },
+  "c-glasslike-gel-cream": { slot: "both", lifespanDays: 90 },
+  "c-glasslike-barrier-cream": { slot: "both", lifespanDays: 60 },
+  "c-glasslike-modeling-mask": { lifespanDays: 28 },
   // 30포 = 하루 1포
   "c-nutree-timezero": { lifespanDays: 30 },
   "c-nutree-time-biotin": { lifespanDays: 30 },
   "c-nutree-time-retinol": { lifespanDays: 30 },
+  "c-nutree-skinhair": { lifespanDays: 28 },
   // 두피 토닉·세럼은 감고 난 뒤 자리다 — 샴푸(both)와 달리 저녁 한 번으로 잡는다
   "c-drforhair-tonic": { slot: "pm", lifespanDays: 60 },
   "c-drforhair-serum": { slot: "pm", lifespanDays: 50 },
@@ -127,7 +161,8 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
 export function regimenOf(p: Product): Regimen {
   const base = BY_CATEGORY[p.category];
   const step = p.category === "skincare" ? stepOfSkincare(p.name) : base.step;
-  return { ...base, step, ...OVERRIDES[p.id] };
+  const sub = p.category === "scalp-hair" ? subOfScalp(p.name) : undefined;
+  return { ...base, step, ...(sub ? { sub } : {}), ...OVERRIDES[p.id] };
 }
 
 export function regimenById(id: string): Regimen | null {
