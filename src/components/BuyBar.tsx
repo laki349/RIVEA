@@ -44,6 +44,7 @@ export default function BuyBar({
   price: number;
   /** 이 제품을 실제로 파는 곳 (`buyUrlOf`). 없으면 구매 버튼을 그리지 않는다 */
   buyHref?: string | null;
+  /** 브랜드 공식몰로 나갈 때만 준다. 비어 있으면 「판매처에서 구매」로 쓴다 */
   brandName?: string;
 }) {
   const router = useRouter();
@@ -87,7 +88,7 @@ export default function BuyBar({
                 href={buyHref}
                 brandName={brandName ?? ""}
                 variant="bar"
-                label={brandName ? `${brandName}에서 구매` : "공식몰에서 구매"}
+                label={brandName ? `${brandName}에서 구매` : "판매처에서 구매"}
               />
             ) : (
               // 파는 곳 주소가 없으면 버튼을 비활성으로 남긴다 — 눌러도 갈 데가 없는

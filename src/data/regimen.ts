@@ -18,7 +18,13 @@ export const STEP_ORDER = [
   "exfoliate",
   "toner",
   "serum",
+  // 눈가와 목은 **얼굴 크림 자리를 뺏으면 안 된다.**
+  // 자리를 안 만들고 넣었더니 「넥 링클 크림」이 이름에 크림이 있다는 이유로
+  // 얼굴 마지막 자리에 앉았다 — 6만원짜리 목 전용 제품을 얼굴에 바르라는 처방이 된다.
+  // 둘 다 OPTIONAL이라 채울 게 없으면 자리째 사라진다 (prescribe.ts).
+  "eye",
   "cream",
+  "neck",
   "sun",
   "makeup",
 ] as const;
@@ -30,7 +36,9 @@ export const STEP_LABEL: Record<Step, string> = {
   exfoliate: "각질 정리",
   toner: "토너",
   serum: "세럼·앰플",
+  eye: "눈가",
   cream: "크림",
+  neck: "목·턱선",
   sun: "자외선 차단",
   makeup: "베이스 메이크업",
   mask: "마스크팩",
@@ -85,8 +93,16 @@ function subOfScalp(name: string): "wash" | "leave-in" {
   return /샴푸/.test(name) ? "wash" : "leave-in";
 }
 
-/** 스킨케어 안에서의 자리 — 제품명이 가장 정확한 신호다 */
+/**
+ * 스킨케어 안에서의 자리 — 제품명이 가장 정확한 신호다.
+ *
+ * ⚠️ **부위 판정이 제형 판정보다 먼저다.** 「아이크림」·「넥 링클 크림」에는 둘 다
+ *    「크림」이 들어 있어서, 제형을 먼저 보면 눈가·목 전용 제품이 얼굴 크림 자리를
+ *    차지한다. 어디에 바르는가가 무엇으로 바르는가보다 앞선다.
+ */
 function stepOfSkincare(name: string): Step {
+  if (/아이크림|아이 크림|눈가|아이세럼|아이 세럼/.test(name)) return "eye";
+  if (/넥|목주름|데콜테/.test(name)) return "neck";
   if (/토너|스킨|미스트/.test(name)) return "toner";
   if (/크림|밤|모이스처|로션/.test(name)) return "cream";
   return "serum";
@@ -105,9 +121,13 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-mediheal-pdrn-pad": { step: "exfoliate", slot: "pm", lifespanDays: 50 },
   "c-anua-clear-pad": { step: "exfoliate", slot: "pm", lifespanDays: 45 },
   "c-glasslike-pha-pad": { step: "exfoliate", slot: "pm", lifespanDays: 45 },
+  "c-torriden-vita-pad": { step: "exfoliate", slot: "pm", lifespanDays: 45 },
+  "c-torriden-dive-peeling": { step: "exfoliate", slot: "pm", lifespanDays: 90 },
+  "c-torriden-cica-pad": { step: "exfoliate", slot: "pm", lifespanDays: 40 },
   // 이중세안은 저녁에만 한다. 아침 세안 자리까지 오일로 채우면 없던 숙제가 생긴다
   "c-roundlab-dokdo-cleansing-oil": { slot: "pm", lifespanDays: 60 },
   "c-anua-cleansing-oil": { slot: "pm", lifespanDays: 60 },
+  "c-torriden-dive-oil": { slot: "pm", lifespanDays: 60 },
   // 레티놀은 저녁 전용
   "c-anua-retinol": { step: "serum", slot: "pm", lifespanDays: 75 },
   // 아침·저녁 둘 다 쓰는 세럼들
@@ -138,6 +158,23 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-glasslike-gel-cream": { slot: "both", lifespanDays: 90 },
   "c-glasslike-barrier-cream": { slot: "both", lifespanDays: 60 },
   "c-glasslike-modeling-mask": { lifespanDays: 28 },
+  "c-torriden-dive-mask": { lifespanDays: 30 },
+  "c-torriden-cell-collagen-mask": { lifespanDays: 30 },
+  // 300ml 토너 · 100ml 크림 — 아침·저녁 둘 다
+  "c-torriden-dive-toner": { slot: "both", lifespanDays: 90 },
+  "c-torriden-dive-serum": { slot: "both", lifespanDays: 70 },
+  "c-torriden-dive-cream": { slot: "both", lifespanDays: 90 },
+  "c-torriden-dive-mist": { slot: "both", lifespanDays: 60 },
+  "c-torriden-vita-toner": { slot: "both", lifespanDays: 70 },
+  "c-torriden-cica-toner": { slot: "both", lifespanDays: 80 },
+  "c-torriden-cica-cream": { slot: "both", lifespanDays: 75 },
+  "c-torriden-cica-mask": { lifespanDays: 30 },
+  "c-torriden-dive-milk": { slot: "pm", lifespanDays: 60 },
+  "c-torriden-dive-water": { slot: "pm", lifespanDays: 70 },
+  "c-torriden-dive-glow-serum": { slot: "both", lifespanDays: 90 },
+  // 국소 도포라 한 통이 오래 간다
+  "c-torriden-vita-spot": { slot: "pm", lifespanDays: 120 },
+  "c-torriden-lip-essence": { slot: "both", lifespanDays: 90 },
   // 30포 = 하루 1포
   "c-nutree-timezero": { lifespanDays: 30 },
   "c-nutree-time-biotin": { lifespanDays: 30 },
@@ -148,6 +185,15 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-drforhair-serum": { slot: "pm", lifespanDays: 50 },
   // 리필 15g 쿠션
   "c-iope-aircushion": { lifespanDays: 75 },
+  "c-hera-black-cushion": { lifespanDays: 150 },
+  "c-clio-concealer": { lifespanDays: 120 },
+  // 눈가·목은 쓰는 양이 적어 한 통이 오래 간다
+  "c-ahc-eyecream": { slot: "both", lifespanDays: 90 },
+  "c-ahc-eyecream-s13": { slot: "both", lifespanDays: 110 },
+  "c-eucerin-eyecream": { slot: "both", lifespanDays: 60 },
+  "c-centellian24-eyecream": { slot: "both", lifespanDays: 60 },
+  "c-medicube-neck-cream": { slot: "pm", lifespanDays: 90 },
+  "c-estra-atobarrier-cream": { slot: "both", lifespanDays: 75 },
   // 50ml 크림 두 종 — 아침·저녁 둘 다 쓰는 마지막 자리
   "c-anua-pdrn-cream": { slot: "both", lifespanDays: 60 },
   // 나이아신아마이드는 레티놀과 달리 빛을 피할 이유가 없다 — 아침 크림 자리도 이걸로 채운다

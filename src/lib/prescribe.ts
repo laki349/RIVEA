@@ -29,8 +29,8 @@ import type { ShelfEntry } from "./shelf";
  */
 
 /** 아침·저녁의 자리. 비어 있어도 자리는 보여준다 (`OPTIONAL`은 예외) */
-const AM_STEPS: Step[] = ["cleanse", "toner", "serum", "cream", "sun"];
-const PM_STEPS: Step[] = ["cleanse", "exfoliate", "toner", "serum", "cream"];
+const AM_STEPS: Step[] = ["cleanse", "toner", "serum", "eye", "cream", "neck", "sun"];
+const PM_STEPS: Step[] = ["cleanse", "exfoliate", "toner", "serum", "eye", "cream", "neck"];
 
 /**
  * 얼굴 사다리 밖의 자리.
@@ -54,8 +54,12 @@ const CONCERN_STEPS: { step: Step; concern: string; when: string }[] = [
  *
  * 각질 정리는 **안 하는 게 기본**인 단계다. 세안처럼 "쓰시던 걸 쓰세요"로 남기면
  * 안 쓰던 사람에게 없던 숙제를 만든다. 세안·토너·크림은 누구나 하는 일이라 남긴다.
+ *
+ * 눈가·목도 같다. 40대+ 루틴에서 값이 큰 자리지만 **모두가 하는 일은 아니다.**
+ * 아이크림을 안 쓰던 사람에게 빈 「눈가」 칸을 내밀면 없던 숙제가 하나 는다 —
+ * 고민에 맞는 제품이 실제로 있을 때만 자리가 생긴다.
  */
-const OPTIONAL: Step[] = ["exfoliate"];
+const OPTIONAL: Step[] = ["exfoliate", "eye", "neck"];
 
 export type Slotted = {
   step: Step;
@@ -161,7 +165,7 @@ const BASIC: Step[] = ["cleanse", "toner"];
  * 고민 3개를 받아놓고 세럼 하나로 다 된다고 말하는 셈이 된다.
  * (실제로 그렇게 만들었더니 아침·저녁 세럼 추천이 통째로 사라졌다.)
  */
-const REPLACEABLE: Step[] = ["cleanse", "toner", "cream", "sun", "exfoliate", "scalp"];
+const REPLACEABLE: Step[] = ["cleanse", "toner", "cream", "sun", "exfoliate", "scalp", "eye", "neck"];
 
 export function prescribe(concerns: string[], shelf: ShelfEntry[] = []): Prescription {
   /**

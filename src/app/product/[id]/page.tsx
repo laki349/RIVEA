@@ -110,6 +110,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const real = product.source;
   // 「구매」 버튼 하나의 목적지. 없으면 버튼을 그리지 않는다 (buyUrlOf 주석)
   const buyHref = buyUrlOf(product);
+  /**
+   * 브랜드 공식몰로 나가나, 가격비교(다나와)로 나가나.
+   *
+   * 공식몰 주소를 확인하지 못한 브랜드가 있고, 그건 지어내지 않고 비워뒀다.
+   * 그 상태에서 「○○ 공식몰에서 진행돼요」라고 쓰면 화면이 거짓말을 한다 —
+   * 실제로는 여러 판매처가 붙은 비교 페이지로 나간다. 문구를 목적지에 맞춘다.
+   */
+  const viaOfficial = Boolean(real?.officialUrl ?? brand.officialUrl);
 
   /**
    * 비교표는 디바이스에만 (docs/07 수정안 5).
@@ -215,7 +223,15 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               label: "결제",
               value: (
                 <>
-                  <b className="font-bold">{brand.name} 공식몰</b>에서 진행돼요
+                  {viaOfficial ? (
+                    <>
+                      <b className="font-bold">{brand.name} 공식몰</b>에서 진행돼요
+                    </>
+                  ) : (
+                    <>
+                      <b className="font-bold">가격비교에 연결된 판매처</b>에서 진행돼요
+                    </>
+                  )}
                   <span className="block text-[15px] text-meta">
                     리베아는 결제를 받지 않고 판매 수수료도 받지 않아요
                   </span>
@@ -226,9 +242,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               label: "배송",
               value: (
                 <>
-                  공식몰의 배송비·기준을 따라요
+                  {viaOfficial ? "공식몰" : "판매처"}의 배송비·기준을 따라요
                   <span className="block text-[15px] text-meta">
-                    주문·배송 조회도 공식몰에서 하시게 돼요
+                    주문·배송 조회도 {viaOfficial ? "공식몰" : "그쪽"}에서 하시게 돼요
                   </span>
                 </>
               ),
@@ -240,7 +256,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   {real?.priceNote ?? "판매처 표시가"}
                   <span className="block text-[15px] text-meta">
                     {real?.pricedAt ? `${real.pricedAt} 확인 · ` : ""}
-                    최종 가격·재고는 공식몰 표시가 우선이에요
+                    최종 가격·재고는 {viaOfficial ? "공식몰" : "판매처"} 표시가 우선이에요
                   </span>
                 </>
               ),
@@ -414,7 +430,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         likes={product.likes}
         price={product.price}
         buyHref={buyHref}
-        brandName={brand.name}
+        brandName={viaOfficial ? brand.name : undefined}
       />
     </>
   );
