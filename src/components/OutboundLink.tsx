@@ -49,24 +49,46 @@ export const withUtm = (href: string, productId: string): string => {
   }
 };
 
+/**
+ * 나가는 문은 **이 컴포넌트 하나뿐이다.**
+ *
+ * 전에는 상품 상세 본문에 「공식몰에서 보기」가, 하단 바에 「바로구매」가 따로 있었고
+ * 둘이 다른 동작을 했다(하나는 밖으로, 하나는 우리 체크아웃으로). 지금은 둘 다
+ * 같은 곳으로 간다. 그러면 같은 컴포넌트여야 한다 — UTM 규칙이나 `outbound_click`
+ * 호출이 두 군데로 갈라지는 순간, 집계가 조용히 반쪽이 된다.
+ *
+ * `variant`는 생김새만 다르다:
+ *  - `block` 본문 안. 테두리형(보조 행동)
+ *  - `bar`   하단 고정 바. 채움형(주 행동) + `flex-1`
+ *
+ * ⚠️ **로그인 게이트를 통과하지 않는다.** 목적지가 우리 화면이 아니라서
+ *    계정에 남길 것이 없다 (`BuyBar` 주석의 판단).
+ */
 export default function OutboundLink({
   productId,
   href,
   brandName,
+  variant = "block",
+  label,
 }: {
   productId: string;
   href: string;
   brandName: string;
+  variant?: "block" | "bar";
+  label?: string;
 }) {
+  const bar = variant === "bar";
   return (
     <a
       href={withUtm(href, productId)}
       target="_blank"
       rel="nofollow sponsored noopener noreferrer"
       onClick={() => trackRepeat("outbound_click", productId)}
-      className="press flex h-[50px] w-full items-center justify-center rounded-cta border border-ink text-[17px] font-medium text-ink"
+      className={`press flex h-[50px] items-center justify-center rounded-cta text-[17px] font-medium ${
+        bar ? "flex-1 bg-ink text-on-ink" : "w-full border border-ink text-ink"
+      }`}
     >
-      {brandName} 공식몰에서 보기
+      {label ?? `${brandName} 공식몰에서 보기`}
     </a>
   );
 }

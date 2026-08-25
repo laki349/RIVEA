@@ -83,7 +83,7 @@ export default function WishList() {
                     <p className="text-[14px] font-bold text-rose">{r.label}</p>
                     <p className="mt-[2px] truncate text-[15px] font-bold text-ink">{r.title}</p>
                     <div className="mt-1 flex items-baseline gap-[5px]">
-                      {rate !== null && (
+                      {rate !== null && rate > 0 && (
                         <span className="text-[15px] font-bold text-rose">{rate}%</span>
                       )}
                       <span className="text-[17px] font-bold text-ink">{won(r.price)}</span>

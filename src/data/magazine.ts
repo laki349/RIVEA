@@ -40,8 +40,8 @@ export const articles: Article[] = [
     readMinutes: 4,
     concerns: ["pigment"],
     ingredientMatch: ["나이아신아마이드"],
-    productIds: ["p1", "p3"],
-    routineIds: ["r1", "r3"],
+    productIds: ["c-paulas-b3", "c-anua-txa", "c-roundlab-vita-cream"],
+    routineIds: ["r1"],
     image: "/images/magazine/mag-niacinamide.jpg",
     body: [
       {
@@ -83,8 +83,8 @@ export const articles: Article[] = [
     readMinutes: 4,
     concerns: ["dry"],
     ingredientMatch: ["세라마이드"],
-    productIds: ["p3"],
-    routineIds: [],
+    productIds: ["c-medicube-txa-cream", "c-anua-pdrn-cream", "c-roundlab-dokdo-cream"],
+    routineIds: ["r3"],
     image: "/images/magazine/mag-ceramide.jpg",
     body: [
       {
@@ -126,8 +126,8 @@ export const articles: Article[] = [
     readMinutes: 4,
     concerns: ["sun", "pigment"],
     ingredientMatch: ["징크옥사이드", "티타늄디옥사이드"],
-    productIds: ["p5"],
-    routineIds: ["r1", "r3"],
+    productIds: ["c-laroche-uvmune", "c-roundlab-birch-sun", "c-iope-aircushion"],
+    routineIds: ["r12", "r1"],
     image: "/images/magazine/mag-uv.jpg",
     body: [
       {
@@ -170,7 +170,7 @@ export const articles: Article[] = [
     dek: "30대까지 통했던 '채우는 관리'가 왜 덜 먹히기 시작하는지, 무엇을 먼저 바꿔야 하는지.",
     readMinutes: 5,
     concerns: ["wrinkle", "pore"],
-    productIds: ["p4", "p2", "p8"],
+    productIds: ["c-anua-retinol", "d-medicube-pro", "c-nutree-timezero"],
     routineIds: ["r2"],
     image: "/images/magazine/mag-age45.jpg",
     block: { ko: "45세 전후", en: "Age 45 Turning Point" },
@@ -217,8 +217,8 @@ export const articles: Article[] = [
     concerns: ["wrinkle", "pigment", "scalp-hair"],
     // 기기 상세에서는 고민 기사보다 이 글이 먼저 걸리도록
     ingredientMatch: ["EMS", "LED"],
-    productIds: ["p2", "p6", "p7"],
-    routineIds: ["r1", "r2", "r4"],
+    productIds: ["d-medicube-x2", "d-lg-ledmask", "d-medicube-mini"],
+    routineIds: ["r6", "r7", "r9"],
     image: "/images/magazine/mag-device.jpg",
     block: { ko: "EMS와 LED", en: "Know Your Device" },
     body: [
@@ -261,9 +261,9 @@ export const articles: Article[] = [
     dek: "분자 크기와 섭취 시점 이야기가 왜 나오는지, 무엇을 기대하고 무엇을 기대하지 않아야 하는지.",
     readMinutes: 4,
     concerns: ["inner", "wrinkle"],
-    ingredientMatch: ["피쉬콜라겐", "콜라겐 3,000"],
-    productIds: ["p8"],
-    routineIds: ["r4"],
+    ingredientMatch: ["저분자콜라겐펩타이드", "비오틴"],
+    productIds: ["c-nutree-timezero", "c-nutree-time-biotin"],
+    routineIds: ["r11"],
     image: "/images/magazine/mag-inner.jpg",
     block: { ko: "8주 기준", en: "Inner Beauty Timeline" },
     body: [

@@ -289,9 +289,11 @@ export default function GiftClient() {
                     </p>
                     <p className="mt-[5px] text-[15px] leading-[1.55] text-soft">{r.description}</p>
                     <div className="mt-[9px] flex items-baseline gap-2">
-                      <span className="text-[16px] text-disabled line-through">
-                        {won(listPrice)}
-                      </span>
+                      {listPrice > r.price && (
+                        <span className="text-[16px] text-disabled line-through">
+                          {won(listPrice)}
+                        </span>
+                      )}
                       <span className="text-[20px] font-bold text-ink">{won(r.price)}</span>
                     </div>
                     <p className="mt-[7px] text-[15px] text-meta">

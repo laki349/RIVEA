@@ -31,7 +31,7 @@ export default function RoutineCard({ routine }: { routine: Routine }) {
           {routine.title}
         </p>
         <div className="flex items-baseline gap-[5px]">
-          {rate !== null && <span className="text-[15px] font-bold text-rose">{rate}%</span>}
+          {rate !== null && rate > 0 && <span className="text-[15px] font-bold text-rose">{rate}%</span>}
           <span className="text-[18px] font-bold text-ink">{won(routine.price)}</span>
         </div>
       </div>

@@ -95,7 +95,7 @@ function RoutineTile({ id }: { id: string }) {
           {r.title}
         </p>
         <div className="mt-1 flex items-baseline gap-[5px]">
-          {rate !== null && <span className="text-[16px] font-bold text-rose">{rate}%</span>}
+          {rate !== null && rate > 0 && <span className="text-[16px] font-bold text-rose">{rate}%</span>}
           <span className="text-[17px] font-bold text-ink">{won(r.price)}</span>
         </div>
       </Link>

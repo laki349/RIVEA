@@ -47,7 +47,7 @@ export default function ProductCard({
           {modelLabel(product)}
         </p>
         <div className="mb-[6px] flex items-baseline gap-[5px]">
-          {rate !== null && (
+          {rate !== null && rate > 0 && (
             <span className="text-[17px] font-bold text-rose">{rate}%</span>
           )}
           <span className="text-[17px] font-bold text-ink">{won(product.price)}</span>

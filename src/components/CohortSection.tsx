@@ -139,7 +139,7 @@ export default function CohortSection({ userName }: { userName?: string }) {
                       {p.name}
                     </p>
                     <div className="mb-1 flex items-baseline gap-1">
-                      {rate !== null && (
+                      {rate !== null && rate > 0 && (
                         <span className="text-[14px] font-bold text-rose">{rate}%</span>
                       )}
                       <span className="text-[16px] font-bold text-ink">
@@ -182,7 +182,7 @@ export default function CohortSection({ userName }: { userName?: string }) {
                       {r.title}
                     </p>
                     <div className="mb-1 flex items-baseline gap-1">
-                      {rate !== null && (
+                      {rate !== null && rate > 0 && (
                         <span className="text-[14px] font-bold text-rose">{rate}%</span>
                       )}
                       <span className="text-[16px] font-bold text-ink">

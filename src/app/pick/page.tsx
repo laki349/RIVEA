@@ -93,8 +93,10 @@ export default function PickPage() {
                   ))}
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-[16px] text-disabled line-through">{won(listPrice)}</span>
-                  {rate !== null && <span className="text-[18px] font-bold text-rose">{rate}%</span>}
+                  {listPrice > r.price && (
+                    <span className="text-[16px] text-disabled line-through">{won(listPrice)}</span>
+                  )}
+                  {rate !== null && rate > 0 && <span className="text-[18px] font-bold text-rose">{rate}%</span>}
                   <span className="text-[21px] font-bold text-ink">{won(r.price)}</span>
                 </div>
               </div>

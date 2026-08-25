@@ -82,11 +82,16 @@ function stepOfSkincare(name: string): Step {
 const OVERRIDES: Record<string, Partial<Regimen>> = {
   // 산은 클렌징 카테고리에 있지만 자리는 세안 다음 "각질 정리"다
   "c-paulas-bha": { step: "exfoliate", slot: "pm", lifespanDays: 80 },
+  // 필링젤·토너패드도 마찬가지 — 카테고리는 클렌징인데 자리는 각질 정리다
+  "c-roundlab-dokdo-peeling": { step: "exfoliate", slot: "pm", lifespanDays: 90 },
+  "c-mediheal-teatree-pad": { step: "exfoliate", slot: "pm", lifespanDays: 50 },
+  // 이중세안은 저녁에만 한다. 아침 세안 자리까지 오일로 채우면 없던 숙제가 생긴다
+  "c-roundlab-dokdo-cleansing-oil": { slot: "pm", lifespanDays: 60 },
   // 레티놀은 저녁 전용
   "c-anua-retinol": { step: "serum", slot: "pm", lifespanDays: 75 },
   // 아침·저녁 둘 다 쓰는 세럼들
   "c-lrp-melab3": { slot: "both" },
-  p3: { slot: "both", lifespanDays: 90 },
+  "c-anua-pdrn-serum": { slot: "both", lifespanDays: 75 },
   // 국소 도포라 한 통이 오래 간다
   "c-glasslike-wrinkle": { lifespanDays: 120 },
   "c-glasslike-lip": { slot: "both", lifespanDays: 90 },
@@ -96,10 +101,23 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-drforhair-bio3": { lifespanDays: 75 },
   // 10매입 — 주 2~3회면 한 달
   "c-mediheal-madeca": { lifespanDays: 30 },
+  "c-mediheal-teatree": { lifespanDays: 30 },
+  "c-roundlab-dokdo-mask": { lifespanDays: 30 },
+  // 미스트는 이름으로 이미 toner 자리다. 아침·저녁 둘 다 쓴다
+  "c-anua-pdrn-mist": { slot: "both", lifespanDays: 60 },
   // 30포 = 하루 1포
-  p8: { lifespanDays: 30 },
+  "c-nutree-timezero": { lifespanDays: 30 },
+  "c-nutree-time-biotin": { lifespanDays: 30 },
+  "c-nutree-time-retinol": { lifespanDays: 30 },
+  // 두피 토닉·세럼은 감고 난 뒤 자리다 — 샴푸(both)와 달리 저녁 한 번으로 잡는다
+  "c-drforhair-tonic": { slot: "pm", lifespanDays: 60 },
+  "c-drforhair-serum": { slot: "pm", lifespanDays: 50 },
   // 리필 15g 쿠션
   "c-iope-aircushion": { lifespanDays: 75 },
+  // 50ml 크림 두 종 — 아침·저녁 둘 다 쓰는 마지막 자리
+  "c-anua-pdrn-cream": { slot: "both", lifespanDays: 60 },
+  // 나이아신아마이드는 레티놀과 달리 빛을 피할 이유가 없다 — 아침 크림 자리도 이걸로 채운다
+  "c-roundlab-vita-cream": { slot: "both", lifespanDays: 60 },
   // 200ml 토너 · 50ml 크림 — 아침·저녁 둘 다 쓰는 자리
   "c-roundlab-dokdo-toner": { slot: "both", lifespanDays: 70 },
   "c-roundlab-dokdo-cream": { slot: "both", lifespanDays: 60 },

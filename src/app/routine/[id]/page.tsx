@@ -87,13 +87,17 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
             {routine.title}
           </h2>
           <div className="flex items-baseline gap-2">
-            <span className="text-[17px] text-disabled line-through">{won(listPrice)}</span>
-            {rate !== null && <span className="text-[20px] font-bold text-rose">{rate}%</span>}
+            {savings > 0 && (
+              <span className="text-[17px] text-disabled line-through">{won(listPrice)}</span>
+            )}
+            {rate !== null && rate > 0 && <span className="text-[20px] font-bold text-rose">{rate}%</span>}
             <span className="text-[25px] font-bold text-ink">{won(routine.price)}</span>
           </div>
-          <span className="mt-[9px] inline-block rounded bg-subtle px-[9px] py-[5px] text-[14px] font-medium text-ink">
-            따로 사면 {won(savings)}원 더 비싸요
-          </span>
+          {savings > 0 && (
+            <span className="mt-[9px] inline-block rounded bg-subtle px-[9px] py-[5px] text-[14px] font-medium text-ink">
+              따로 사면 {won(savings)}원 더 비싸요
+            </span>
+          )}
         </section>
 
         {/* 왜 이 조합인가요 — 신뢰 근거 */}

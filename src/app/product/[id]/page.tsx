@@ -12,13 +12,13 @@ import {
   products,
   routines,
   won,
+  buyUrlOf,
 } from "@/data/catalog";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import AppBar from "@/components/AppBar";
 import RoutineCard from "@/components/RoutineCard";
 import BuyBar from "@/components/BuyBar";
-import OutboundLink from "@/components/OutboundLink";
 import Track from "@/components/Track";
 import TrackRecent from "@/components/TrackRecent";
 import ActiveBars from "@/components/ActiveBars";
@@ -93,7 +93,7 @@ const sampleReviews: Record<string, { meta: string; text: string }> = {
   },
   inner: {
     meta: "4.5 · 50세",
-    text: "8주째 먹는 중인데 피부가 덜 푸석해요. 젤리 타입이라 챙겨 먹기 편합니다.",
+    text: "8주째 먹는 중인데 피부가 덜 푸석해요. 한 포씩 나뉘어 있어 챙겨 먹기 편합니다.",
   },
 };
 
@@ -108,6 +108,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   // 성분이 겹치는 기사 우선, 없으면 고민이 겹치는 기사
   const productArticle = articlesForProduct(product)[0];
   const real = product.source;
+  // 「구매」 버튼 하나의 목적지. 없으면 버튼을 그리지 않는다 (buyUrlOf 주석)
+  const buyHref = buyUrlOf(product);
 
   /**
    * 비교표는 디바이스에만 (docs/07 수정안 5).
@@ -175,7 +177,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             {product.listPrice && (
               <span className="text-[17px] text-disabled line-through">{won(product.listPrice)}</span>
             )}
-            {rate !== null && <span className="text-[20px] font-bold text-rose">{rate}%</span>}
+            {rate !== null && rate > 0 && <span className="text-[20px] font-bold text-rose">{rate}%</span>}
             <span className="text-[24px] font-bold text-ink">{won(product.price)}</span>
           </div>
           <p className="mb-[5px] flex items-center gap-1 text-[15px] text-meta">
@@ -196,22 +198,27 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
         </section>
 
-        {/* 혜택·배송 정보 행 */}
+        {/*
+          결제·배송 안내.
+
+          전에는 이 자리에 「카드사 즉시할인 최대 10%」·「리베아 포인트 1% 적립 예상」과
+          브랜드별 배송비가 있었다. 셋 다 우리가 지어낸 값이다. 구매 버튼이 공식몰로
+          나가게 된 순간(2026-08-25) 이건 단순 데모값이 아니라 **거짓 안내**가 된다 —
+          우리 화면에서 적립을 약속하고 다른 가게로 보내는 꼴이기 때문이다.
+
+          그래서 숫자를 지우고 **어디서 무엇이 정해지는지**만 남겼다.
+          가격에 확인 시점을 붙이는 건 「이 가격이 지금도 맞나」에 대한 정직한 답이다.
+        */}
         <section className="border-b border-hairline px-4 py-1">
           {[
             {
-              label: "결제혜택",
+              label: "결제",
               value: (
                 <>
-                  카드사 즉시할인 <b className="font-bold">최대 10%</b>
-                </>
-              ),
-            },
-            {
-              label: "적립",
-              value: (
-                <>
-                  리베아 포인트 <b className="font-bold">1%</b> 적립 예상
+                  <b className="font-bold">{brand.name} 공식몰</b>에서 진행돼요
+                  <span className="block text-[15px] text-meta">
+                    리베아는 결제를 받지 않고 판매 수수료도 받지 않아요
+                  </span>
                 </>
               ),
             },
@@ -219,29 +226,25 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               label: "배송",
               value: (
                 <>
-                  {won(brand.shippingFee)}원
-                  {brand.freeShippingOver && (
-                    <>
-                      {" "}
-                      · <b className="font-bold">{won(brand.freeShippingOver)}원 이상 무료</b>
-                    </>
-                  )}
-                  <span className="block text-[15px] text-meta">평균 2~3일 이내 도착</span>
+                  공식몰의 배송비·기준을 따라요
+                  <span className="block text-[15px] text-meta">
+                    주문·배송 조회도 공식몰에서 하시게 돼요
+                  </span>
                 </>
               ),
             },
-            ...(product.badges.includes("빠른배송")
-              ? [
-                  {
-                    label: "빠른배송",
-                    value: (
-                      <>
-                        <b className="font-bold">지금 주문 시 내일 도착</b> 가능
-                      </>
-                    ),
-                  },
-                ]
-              : []),
+            {
+              label: "가격",
+              value: (
+                <>
+                  {real?.priceNote ?? "판매처 표시가"}
+                  <span className="block text-[15px] text-meta">
+                    {real?.pricedAt ? `${real.pricedAt} 확인 · ` : ""}
+                    최종 가격·재고는 공식몰 표시가 우선이에요
+                  </span>
+                </>
+              ),
+            },
           ].map((row, i, arr) => (
             <div
               key={row.label}
@@ -249,33 +252,11 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             >
               <span className="w-[56px] flex-shrink-0 text-[15px] text-meta">{row.label}</span>
               <span className="flex-1 text-[16px] leading-[1.5] text-ink">{row.value}</span>
-              <span className="text-disabled">
-                <Icon name="chevron-right" size={17} />
-              </span>
             </div>
           ))}
         </section>
 
         {/* 제품 사양 — 실제 시판 제품. 공개된 물리량만 */}
-        {/*
-          공식몰로 내보내기. 우리가 결제를 받지 않는 동안 이게 유일한 「살 수 있는 길」이고,
-          동시에 입점 협상에 들고 갈 유일한 숫자다 (OutboundLink 주석).
-          공식몰 주소가 확인된 제품에만 붙인다 — 없는 링크를 지어내지 않는다.
-        */}
-        {(real?.officialUrl ?? brand.officialUrl) && (
-          <section className="border-b border-hairline px-4 py-4">
-            <OutboundLink
-              productId={product.id}
-              href={(real?.officialUrl ?? brand.officialUrl)!}
-              brandName={brand.name}
-            />
-            <p className="mt-[9px] text-[15px] leading-[1.6] text-meta">
-              브랜드 공식몰로 이동해요. 결제와 배송은 그쪽에서 진행되고, 최종 가격·재고는
-              공식몰 표시를 따릅니다. 리베아는 판매 수수료를 받지 않아요.
-            </p>
-          </section>
-        )}
-
         {real && product.specs && (
           <section className="border-b border-hairline px-4 py-4">
             <h3 className="mb-[9px] text-[18px] font-bold text-ink">제품 사양</h3>
@@ -427,7 +408,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       </main>
 
       {/* 하단 구매 바 — 담기 실동작 */}
-      <BuyBar kind="product" id={product.id} likes={product.likes} price={product.price} />
+      <BuyBar
+        kind="product"
+        id={product.id}
+        likes={product.likes}
+        price={product.price}
+        buyHref={buyHref}
+        brandName={brand.name}
+      />
     </>
   );
 }

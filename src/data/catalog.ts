@@ -3,13 +3,20 @@
  *
  * ⚠️ 이 앱은 **랩 발표용 데모**다. 실제 판매하지 않는다 (홈 하단에 고지).
  *
- * 상품은 두 출처가 섞여 있고, 화면에서는 구분 없이 하나로 어우러진다.
+ * **여기 있는 상품은 전부 실제로 파는 제품이다.** (2026-08-25)
  *
- * 1) 데모 브랜드 (source 없음) — 가상 입점사. 전부 창작.
- * 2) 실제 시판 제품 (source 있음) — 모델명·가격·물리 스펙은 공개 정보를 실측 수집.
- *    `source`에 수집 출처(sourceUrl)·확인 시점(pricedAt)·가격 성격(priceNote)을 남긴다.
- *    발표 때 "이 숫자 어디서 났나"에 답할 수 있어야 하므로 지우지 말 것.
- *    평점·리뷰수·조회수는 데모값이다 (실제 집계가 아님).
+ * 전에는 데모 브랜드(source 없음) 8종이 섞여 있었다. 지웠다 — 처방은 "이걸 사서
+ * 이렇게 쓰세요"라는 말인데, 존재하지 않는 제품이 그 자리에 앉으면 처방 전체가
+ * 거짓이 된다. 아웃바운드(공식몰로 내보내기)를 퍼널의 끝으로 잡은 뒤로는
+ * 나갈 곳이 없는 상품을 카드로 세울 이유도 없어졌다.
+ *
+ * 그래서 **`source` 없는 상품은 이 배열에 넣지 않는다.** 새 상품을 넣을 때는
+ * 모델명·가격·물리 스펙을 공개 정보에서 실측 수집하고, `source`에 수집 출처
+ * (sourceUrl)·확인 시점(pricedAt)·가격 성격(priceNote)을 남긴다.
+ * 발표 때 "이 숫자 어디서 났나"에 답할 수 있어야 하므로 지우지 말 것.
+ *
+ * 다만 **평점·리뷰수·조회수(cohortViews)는 여전히 데모값이다** — 우리 집계가 아니다.
+ * 실제 집계가 붙기 전까지 이 세 값을 근거로 무엇도 주장하지 않는다.
  *
  * 지키는 선 두 개:
  *  - **효과·효능 표현을 specs에 넣지 않는다.** 판매처에 "주름개선·탄력개선"으로
@@ -210,14 +217,9 @@ export type Brand = {
 };
 
 export const brands: Brand[] = [
-  { slug: "lavid", name: "라비드", tagline: "더마 브라이트닝 전문", since: "2024", rating: 4.8, freeShippingOver: 20000, shippingFee: 2500 },
-  { slug: "objet", name: "오브제", tagline: "홈 뷰티 디바이스", since: "2023", rating: 4.7, freeShippingOver: null, shippingFee: 3000 },
-  { slug: "selen", name: "셀렌", tagline: "민감 피부 선케어", since: "2024", rating: 4.7, freeShippingOver: 30000, shippingFee: 2500 },
-  { slug: "muel", name: "뮤엘", tagline: "탄력 집중 스킨케어", since: "2025", rating: 4.9, freeShippingOver: 20000, shippingFee: 2500 },
-  { slug: "onhue", name: "온휴", tagline: "두피·헤어 홈케어", since: "2025", rating: 4.6, freeShippingOver: 25000, shippingFee: 3000 },
-  { slug: "vitalab", name: "비타랩", tagline: "이너뷰티 연구소", since: "2024", rating: 4.8, freeShippingOver: 30000, shippingFee: 2500 },
-
-  // ── 실제 시판 브랜드 (제품 스펙·가격이 실측) ──
+  // 실제 시판 브랜드만 남긴다. 가상 브랜드 6곳(라비드·오브제·셀렌·뮤엘·온휴·비타랩)은
+  // 2026-08-25에 소속 상품과 함께 지웠다 — 없는 회사의 배송비·무료배송 기준을
+  // 화면에 띄우고 있었다.
   { slug: "medicube", name: "메디큐브", tagline: "에이피알 홈뷰티 디바이스", since: "2023", rating: 4.7, freeShippingOver: 30000, shippingFee: 3000, isReal: true, officialUrl: "https://themedicube.co.kr/age-r/main.html" },
   { slug: "lgpral", name: "LG 프라엘", tagline: "LG 뷰티 디바이스", since: "2023", rating: 4.6, freeShippingOver: 50000, shippingFee: 4000, isReal: true, officialUrl: "https://lgpralofficial.co.kr/" },
   { slug: "glasslike", name: "글래스라이크", tagline: "기기 전용 스킨케어", since: "2025", rating: 4.5, freeShippingOver: 30000, shippingFee: 3000, isReal: true, officialUrl: "https://www.lgcaremall.com/product/list/10665" },
@@ -229,6 +231,7 @@ export const brands: Brand[] = [
   { slug: "roundlab", name: "라운드랩", tagline: "자작나무 수분 라인", since: "2025", rating: 4.7, freeShippingOver: 30000, shippingFee: 3000, isReal: true, officialUrl: "https://roundlab.co.kr" },
   { slug: "drforhair", name: "닥터포헤어", tagline: "두피·탈모 케어 전문", since: "2025", rating: 4.6, freeShippingOver: 30000, shippingFee: 3000, isReal: true, officialUrl: "https://www.drforhair.co.kr" },
   { slug: "mediheal", name: "메디힐", tagline: "데일리 시트 마스크", since: "2025", rating: 4.6, freeShippingOver: 20000, shippingFee: 3000, isReal: true, officialUrl: "https://medihealshop.com" },
+  { slug: "nutree", name: "뉴트리", tagline: "에버콜라겐 이너뷰티", since: "2025", rating: 4.7, freeShippingOver: 30000, shippingFee: 3000, isReal: true, officialUrl: "https://newtreemall.co.kr" },
   { slug: "iope", name: "아이오페", tagline: "아모레퍼시픽 베이스 메이크업", since: "2025", rating: 4.5, freeShippingOver: 30000, shippingFee: 2500, isReal: true, officialUrl: "https://www.iope.com" },
 ];
 
@@ -290,6 +293,14 @@ export type ProductSource = {
   priceNote: string; // 가격의 성격 — "다나와 최저가" / "권장소비자가" / "공식몰 소비자가"
   officialUrl?: string; // 브랜드 공식몰 (확인된 경우만)
   /**
+   * **이 제품을 파는 정확한 페이지.** 「구매」 버튼의 목적지 1순위 (`buyUrlOf`).
+   *
+   * `sourceUrl`과 나누는 이유: `sourceUrl`은 **가격을 확인한 곳**이고 목록·비교
+   * 페이지일 수 있다. 구매 버튼이 목록으로 보내면 사람이 거기서 제품을 다시 찾아야
+   * 한다 — 40대+에게 특히 나쁘다. 그래서 상세 페이지를 따로 확인했을 때만 여기 적는다.
+   */
+  buyUrl?: string;
+  /**
    * 브랜드 실제 제품 사진 (2026-08-23 신설, 운영자 결정).
    *
    * ⚠️ **저작물이다.** 브랜드가 자기 공식몰에 올린 이미지를 쓴다 — 출처가 명확해야
@@ -339,169 +350,11 @@ export type Product = {
 };
 
 export const products: Product[] = [
-  {
-    id: "p1",
-    actives: [{ key: "niacinamide", pct: 5 }],
-    image: "product-p1.jpg",
-    brand: "lavid",
-    name: "멜라 리페어 세럼 30ml",
-    category: "skincare",
-    concerns: ["pigment"],
-    tags: ["기미·잡티", "미백", "톤업"],
-    price: 48000,
-    listPrice: 60000,
-    rating: 4.8,
-    reviewCount: 15499,
-    likes: 6100,
-    badges: ["빠른배송", "베스트"],
-    keyIngredient: "나이아신아마이드 5%",
-    volume: "30ml",
-    usage: "저녁 세안 후, 토너 다음 단계에 2~3방울을 얼굴 전체에 펴 바릅니다. 기미가 신경 쓰이는 부위엔 한 번 더.",
-    cohortViews: { "40s": 1820, "50s": 2340, "60s": 940 },
-  },
-  {
-    id: "p2",
-    deviceKinds: ["ems", "microcurrent"],
-    image: "product-p2.jpg",
-    brand: "objet",
-    name: "리프팅 EMS 디바이스",
-    category: "device",
-    concerns: ["wrinkle", "pore"],
-    tags: ["주름·탄력", "리프팅"],
-    price: 178000,
-    listPrice: null,
-    rating: 4.7,
-    reviewCount: 9894,
-    likes: 4200,
-    badges: ["단독"],
-    keyIngredient: "미세전류 EMS",
-    volume: "본체+젤",
-    usage: "아침 세안 후 전용 젤을 바르고 턱선에서 귀 방향으로 3분간 밀어 올립니다. 주 5회 권장.",
-    cohortViews: { "40s": 1560, "50s": 1910, "60s": 720 },
-  },
-  {
-    id: "p3",
-    actives: [{ key: "arbutin" }, { key: "vitaminC" }],
-    image: "product-p3.jpg",
-    brand: "selen",
-    name: "비타 브라이트닝 앰플 50ml",
-    category: "skincare",
-    concerns: ["pigment", "dry"],
-    tags: ["기미·잡티", "비타민C"],
-    price: 39000,
-    listPrice: null,
-    rating: 4.7,
-    reviewCount: 8210,
-    likes: 3100,
-    badges: [],
-    keyIngredient: "알부틴·비타민C",
-    volume: "50ml",
-    usage: "아침·저녁 토너 후 3~4방울. 산화 방지를 위해 개봉 후 3개월 내 사용.",
-    cohortViews: { "40s": 1240, "50s": 1480, "60s": 610 },
-  },
-  {
-    id: "p4",
-    actives: [{ key: "peptide" }],
-    image: "product-p4.jpg",
-    brand: "muel",
-    name: "콜라겐 탄력 앰플 30ml",
-    category: "skincare",
-    concerns: ["wrinkle"],
-    tags: ["주름·탄력", "콜라겐"],
-    price: 42000,
-    listPrice: 60000,
-    rating: 4.9,
-    reviewCount: 11320,
-    likes: 5400,
-    badges: ["빠른배송"],
-    keyIngredient: "저분자 콜라겐·펩타이드",
-    volume: "30ml",
-    usage: "저녁 세럼 단계에 2~3방울. 흡수 후 크림으로 마무리하면 탄력감이 오래갑니다.",
-    cohortViews: { "40s": 1690, "50s": 1350, "60s": 830 },
-  },
-  {
-    id: "p5",
-    actives: [{ key: "sunscreen" }],
-    image: "product-p5.jpg",
-    brand: "selen",
-    name: "데일리 선크림 SPF50+ 50ml",
-    category: "suncare",
-    concerns: ["sun", "pigment"],
-    tags: ["자외선", "무기자차"],
-    price: 22000,
-    listPrice: null,
-    rating: 4.6,
-    reviewCount: 20310,
-    likes: 7800,
-    badges: ["베스트", "빠른배송"],
-    keyIngredient: "징크옥사이드",
-    volume: "50ml",
-    usage: "외출 20분 전, 마지막 단계에 충분한 양을. 야외활동 시 2~3시간마다 덧바릅니다.",
-    cohortViews: { "40s": 2010, "50s": 1770, "60s": 990 },
-  },
-  {
-    id: "p6",
-    deviceKinds: ["led"],
-    image: "product-p6.jpg",
-    brand: "objet",
-    name: "LED 색소 케어 디바이스",
-    category: "device",
-    concerns: ["pigment"],
-    tags: ["기미·잡티", "LED"],
-    price: 62000,
-    listPrice: 89000,
-    rating: 4.5,
-    reviewCount: 4120,
-    likes: 2200,
-    badges: ["NEW"],
-    keyIngredient: "660nm 레드 LED",
-    volume: "본체",
-    usage: "세럼 위에 5분간 밀착 케어. 주 3회면 충분해요.",
-    cohortViews: { "40s": 890, "50s": 1120, "60s": 480 },
-  },
-  {
-    id: "p7",
-    actives: [{ key: "panthenol" }],
-    image: "product-p7.jpg",
-    brand: "onhue",
-    name: "두피 볼륨 앰플 토닉",
-    category: "scalp-hair",
-    concerns: ["scalp-hair"],
-    tags: ["두피·헤어", "볼륨"],
-    price: 34000,
-    listPrice: 42000,
-    rating: 4.6,
-    reviewCount: 5230,
-    likes: 1900,
-    badges: ["NEW"],
-    keyIngredient: "덱스판테놀·비오틴",
-    volume: "100ml",
-    usage: "샴푸 후 타월 드라이한 두피에 분사, 손끝으로 마사지. 매일 사용.",
-    cohortViews: { "40s": 720, "50s": 1040, "60s": 660 },
-  },
-  {
-    id: "p8",
-    actives: [{ key: "collagen" }],
-    image: "product-p8.jpg",
-    brand: "vitalab",
-    name: "저분자 콜라겐 젤리스틱 30포",
-    category: "inner",
-    concerns: ["inner", "wrinkle"],
-    tags: ["이너뷰티", "콜라겐"],
-    price: 29000,
-    listPrice: 36000,
-    rating: 4.8,
-    reviewCount: 13980,
-    likes: 5100,
-    badges: ["베스트"],
-    keyIngredient: "피쉬콜라겐 3,000mg",
-    volume: "30포",
-    usage: "하루 1포, 시간 상관없이. 최소 8주 꾸준히.",
-    cohortViews: { "40s": 1330, "50s": 1620, "60s": 1080 },
-  },
 
-  // ══ 실제 시판 제품 ══════════════════════════════════
-  // 가격·스펙은 2026-07-30 실측 수집 (source.sourceUrl 참조).
+  // ══ 전부 실제 시판 제품이다 ═════════════════════════
+  // 2026-08-25에 창작 상품 8종(p1~p8)과 그 가상 브랜드 6곳을 카탈로그에서 지웠다.
+  // 이제 `source` 없는 항목은 이 배열에 존재하지 않는다 — 새로 넣을 때도 마찬가지다.
+  // 가격·스펙은 각 항목의 source.sourceUrl에서 source.pricedAt 시점에 실측 수집.
   // specs는 물리량만 — 판매처의 "주름개선·탄력개선" 류 효과 표기는 옮기지 않았다.
   // image는 제품 유형 대표 이미지(자체 생성분)이고 해당 제품의 실제 사진이 아니다.
 
@@ -887,6 +740,7 @@ export const products: Product[] = [
     cohortViews: { "40s": 1420, "50s": 1010, "60s": 380 },
     source: {
       sourceUrl: "https://www.paulaschoice.co.kr/expert-advice/beauty-advice-015.html",
+      buyUrl: "https://www.paulaschoice.co.kr/paulas-choice-skincare/798.html",
       pricedAt: "2026-07-30",
       priceNote: "공식몰 판매가",
       imageUrl: "/images/product/real/c-paulas-b3.jpg",
@@ -1005,7 +859,10 @@ export const products: Product[] = [
     brand: "laroche",
     name: "안뗄리오스 유브이뮨 400 하이드레이팅 크림 50ml",
     category: "suncare",
-    concerns: ["sun", "pigment"],
+    // 주름을 붙인 건 마케팅이 아니라 자리 때문이다. 주름 고민을 고르면 아침 차단 자리가
+    // 통째로 비어 「쓰시던 걸 쓰세요」가 됐다 — 광노화가 주름 근거에서 차지하는 비중을
+    // 생각하면, 그 자리를 비워두는 쪽이 오히려 틀린 처방이다 (docs/17).
+    concerns: ["sun", "pigment", "wrinkle"],
     tags: ["자외선", "민감 피부", "촉촉"],
     price: 35000,
     listPrice: null,
@@ -1261,6 +1118,7 @@ export const products: Product[] = [
       sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
       pricedAt: "2026-08-02",
       priceNote: "공식몰 판매가 (정가 15,000원)",
+      buyUrl: "https://roundlab.co.kr/product/1025-%EB%8F%85%EB%8F%84-%ED%86%A0%EB%84%88-200ml/22/",
       imageUrl: "/images/product/real/c-roundlab-dokdo-toner.jpg",
       imageSource: "https://prod.danawa.com/info/?pcode=4926856",
       officialUrl: "https://roundlab.co.kr",
@@ -1290,9 +1148,418 @@ export const products: Product[] = [
       sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
       pricedAt: "2026-08-02",
       priceNote: "공식몰 판매가 (정가 25,000원)",
+      buyUrl: "https://roundlab.co.kr/product/1025-%EB%8F%85%EB%8F%84-%EC%88%98%EB%B6%84-%ED%81%AC%EB%A6%BC-50ml/227/",
       imageUrl: "/images/product/real/c-roundlab-dokdo-cream.jpg",
       imageSource: "https://prod.danawa.com/info/?pcode=19019930",
       officialUrl: "https://roundlab.co.kr",
+    },
+  },
+  // ── 2026-08-25 수집분: 창작 상품을 지우며 생긴 빈 자리를 실제 제품으로 채웠다 ──
+  // 이너뷰티는 p8 하나뿐이었고 그게 창작이라, 지우는 순간 「이너뷰티」 고민이
+  // 처방에서 통째로 비었다. 두피도 샴푸 하나만 남아 「샴푸와 토닉은 둘 중 하나가
+  // 아니다」(prescribe.ts extra)는 판단이 성립하지 못했다.
+  {
+    id: "c-nutree-timezero",
+    image: "product-p8.jpg",
+    brand: "nutree",
+    name: "에버콜라겐 타임제로 30일분",
+    category: "inner",
+    concerns: ["inner", "dry"],
+    tags: ["이너뷰티", "저분자 콜라겐", "30일분"],
+    price: 24500,
+    listPrice: 39000,
+    rating: 4.7,
+    reviewCount: 8600,
+    likes: 3200,
+    badges: ["베스트"],
+    // 건강기능식품 표시 그대로 옮긴다. 「피부에 좋다」로 바꿔 쓰지 않는다
+    keyIngredient: "저분자콜라겐펩타이드 30mg/g (Gly-Pro-Hyp)",
+    volume: "2g × 30포",
+    usage:
+      "1일 1회, 1포를 그대로 섭취합니다. 표시된 기능성은 「피부 보습에 도움을 줄 수 있음」이고, 먹는 것은 바르는 것보다 느리게 움직이니 8주를 기준으로 보세요.",
+    cohortViews: { "40s": 1420, "50s": 1780, "60s": 1120 },
+    source: {
+      sourceUrl: "https://newtreemall.co.kr/product/detail.html?product_no=223&cate_no=1&display_group=25",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (소비자가 39,000원)",
+      officialUrl: "https://newtreemall.co.kr",
+    },
+  },
+  {
+    id: "c-nutree-time-biotin",
+    image: "product-p8.jpg",
+    brand: "nutree",
+    name: "에버콜라겐 타임 비오틴 30일분",
+    category: "inner",
+    concerns: ["inner", "scalp-hair"],
+    tags: ["이너뷰티", "콜라겐", "비오틴"],
+    price: 28600,
+    listPrice: 44000,
+    rating: 4.7,
+    reviewCount: 6100,
+    likes: 2400,
+    badges: [],
+    keyIngredient: "저분자콜라겐펩타이드 30mg/g + 비오틴 1,000㎍",
+    volume: "3g × 30포",
+    usage:
+      "1일 1회, 1포를 그대로 섭취합니다. 비오틴 쪽 표시 기능성은 「에너지 생성에 필요」이지 모발이 굵어진다는 뜻이 아닙니다 — 두피는 바르는 것과 같이 봐야 해요.",
+    cohortViews: { "40s": 1180, "50s": 1460, "60s": 940 },
+    source: {
+      sourceUrl: "https://newtreemall.co.kr/product/%EC%97%90%EB%B2%84%EC%BD%9C%EB%9D%BC%EA%B2%90-%ED%83%80%EC%9E%84-%EB%B9%84%EC%98%A4%ED%8B%B4-30%EC%9D%BC%EB%B6%84-3g%C3%9730%ED%8F%AC/225/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (소비자가 44,000원)",
+      officialUrl: "https://newtreemall.co.kr",
+    },
+  },
+  {
+    id: "c-drforhair-tonic",
+    image: "product-p7.jpg",
+    brand: "drforhair",
+    name: "폴리젠 씨크닝 스칼프 토닉 120ml",
+    category: "scalp-hair",
+    concerns: ["scalp-hair"],
+    tags: ["두피", "토닉", "볼륨"],
+    price: 19900,
+    listPrice: 21000,
+    rating: 4.5,
+    reviewCount: 5400,
+    likes: 2100,
+    badges: [],
+    keyIngredient: "브랜드 미공개",
+    volume: "120ml",
+    usage:
+      "머리를 감고 말린 뒤 가르마와 정수리에 분사해 손끝으로 문지릅니다. 샴푸 대신 쓰는 게 아니라 감고 난 다음 자리예요.",
+    cohortViews: { "40s": 980, "50s": 1240, "60s": 720 },
+    source: {
+      sourceUrl: "https://www.drforhair.co.kr/product/detail.html?product_no=1518&cate_no=1&display_group=5",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 21,000원)",
+      officialUrl: "https://www.drforhair.co.kr",
+    },
+  },
+  {
+    id: "c-drforhair-serum",
+    image: "product-p7.jpg",
+    brand: "drforhair",
+    name: "폴리젠 씨크닝 스칼프 세럼 50ml",
+    category: "scalp-hair",
+    concerns: ["scalp-hair"],
+    tags: ["두피", "정수리", "세럼"],
+    price: 29900,
+    listPrice: 39000,
+    rating: 4.5,
+    reviewCount: 3900,
+    likes: 1700,
+    badges: [],
+    keyIngredient: "브랜드 미공개",
+    volume: "50ml",
+    usage:
+      "가르마를 따라 두피에 직접 떨어뜨리고 손끝으로 눌러 폅니다. 모발이 아니라 두피에 닿아야 하는 제형이에요.",
+    cohortViews: { "40s": 860, "50s": 1020, "60s": 540 },
+    source: {
+      sourceUrl: "https://www.drforhair.co.kr/product/detail.html?product_no=1472&cate_no=1&display_group=5",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 39,000원)",
+      officialUrl: "https://www.drforhair.co.kr",
+    },
+  },
+  {
+    id: "c-anua-pdrn-serum",
+    image: "product-p3.jpg",
+    brand: "anua",
+    name: "PDRN 히알루론산 캡슐 100 세럼 30ml",
+    category: "skincare",
+    concerns: ["dry", "wrinkle"],
+    tags: ["건조", "PDRN", "히알루론산"],
+    price: 22500,
+    listPrice: 39000,
+    rating: 4.7,
+    reviewCount: 11200,
+    likes: 4600,
+    badges: ["빠른배송"],
+    // 설문 Q22에서 사람들이 실제로 아는 단어 두 개(PDRN·히알루론산)가 이름에 다 있다.
+    // 함량은 브랜드가 공개하지 않아 숫자를 만들지 않는다.
+    keyIngredient: "PDRN · 히알루론산 (함량 미공개)",
+    volume: "30ml",
+    usage: "아침·저녁 토너 다음에 2~3방울. 크림 전 단계입니다.",
+    cohortViews: { "40s": 2180, "50s": 1640, "60s": 700 },
+    source: {
+      sourceUrl: "https://anua.kr/product/detail.html?product_no=359&cate_no=1&display_group=5",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 39,000원)",
+      officialUrl: "https://anua.kr",
+    },
+  },
+  {
+    id: "c-anua-pdrn-cream",
+    image: "product-p4.jpg",
+    brand: "anua",
+    name: "PDRN 히알루론산 100 수분 크림 50ml",
+    category: "skincare",
+    concerns: ["dry", "wrinkle"],
+    tags: ["건조", "크림", "PDRN"],
+    price: 21000,
+    listPrice: 32000,
+    rating: 4.6,
+    reviewCount: 7300,
+    likes: 3100,
+    badges: [],
+    keyIngredient: "PDRN · 히알루론산 (함량 미공개)",
+    volume: "50ml",
+    usage:
+      "저녁 마지막 단계에 얹어 마무리합니다. 레티놀을 쓰는 날엔 이 단계를 거르지 마세요 — 건조가 레티놀을 그만두게 만드는 가장 흔한 이유예요.",
+    cohortViews: { "40s": 1740, "50s": 1380, "60s": 640 },
+    source: {
+      sourceUrl: "https://anua.kr/product/detail.html?product_no=402&cate_no=1&display_group=5",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 32,000원)",
+      officialUrl: "https://anua.kr",
+    },
+  },
+  {
+    id: "c-roundlab-vita-cream",
+    image: "product-p1.jpg",
+    brand: "roundlab",
+    name: "비타 나이아신 잡티 크림 50ml",
+    category: "skincare",
+    concerns: ["pigment", "dry"],
+    tags: ["기미·잡티", "크림", "나이아신아마이드"],
+    price: 24000,
+    listPrice: 30000,
+    rating: 4.6,
+    reviewCount: 4800,
+    likes: 2000,
+    badges: ["NEW"],
+    // 브랜드가 함량을 공개하지 않았다. 이름에 「나이아신」이 있다고 %를 지어내지 않는다
+    keyIngredient: "나이아신아마이드 (함량 미공개)",
+    volume: "50ml",
+    usage:
+      "아침·저녁 세럼 다음, 마지막 단계에 얼굴 전체에 폅니다. 레티놀과 달리 아침에 발라도 되는 성분이라 두 번 다 쓸 수 있어요.",
+    cohortViews: { "40s": 1320, "50s": 1180, "60s": 520 },
+    source: {
+      sourceUrl: "https://roundlab.co.kr/product/%EB%B9%84%ED%83%80-%EB%82%98%EC%9D%B4%EC%95%84%EC%8B%A0-%EC%9E%A1%ED%8B%B0-%ED%81%AC%EB%A6%BC-50ml/245/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 30,000원)",
+      officialUrl: "https://roundlab.co.kr",
+    },
+  },
+  // ── 2026-08-25 2차 수집분: 자리가 하나뿐이던 단계를 늘렸다 ──
+  // 각질 정리는 BHA 하나, 마스크팩도 하나뿐이라 「한 번 고르면 다음 선택지가 없는」
+  // 단계가 있었다. 이중세안(클렌징 오일) 자리는 아예 비어 있었다.
+  {
+    id: "c-roundlab-dokdo-cleansing-oil",
+    image: "product-p3.jpg",
+    brand: "roundlab",
+    name: "1025 독도 클렌징 오일 200ml",
+    category: "cleansing",
+    concerns: ["dry", "pigment"],
+    tags: ["클렌징", "오일", "이중세안"],
+    price: 19500,
+    listPrice: 23000,
+    rating: 4.6,
+    reviewCount: 9800,
+    likes: 3600,
+    badges: [],
+    keyIngredient: "해양심층수",
+    volume: "200ml",
+    usage:
+      "마른 손·마른 얼굴에 굴리듯 녹인 뒤 물로 유화시켜 헹굽니다. 선크림과 쿠션은 물세안만으로 잘 지워지지 않아, 색소 관리 중이라면 저녁 첫 단계가 여기예요.",
+    cohortViews: { "40s": 1560, "50s": 1180, "60s": 480 },
+    source: {
+      sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
+      buyUrl: "https://roundlab.co.kr/product/1025-%EB%8F%85%EB%8F%84-%ED%81%B4%EB%A0%8C%EC%A7%95-%EC%98%A4%EC%9D%BC-200ml/130/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 23,000원)",
+      officialUrl: "https://roundlab.co.kr",
+    },
+  },
+  {
+    id: "c-roundlab-dokdo-peeling",
+    image: "product-p3.jpg",
+    brand: "roundlab",
+    name: "1025 독도 필링젤 120ml",
+    category: "cleansing",
+    concerns: ["pore", "dry"],
+    tags: ["각질", "필링", "저자극"],
+    price: 13500,
+    listPrice: 15000,
+    rating: 4.5,
+    reviewCount: 6400,
+    likes: 2300,
+    badges: [],
+    keyIngredient: "해양심층수",
+    volume: "120ml",
+    usage:
+      "물기 없는 얼굴에 펴 바르고 부드럽게 굴린 뒤 헹굽니다. 산(BHA)과 같은 날 겹치지 마세요 — 둘 다 각질을 건드립니다.",
+    cohortViews: { "40s": 1080, "50s": 860, "60s": 380 },
+    source: {
+      sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
+      buyUrl: "https://roundlab.co.kr/product/1025-%EB%8F%85%EB%8F%84-%ED%95%84%EB%A7%81%EC%A0%A4-120ml/181/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 15,000원)",
+      officialUrl: "https://roundlab.co.kr",
+    },
+  },
+  {
+    id: "c-roundlab-dokdo-mask",
+    image: "product-p9.jpg",
+    brand: "roundlab",
+    name: "1025 독도 수분 워터겔 마스크 10매",
+    category: "mask",
+    concerns: ["dry"],
+    tags: ["시트 마스크", "수분", "10매"],
+    price: 22000,
+    listPrice: 40000,
+    rating: 4.6,
+    reviewCount: 5200,
+    likes: 2100,
+    badges: [],
+    keyIngredient: "해양심층수",
+    volume: "30ml × 10매",
+    usage: "토너 다음에 15~20분. 주 2회면 충분해요.",
+    cohortViews: { "40s": 1240, "50s": 980, "60s": 420 },
+    source: {
+      sourceUrl: "https://roundlab.co.kr/category/1025-%EB%8F%85%EB%8F%84/100/",
+      buyUrl: "https://roundlab.co.kr/product/1025-%EB%8F%85%EB%8F%84-%EC%88%98%EB%B6%84-%EC%9B%8C%ED%84%B0%EA%B2%94-%EB%A7%88%EC%8A%A4%ED%81%AC-30ml-10%EB%A7%A4/145/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 40,000원)",
+      officialUrl: "https://roundlab.co.kr",
+    },
+  },
+  {
+    id: "c-roundlab-birch-tone-sun",
+    actives: [{ key: "sunscreen" }],
+    image: "product-p5.jpg",
+    brand: "roundlab",
+    name: "자작나무 수분 톤업 선크림 50ml",
+    category: "suncare",
+    concerns: ["sun", "pigment"],
+    tags: ["자외선", "톤업", "데일리"],
+    price: 22500,
+    listPrice: 25000,
+    rating: 4.6,
+    reviewCount: 8700,
+    likes: 3400,
+    badges: [],
+    keyIngredient: "자작나무 수액",
+    volume: "50ml",
+    usage:
+      "아침 마지막 단계에 폅니다. 톤업 제형이라 이것만으로 화장을 끝내는 날에도 차단 단계가 빠지지 않아요.",
+    cohortViews: { "40s": 1680, "50s": 1260, "60s": 520 },
+    source: {
+      sourceUrl: "https://roundlab.co.kr/",
+      buyUrl: "https://roundlab.co.kr/product/%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4-%EC%88%98%EB%B6%84-%ED%86%A4%EC%97%85-%EC%84%A0%ED%81%AC%EB%A6%BC-50ml/199/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 25,000원)",
+      officialUrl: "https://roundlab.co.kr",
+    },
+  },
+  {
+    id: "c-mediheal-teatree",
+    image: "product-p9.jpg",
+    brand: "mediheal",
+    name: "티트리 에센셜 마스크 진정 수분 10매",
+    category: "mask",
+    concerns: ["pore", "dry"],
+    tags: ["시트 마스크", "진정", "10매"],
+    price: 11900,
+    listPrice: 20000,
+    rating: 4.6,
+    reviewCount: 18400,
+    likes: 6200,
+    badges: ["빠른배송"],
+    keyIngredient: "티트리잎추출물",
+    volume: "10매",
+    usage: "토너 다음에 15~20분. 산이나 레티놀을 쓴 다음 날 얹기 좋아요.",
+    cohortViews: { "40s": 1820, "50s": 1240, "60s": 460 },
+    source: {
+      sourceUrl: "https://medihealshop.com/",
+      buyUrl: "https://medihealshop.com/product/%ED%8B%B0%ED%8A%B8%EB%A6%AC-%EC%97%90%EC%84%BC%EC%85%9C-%EB%A7%88%EC%8A%A4%ED%81%AC-%EC%A7%84%EC%A0%95-%EC%88%98%EB%B6%84-10%EB%A7%A4/1396/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 20,000원)",
+      officialUrl: "https://medihealshop.com",
+    },
+  },
+  {
+    id: "c-mediheal-teatree-pad",
+    image: "product-p3.jpg",
+    brand: "mediheal",
+    name: "티트리 트러블 진정 토너패드 100매",
+    category: "cleansing",
+    concerns: ["pore"],
+    tags: ["토너패드", "진정", "100매"],
+    price: 17900,
+    listPrice: 26000,
+    rating: 4.6,
+    reviewCount: 14200,
+    likes: 5100,
+    badges: [],
+    keyIngredient: "티트리잎추출물",
+    volume: "100매",
+    usage:
+      "세안 후 결을 따라 가볍게 닦아냅니다. 매일 쓰는 각질 관리라 산(BHA)과 같은 날 겹치지 않는 쪽이 편해요.",
+    cohortViews: { "40s": 1420, "50s": 980, "60s": 360 },
+    source: {
+      sourceUrl: "https://medihealshop.com/",
+      buyUrl: "https://medihealshop.com/product/%ED%8B%B0%ED%8A%B8%EB%A6%AC-%ED%8A%B8%EB%9F%AC%EB%B8%94-%EC%A7%84%EC%A0%95-%ED%86%A0%EB%84%88%ED%8C%A8%EB%93%9C-100%EB%A7%A4/1675/",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 26,000원)",
+      officialUrl: "https://medihealshop.com",
+    },
+  },
+  {
+    id: "c-anua-pdrn-mist",
+    image: "product-p3.jpg",
+    brand: "anua",
+    name: "PDRN 히알루론산 수분 캡슐 미스트 100ml",
+    category: "skincare",
+    concerns: ["dry"],
+    tags: ["미스트", "PDRN", "수분"],
+    price: 29000,
+    listPrice: 35000,
+    rating: 4.5,
+    reviewCount: 4300,
+    likes: 1800,
+    badges: ["NEW"],
+    keyIngredient: "PDRN · 히알루론산 (함량 미공개)",
+    volume: "100ml",
+    usage:
+      "세안 후 첫 단계로, 또는 낮에 당길 때 얼굴에서 20cm 떨어뜨려 뿌립니다. 뿌린 뒤에는 마르기 전에 다음 단계를 얹어야 오히려 안 당겨요.",
+    cohortViews: { "40s": 1120, "50s": 820, "60s": 340 },
+    source: {
+      sourceUrl: "https://anua.kr/",
+      buyUrl: "https://anua.kr/product/detail.html?product_no=466&cate_no=1&display_group=5",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (정가 35,000원)",
+      officialUrl: "https://anua.kr",
+    },
+  },
+  {
+    id: "c-nutree-time-retinol",
+    image: "product-p8.jpg",
+    brand: "nutree",
+    name: "에버콜라겐 타임레티놀A 30일분",
+    category: "inner",
+    concerns: ["inner", "wrinkle"],
+    tags: ["이너뷰티", "콜라겐", "비타민A"],
+    price: 30380,
+    listPrice: 49000,
+    rating: 4.6,
+    reviewCount: 3400,
+    likes: 1300,
+    badges: [],
+    // 「레티놀」이 이름에 있지만 바르는 레티놀이 아니라 **비타민 A**다.
+    // 표시 함량을 그대로 옮긴다 — 이름만 보고 바르는 것과 같다고 읽히면 안 된다.
+    keyIngredient: "저분자콜라겐펩타이드 30mg/g + 비타민A 700㎍RAE",
+    volume: "3g × 30포",
+    usage:
+      "1일 1회, 1포를 그대로 섭취합니다. 이름의 「레티놀A」는 먹는 비타민A라서, 바르는 레티놀 세럼을 대신하지 않아요 — 둘은 다른 자리입니다.",
+    cohortViews: { "40s": 980, "50s": 1180, "60s": 720 },
+    source: {
+      sourceUrl: "https://newtreemall.co.kr/product/detail.html?product_no=511&cate_no=1&display_group=2",
+      pricedAt: "2026-08-25",
+      priceNote: "공식몰 판매가 (소비자가 49,000원 · 시점 할인가는 별도)",
+      officialUrl: "https://newtreemall.co.kr",
     },
   },
 ];
@@ -1319,16 +1586,16 @@ export const routines: Routine[] = [
     id: "r1",
     image: "routine-r1.jpg",
     concern: "pigment",
-    label: "기미 집중",
+    label: "기미 3단계",
     title: "기미가 신경 쓰이기 시작했다면",
-    description: "저녁 10분, 세럼→디바이스→선크림으로 잡티 케어의 기본을 잡는 세트",
+    description: "저녁 세럼 → 저녁 크림 → 아침 차단. 색소 관리의 기본 자리를 채우는 3단계",
     steps: [
-      { productId: "p1", how: "세안·토너 후 2~3방울, 기미 부위에 집중해 흡수시켜요." },
-      { productId: "p6", how: "세럼 위에 5분간 밀착 케어. 주 3회면 충분해요." },
-      { productId: "p5", how: "아침 마무리는 자외선 차단. 기미 관리의 절반은 선케어예요." },
+      { productId: "c-lrp-melab3", how: "저녁 토너 후 2~3방울, 색소 부위에 집중해 폅니다." },
+      { productId: "c-roundlab-vita-cream", how: "세럼 위 마지막 단계로 얹어 마무리해요." },
+      { productId: "c-laroche-uvmune", how: "아침 마무리는 자외선 차단. 기미 관리의 절반은 선케어예요." },
     ],
-    why: "나이아신아마이드 세럼은 이미 생긴 색소를 옅히고, LED 디바이스는 그 흡수를 돕는 순서로 함께 써야 효과가 배가돼요. 그런데 새로 생기는 색소를 막지 않으면 옅힌 만큼 다시 쌓이기 때문에, 자외선 차단이 반드시 세트에 들어갑니다. 셋 중 하나만 쓰면 '지우는 것'과 '막는 것' 중 한쪽이 빕니다.",
-    price: 95000,
+    why: "색소 관리에서 실제로 갈리는 건 성분이 아니라 자리입니다. 세럼 한 통만 쓰다 그만두는 이유는 대개 효과가 없어서가 아니라 저녁에 그 위를 덮는 게 없어서 자극이 쌓이기 때문이에요. 그래서 세럼 다음에 나이아신아마이드가 든 크림을 마지막 자리에 두어 하나로 이어 붙였습니다. 그리고 아침 차단이 빠지면 저녁에 옅힌 만큼 낮에 다시 쌓이기 때문에, 선크림은 선택이 아니라 이 세트의 세 번째 구성품입니다.",
+    price: 126000,
     badge: "3단계 루틴",
     level: "집중",
     cohortAdds: { "40s": 480, "50s": 620, "60s": 210 },
@@ -1337,34 +1604,34 @@ export const routines: Routine[] = [
     id: "r2",
     image: "routine-r2.jpg",
     concern: "wrinkle",
-    label: "탄력 데일리",
-    title: "아침마다 무너지는 탄력, 짧게",
-    description: "바쁜 아침 3분, EMS 리프팅과 콜라겐 앰플 두 단계로 끝내는 데일리 세트",
+    label: "레티놀 시작",
+    title: "레티놀, 그만두지 않고 8주 채우기",
+    description: "저녁 레티놀 세럼과 그 위를 덮는 수분 크림. 자극으로 포기하지 않게 만드는 2단계",
     steps: [
-      { productId: "p4", how: "저녁 세럼 단계에 2~3방울, 목 라인까지." },
-      { productId: "p2", how: "아침 전용 젤 위에 3분, 턱선에서 귀 방향으로." },
+      { productId: "c-anua-retinol", how: "저녁에만, 처음엔 이틀에 한 번으로 시작해요." },
+      { productId: "c-anua-pdrn-cream", how: "레티놀을 바른 날은 반드시 마지막에 덮어주세요." },
     ],
-    why: "콜라겐 앰플은 저녁에 피부 안쪽 지지력을 채우는 역할이고, EMS 디바이스는 아침에 그 지지력을 물리적으로 끌어올리는 역할이에요. 성분만 바르면 탄력이 '유지'되는 정도지만, 자극이 없으면 이미 처진 라인은 잘 안 올라옵니다. 발라서 채우고 자극으로 끌어올리는 아침·저녁 역할 분담이 이 세트의 핵심이에요.",
-    price: 187000,
+    why: "레티놀은 주름 쪽에서 근거가 가장 두꺼운 성분인데, 40대가 중간에 그만두는 이유는 효과가 없어서가 아니라 건조하고 각질이 일어나서입니다. 그래서 레티놀은 단품이 아니라 짝으로 사야 합니다 — 위를 덮는 보습이 있어야 매일 쓸 수 있고, 매일 써야 8주 뒤에 판정할 거리가 생겨요. 두 제품이 같은 브랜드라 배송이 한 번에 묶이는 것도 실제로는 도움이 됩니다.",
+    price: 48800,
     badge: "2단계 루틴",
-    level: "데일리",
+    level: "입문",
     cohortAdds: { "40s": 390, "50s": 310, "60s": 150 },
   },
   {
     id: "r3",
     image: "routine-r3.jpg",
-    concern: "pigment",
-    label: "기미 입문",
-    title: "처음 기미 케어, 부담 없이 시작",
-    description: "세럼과 선크림, 딱 두 가지로 시작하는 입문 세트",
+    concern: "dry",
+    label: "건조 기본",
+    title: "발라도 계속 당긴다면, 순서부터",
+    description: "수분을 채우는 세럼과 그걸 가두는 크림. 두 가지로 끝내는 2단계",
     steps: [
-      { productId: "p3", how: "아침·저녁 토너 후 3~4방울." },
-      { productId: "p5", how: "아침 마지막 단계에 충분한 양을." },
+      { productId: "c-anua-pdrn-serum", how: "아침·저녁 토너 후 2~3방울." },
+      { productId: "c-roundlab-dokdo-cream", how: "마지막 단계에 얹어 덮어요. 이 단계가 채운 걸 붙듭니다." },
     ],
-    why: "비타민C 앰플은 디바이스 없이도 톤을 관리할 수 있는 가장 가벼운 시작점이고, 선크림은 어떤 기미 관리든 빠지면 안 되는 기본기예요. 아직 디바이스까지 부담스러운 입문 단계라면, 이 두 가지만으로도 '더 진해지는 걸 막는' 절반의 관리는 됩니다.",
-    price: 52000,
+    why: "건조가 안 잡히는 사람 대부분은 채우는 걸 안 해서가 아니라 채운 걸 안 덮어서입니다. 수분은 그 자체로는 날아가고, 위를 덮는 유분·장벽 층이 있어야 남아요. 그래서 이 세트는 채우는 자리 하나와 가두는 자리 하나, 딱 두 자리만 씁니다. 건조는 판정이 가장 빠른 고민이라 2주면 답이 나옵니다 — 단계를 늘리지 않는 게 2주를 채우는 데 유리해요.",
+    price: 40500,
     badge: "2단계 루틴",
-    level: "입문",
+    level: "데일리",
     cohortAdds: { "40s": 350, "50s": 410, "60s": 190 },
   },
   {
@@ -1372,14 +1639,14 @@ export const routines: Routine[] = [
     image: "routine-r4.jpg",
     concern: "scalp-hair",
     label: "두피 볼륨",
-    title: "가늘어진 모발, 두피부터",
-    description: "샴푸 후 앰플 토닉과 이너뷰티로 안팎에서 채우는 두피 루틴",
+    title: "가늘어진 모발, 감는 순서 안에서",
+    description: "탈모완화 샴푸와 감고 난 뒤 쓰는 토닉. 순서가 정해진 2단계",
     steps: [
-      { productId: "p7", how: "샴푸 후 두피에 분사하고 마사지, 매일." },
-      { productId: "p8", how: "하루 1포, 최소 8주 꾸준히." },
+      { productId: "c-drforhair-bio3", how: "두피에 문질러 거품을 내고 2~3분 두었다가 헹궈요." },
+      { productId: "c-drforhair-tonic", how: "말린 뒤 가르마와 정수리에 분사하고 문질러요." },
     ],
-    why: "두피 앰플은 모근 주변 환경을 바깥에서 관리하는 방법이고, 이너뷰티 콜라겐은 모발이 자라는 안쪽 조건을 채우는 방법이에요. 바르는 것만으로는 이미 가늘어진 모발 자체를 바꾸기 어렵기 때문에, 안팎을 같이 채워야 8주 뒤 변화를 체감할 확률이 높아집니다.",
-    price: 58000,
+    why: "샴푸와 토닉은 둘 중 하나를 고르는 게 아니라 순서가 있는 두 단계입니다. 샴푸는 감을 때 두피를 씻어내는 자리고, 토닉은 감고 말린 뒤 남겨두는 자리예요. 샴푸만 쓰면 두피에 남는 게 없고, 토닉만 쓰면 씻기지 않은 위에 얹게 됩니다. 두피는 얼굴보다 눈에 띄는 데 오래 걸리므로 8주를 기준으로 보세요.",
+    price: 39700,
     badge: "2단계 루틴",
     level: "입문",
     cohortAdds: { "40s": 180, "50s": 290, "60s": 240 },
@@ -1402,10 +1669,10 @@ export const routines: Routine[] = [
     steps: [
       { productId: "c-anua-txa", how: "저녁 토너 후 2~3방울. 처음엔 이틀에 한 번으로 시작해요." },
       { productId: "c-medicube-txa-cream", how: "마지막 단계에 캡슐을 섞어 얹어 마무리해요." },
-      { productId: "p5", how: "아침 마지막은 차단. 이 단계가 빠지면 앞의 둘이 상쇄돼요." },
+      { productId: "c-laroche-uvmune", how: "아침 마지막은 차단. 이 단계가 빠지면 앞의 둘이 상쇄돼요." },
     ],
     why: "나이아신아마이드는 만들어진 멜라닌이 표피 세포로 넘어가는 단계를 줄이고, 트라넥삼산은 자외선 자극이 멜라닌 생성 신호로 이어지는 앞단을 건드립니다. 같은 색소 고민이지만 손대는 지점이 달라서, 한쪽만 쓰면 나머지 절반이 그대로 남아요. 두 제품 모두 이 조합을 함께 담고 있고 크림 쪽엔 세라마이드·판테놀이 들어 있어 고함량 세럼을 매일 쓸 때의 자극을 받아줍니다. 그리고 색소 관리에서 선크림이 빠지면 옅힌 만큼 다시 쌓이기 때문에, 아침 차단이 선택이 아니라 구성품입니다.",
-    price: 66000,
+    price: 77000,
     badge: "3단계 루틴",
     level: "집중",
     cohortAdds: { "40s": 620, "50s": 540, "60s": 210 },
@@ -1495,6 +1762,40 @@ export const routines: Routine[] = [
     level: "데일리",
     cohortAdds: { "40s": 560, "50s": 410, "60s": 170 },
   },
+  {
+    id: "r11",
+    image: "routine-r4.jpg",
+    concern: "inner",
+    label: "안팎 콜라겐",
+    title: "먹는 콜라겐은 바르는 것과 같이 봐야 해요",
+    description: "하루 한 포와 저녁 크림. 안쪽과 바깥쪽을 같이 채우는 2단계",
+    steps: [
+      { productId: "c-nutree-timezero", how: "하루 1포. 시간대는 상관없고 거르지 않는 게 전부예요." },
+      { productId: "c-anua-pdrn-cream", how: "저녁 마지막 단계에 덮어요." },
+    ],
+    why: "먹는 콜라겐의 표시 기능성은 「피부 보습에 도움을 줄 수 있음」입니다. 주름이 펴진다는 말이 아니고, 보습이라면 바르는 쪽이 훨씬 빠릅니다. 그래서 이너뷰티만 단독으로 시작하면 8주 동안 아무 변화도 못 느끼고 그만두게 돼요. 안쪽은 느리게 채우고 바깥쪽은 그날 저녁에 채우는 두 속도를 같이 두면, 8주를 채울 확률이 올라갑니다. 이 조합의 값은 성분 궁합이 아니라 그 지속력에 있습니다.",
+    price: 45500,
+    badge: "2단계 루틴",
+    level: "데일리",
+    cohortAdds: { "40s": 320, "50s": 480, "60s": 360 },
+  },
+  {
+    id: "r12",
+    image: "routine-r3.jpg",
+    concern: "sun",
+    label: "덧바르기",
+    title: "아침에 바른 선크림은 점심이면 없어요",
+    description: "아침의 선크림과 낮에 덧바르는 쿠션. 하루를 두 번에 나누는 2단계",
+    steps: [
+      { productId: "c-roundlab-birch-sun", how: "아침 마지막 단계에 충분한 양을 폅니다." },
+      { productId: "c-iope-aircushion", how: "점심 이후 화장 위에 가볍게 덧발라요." },
+    ],
+    why: "선크림은 시간이 지나면 땀·피지와 함께 지워집니다. 아침에 아무리 잘 발라도 오후엔 남아 있는 양이 크게 줄어요. 그런데 이미 화장한 얼굴에 선크림을 다시 바르기는 어렵기 때문에, 실제로 덧바를 수 있는 건 SPF가 있는 쿠션 쪽입니다. 이 쿠션은 SPF50/PA+++ 표시가 있고 리필이라 부담이 적어요. 아침 한 번으로 끝내는 것보다, 오후에 한 번 더 얹는 쪽이 색소 관리에서 실제로 차이를 만듭니다.",
+    price: 39000,
+    badge: "2단계 루틴",
+    level: "데일리",
+    cohortAdds: { "40s": 410, "50s": 350, "60s": 180 },
+  },
 ];
 
 // ── 이미지 경로 헬퍼 ────────────────────────────────
@@ -1510,6 +1811,38 @@ export const productImage = (id: string) => {
   const p = products.find((x) => x.id === id);
   if (!p) return undefined;
   return p.source?.imageUrl ?? `/images/product/${p.image}`;
+};
+
+/**
+ * **이 제품을 실제로 파는 곳.** 「구매」 버튼 하나가 전부 여기로 간다.
+ *
+ * 우리는 결제를 받지 않는다. 그래서 「구매」는 우리 체크아웃이 아니라 **판매처로
+ * 나가는 문**이다. 문이 없으면 버튼도 없어야 한다 — 없는 주소를 지어내지 않는다.
+ *
+ * 고르는 순서와 이유:
+ *  0. `source.buyUrl` — 상세 페이지를 따로 확인해 둔 경우. 가장 정확하다
+ *  1. `source.officialUrl`이 **`sourceUrl`과 같은 호스트**면 `sourceUrl`을 쓴다.
+ *     그건 공식몰 안의 **그 제품 상세 페이지**라는 뜻이라, 몰 첫 화면보다 정확하다.
+ *     (첫 화면으로 보내면 사람이 거기서 제품을 다시 찾아야 한다 — 40대+에게 특히 나쁘다)
+ *  2. 없으면 `source.officialUrl`
+ *  3. 없으면 브랜드 공식몰
+ *  4. 그것도 없으면 `sourceUrl`(다나와·컬리 등) — 파는 곳인 건 맞다
+ */
+export const buyUrlOf = (p: Product): string | null => {
+  const s = p.source;
+  if (s?.buyUrl) return s.buyUrl;
+  const official = s?.officialUrl ?? brands.find((b) => b.slug === p.brand)?.officialUrl ?? null;
+  const host = (u: string) => {
+    try {
+      return new URL(u).host.replace(/^www\./, "");
+    } catch {
+      return null;
+    }
+  };
+  if (s?.sourceUrl && official && host(s.sourceUrl) && host(s.sourceUrl) === host(official)) {
+    return s.sourceUrl;
+  }
+  return official ?? s?.sourceUrl ?? null;
 };
 
 /** 이 제품이 브랜드 실사진을 쓰고 있나 — 화면에 📷출처를 붙일지 판단한다 */
