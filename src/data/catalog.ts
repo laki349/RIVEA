@@ -286,7 +286,14 @@ export type ActiveKey =
   | "ceramide"
   | "panthenol"
   | "sunscreen"
-  | "collagen";
+  | "collagen"
+  // ── 2026-08-25 추가 (QA ISSUE-003).
+  // 이 셋이 없어서 카탈로그의 40여 종이 통째로 판정 엔진 밖에 있었다. 성분 바도 비었고,
+  // 병용 판정에도 안 잡혔다. 「없는 성분」이 아니라 「우리가 등록을 안 한 성분」이었다.
+  // 등급은 문헌이 주는 대로 적는다 — 두 개가 C로 나오는데, 그게 사실이다.
+  | "hyaluronic"
+  | "centella"
+  | "pdrn";
 
 /** 함량은 브랜드가 공개한 값만. 미공개면 pct 없음 */
 export type Active = { key: ActiveKey; pct?: number };
@@ -979,7 +986,7 @@ export const products: Product[] = [
   },
   {
     id: "c-mediheal-madeca",
-    actives: [{ key: "panthenol" }],
+    actives: [{ key: "centella" }],
     image: "product-p9.jpg",
     brand: "mediheal",
     name: "마데카소사이드 에센셜 마스크 흔적 리페어 10매",
@@ -1171,6 +1178,7 @@ export const products: Product[] = [
   // 아니다」(prescribe.ts extra)는 판단이 성립하지 못했다.
   {
     id: "c-nutree-timezero",
+    actives: [{ key: "collagen" }],
     image: "product-p8.jpg",
     brand: "nutree",
     name: "에버콜라겐 타임제로 30일분",
@@ -1198,6 +1206,7 @@ export const products: Product[] = [
   },
   {
     id: "c-nutree-time-biotin",
+    actives: [{ key: "collagen" }],
     image: "product-p8.jpg",
     brand: "nutree",
     name: "에버콜라겐 타임 비오틴 30일분",
@@ -1276,6 +1285,7 @@ export const products: Product[] = [
   },
   {
     id: "c-anua-pdrn-serum",
+    actives: [{ key: "pdrn" }, { key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "anua",
     name: "PDRN 히알루론산 캡슐 100 세럼 30ml",
@@ -1303,6 +1313,7 @@ export const products: Product[] = [
   },
   {
     id: "c-anua-pdrn-cream",
+    actives: [{ key: "pdrn" }, { key: "hyaluronic" }],
     image: "product-p4.jpg",
     brand: "anua",
     name: "PDRN 히알루론산 100 수분 크림 50ml",
@@ -1329,6 +1340,7 @@ export const products: Product[] = [
   },
   {
     id: "c-roundlab-vita-cream",
+    actives: [{ key: "niacinamide" }],
     image: "product-p1.jpg",
     brand: "roundlab",
     name: "비타 나이아신 잡티 크림 50ml",
@@ -1520,6 +1532,7 @@ export const products: Product[] = [
   },
   {
     id: "c-anua-pdrn-mist",
+    actives: [{ key: "pdrn" }, { key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "anua",
     name: "PDRN 히알루론산 수분 캡슐 미스트 100ml",
@@ -1547,6 +1560,7 @@ export const products: Product[] = [
   },
   {
     id: "c-nutree-time-retinol",
+    actives: [{ key: "collagen" }],
     image: "product-p8.jpg",
     brand: "nutree",
     name: "에버콜라겐 타임레티놀A 30일분",
@@ -1792,6 +1806,7 @@ export const products: Product[] = [
   },
   {
     id: "c-mediheal-pdrn-pad",
+    actives: [{ key: "pdrn" }],
     image: "product-p3.jpg",
     brand: "mediheal",
     name: "피디알엔 모공 탄력 토너패드 100매",
@@ -1818,7 +1833,7 @@ export const products: Product[] = [
   },
   {
     id: "c-mediheal-madeca-serum",
-    actives: [{ key: "panthenol" }],
+    actives: [{ key: "centella" }],
     image: "product-p1.jpg",
     brand: "mediheal",
     name: "마데카소사이드 흔적 리페어 세럼 40ml",
@@ -1845,6 +1860,7 @@ export const products: Product[] = [
   },
   {
     id: "c-mediheal-pdrn-serum",
+    actives: [{ key: "pdrn" }],
     image: "product-p1.jpg",
     brand: "mediheal",
     name: "피디알엔 모공 탄력 세럼 40ml",
@@ -1933,6 +1949,7 @@ export const products: Product[] = [
   },
   {
     id: "c-glasslike-pdrn-ampoule",
+    actives: [{ key: "pdrn" }],
     image: "product-p1.jpg",
     brand: "glasslike",
     name: "PDRN 퍼밍 앰플 세럼 90ml",
@@ -2066,6 +2083,7 @@ export const products: Product[] = [
   },
   {
     id: "c-glasslike-modeling-mask",
+    actives: [{ key: "collagen" }],
     image: "product-p9.jpg",
     brand: "glasslike",
     name: "콜라겐 하이드로 모델링 마스크 4매",
@@ -2120,6 +2138,7 @@ concerns: ["dry"],
   },
   {
     id: "c-nutree-skinhair",
+    actives: [{ key: "collagen" }],
     image: "product-p8.jpg",
     brand: "nutree",
     name: "에버콜라겐 스킨앤헤어 4주분",
@@ -2152,6 +2171,7 @@ concerns: ["dry"],
   // 네 번 받는 것보다 한 번에 오는 쪽이 8주를 채울 확률이 높다.
   {
     id: "c-torriden-dive-toner",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 토너 300ml",
@@ -2179,6 +2199,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-serum",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 프로 저분자 히알루론산 앰플 35ml",
@@ -2206,6 +2227,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-cream",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p4.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 수딩 크림 100ml",
@@ -2233,6 +2255,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-oil",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 클렌징 오일 200ml",
@@ -2260,6 +2283,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-foam",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 클렌징 폼 150ml",
@@ -2287,6 +2311,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-peeling",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 수분 필링 젤 150ml",
@@ -2314,6 +2339,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-mask",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p9.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 마스크 10매",
@@ -2341,6 +2367,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-mist",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 크림 미스트 120ml",
@@ -2368,6 +2395,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-cell-collagen-cream",
+    actives: [{ key: "collagen" }],
     image: "product-p4.jpg",
     brand: "torriden",
     name: "셀메이징 저분자 콜라겐 탄력 크림 60ml",
@@ -2398,6 +2426,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-cell-collagen-mask",
+    actives: [{ key: "collagen" }],
     image: "product-p9.jpg",
     brand: "torriden",
     name: "셀메이징 저분자 콜라겐 모공 탄력 마스크 10매",
@@ -2428,6 +2457,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-vita-cream",
+    actives: [{ key: "vitaminC" }],
     image: "product-p1.jpg",
     brand: "torriden",
     name: "셀메이징 비타 C 브라이트닝 크림 50ml",
@@ -2455,6 +2485,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-vita-pad",
+    actives: [{ key: "vitaminC" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "셀메이징 비타 C 브라이트닝 흔적 토닝 패드 70매",
@@ -2511,6 +2542,7 @@ concerns: ["dry"],
   },
   {
     id: "c-medicube-neck-cream",
+    actives: [{ key: "pdrn" }, { key: "collagen" }],
     image: "product-p4.jpg",
     brand: "medicube",
     name: "PDRN 콜라겐 괄사 넥 링클 크림",
@@ -2615,6 +2647,7 @@ concerns: ["dry"],
   // ── 토리든 2차: 같은 라인 안에서도 자리를 나눠 담는다 ──
   {
     id: "c-torriden-vita-toner",
+    actives: [{ key: "vitaminC" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "셀메이징 비타 C 브라이트닝 토너 200ml",
@@ -2642,6 +2675,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-vita-spot",
+    actives: [{ key: "vitaminC" }],
     image: "product-p1.jpg",
     brand: "torriden",
     name: "셀메이징 비타 C 브라이트닝 스팟 크림 30ml",
@@ -2669,6 +2703,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-cica-cream",
+    actives: [{ key: "centella" }],
     image: "product-p4.jpg",
     brand: "torriden",
     name: "밸런스풀 시카 진정 크림 80ml",
@@ -2696,6 +2731,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-cica-toner",
+    actives: [{ key: "centella" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "밸런스풀 시카 각질 토너 250ml",
@@ -2723,6 +2759,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-cica-pad",
+    actives: [{ key: "centella" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "밸런스풀 시카 토너 패드 60매",
@@ -2750,6 +2787,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-cica-mask",
+    actives: [{ key: "centella" }],
     image: "product-p9.jpg",
     brand: "torriden",
     name: "밸런스풀 시카 마스크 10매",
@@ -2777,6 +2815,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-milk",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 클렌징 밀크 200ml",
@@ -2804,6 +2843,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-lip-essence",
+    actives: [{ key: "collagen" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "셀메이징 저분자 콜라겐 볼륨 립 에센스 11ml",
@@ -2883,7 +2923,7 @@ concerns: ["dry"],
   },
   {
     id: "c-centellian24-eyecream",
-    actives: [{ key: "panthenol" }],
+    actives: [{ key: "centella" }],
     image: "product-p4.jpg",
     brand: "centellian24",
     name: "마데카 인텐스 리프팅 아이크림 15ml",
@@ -2908,6 +2948,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-water",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p3.jpg",
     brand: "torriden",
     name: "다이브인 저분자 히알루론산 클렌징 워터 센서티브 400ml",
@@ -2934,6 +2975,7 @@ concerns: ["dry"],
   },
   {
     id: "c-torriden-dive-glow-serum",
+    actives: [{ key: "hyaluronic" }],
     image: "product-p1.jpg",
     brand: "torriden",
     name: "다이브인 프로 저분자 히알루론산 글로우 세럼 120ml",
@@ -3027,7 +3069,7 @@ concerns: ["dry"],
   },
   {
     id: "c-numbuzin-panto-gauze",
-    actives: [{ key: "panthenol" }],
+    actives: [{ key: "panthenol" }, { key: "hyaluronic" }],
     image: "product-p9.jpg",
     brand: "numbuzin",
     name: "1번 히알루로닉 판토텐산 클리어 수딩 거즈팩 5매",
