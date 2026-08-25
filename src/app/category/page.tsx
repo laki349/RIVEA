@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { categories, concerns } from "@/data/catalog";
 import Icon from "@/components/Icon";
-import CartLink from "@/components/CartLink";
 import TabBar from "@/components/TabBar";
 
 /**
@@ -22,7 +21,6 @@ export default function CategoryPage() {
           <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
-          <CartLink />
         </div>
       </header>
 

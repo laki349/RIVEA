@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { brands, products, won } from "@/data/catalog";
+import { brands, products } from "@/data/catalog";
+import { activeInfo } from "@/data/actives";
 import AppBar from "@/components/AppBar";
 import ProductCard from "@/components/ProductCard";
 import TabBar from "@/components/TabBar";
@@ -13,7 +14,15 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
   if (!brand) notFound();
 
   const list = products.filter((p) => p.brand === brand.slug);
-  const reviewTotal = list.reduce((s, p) => s + p.reviewCount, 0);
+  // 우리가 실제로 아는 값만 센다
+  const gradedCount = new Set(
+    list.flatMap((p) => (p.actives ?? []).map((a) => a.key)).filter((k) => activeInfo[k]?.evidence)
+  ).size;
+  const lastPriced = list
+    .map((p) => p.source?.pricedAt)
+    .filter(Boolean)
+    .sort()
+    .slice(-1)[0];
 
   return (
     <>
@@ -33,25 +42,24 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
           </div>
         </section>
 
-        {/* 신뢰지표 — 중개형의 이탈 방지 장치 */}
+        {/*
+          ⚠️ 「신뢰지표」 4칸을 전부 갈아엎었다 (2026-08-25).
+          전에는 브랜드 평점 · 입점 연도 · 누적 리뷰 · 무료배송이었는데 **네 개 다 창작**이었다.
+          라로슈포제·헤라 같은 실존 기업의 입점 연도와 배송 정책을 지어낸 것이라
+          리뷰수를 지어낸 것보다 성격이 나쁘다. 우리가 실제로 아는 값으로만 바꾼다.
+        */}
         <section className="flex border-b border-hairline">
           <div className="flex-1 border-r border-hairline py-[14px] text-center">
-            <p className="text-[19px] font-bold text-ink">{brand.rating}</p>
-            <p className="mt-[3px] text-[14px] text-meta">브랜드 평점</p>
+            <p className="text-[19px] font-bold text-ink">{list.length}</p>
+            <p className="mt-[3px] text-[14px] text-meta">취급 상품</p>
           </div>
           <div className="flex-1 border-r border-hairline py-[14px] text-center">
-            <p className="text-[19px] font-bold text-ink">{brand.since}년</p>
-            <p className="mt-[3px] text-[14px] text-meta">입점</p>
-          </div>
-          <div className="flex-1 border-r border-hairline py-[14px] text-center">
-            <p className="text-[19px] font-bold text-ink">{won(reviewTotal)}</p>
-            <p className="mt-[3px] text-[14px] text-meta">누적 리뷰</p>
+            <p className="text-[19px] font-bold text-ink">{gradedCount}</p>
+            <p className="mt-[3px] text-[14px] text-meta">근거 확인 성분</p>
           </div>
           <div className="flex-1 py-[14px] text-center">
-            <p className="text-[19px] font-bold text-ink">
-              {brand.freeShippingOver ? `${Math.round(brand.freeShippingOver / 10000)}만원↑` : "유료"}
-            </p>
-            <p className="mt-[3px] text-[14px] text-meta">무료배송</p>
+            <p className="text-[19px] font-bold text-ink">{lastPriced || "-"}</p>
+            <p className="mt-[3px] text-[14px] text-meta">가격 확인</p>
           </div>
         </section>
 

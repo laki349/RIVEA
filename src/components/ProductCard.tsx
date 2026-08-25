@@ -11,12 +11,10 @@ export default function ProductCard({
   product,
   rank,
   imageClassName = "h-[168px]",
-  showRating = true,
 }: {
   product: Product;
   rank?: number;
   imageClassName?: string;
-  showRating?: boolean;
 }) {
   const rate = discountRate(product);
   const badge = product.badges.find((b) => b === "빠른배송" || b === "단독");
@@ -52,14 +50,6 @@ export default function ProductCard({
           )}
           <span className="text-[17px] font-bold text-ink">{won(product.price)}</span>
         </div>
-        {showRating && (
-          <p className="flex items-center gap-1 text-[14px] text-meta">
-            <span className="text-ink">
-              <Icon name="star" size={12} />
-            </span>
-            {product.rating} ({won(product.reviewCount)})
-          </p>
-        )}
       </div>
     </Link>
   );

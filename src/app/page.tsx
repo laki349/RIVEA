@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { brands, products } from "@/data/catalog";
+import { activeInfo } from "@/data/actives";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import TabBar from "@/components/TabBar";
@@ -8,12 +9,22 @@ import ProductCard from "@/components/ProductCard";
 import ConcernRail from "@/components/ConcernRail";
 import HeroCarousel from "@/components/HeroCarousel";
 import PickRail from "@/components/PickRail";
-import CohortSection from "@/components/CohortSection";
-import CartLink from "@/components/CartLink";
 import VerdictSlot from "@/components/VerdictSlot";
 
 export default function HomePage() {
-  const best = [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 4);
+  /**
+   * ⚠️ 「베스트」를 「근거가 두꺼운 것부터」로 바꿨다 (2026-08-25).
+   *
+   * 전에는 `reviewCount` 내림차순이었는데 그 리뷰수는 **우리가 지어낸 값**이다.
+   * 창작한 숫자로 순위를 매기면 그 순위 자체가 창작이고, 홈 첫 화면에서 그걸 하면
+   * 뒤에 있는 근거표까지 같이 의심받는다.
+   *
+   * 대신 **동료심사 논문 등급(A)이 붙은 성분을 가진 제품**을 앞에 둔다. 이건 실제 값이고,
+   * 상세 안쪽에 접혀 있던 이 앱의 유일한 차별점을 첫 화면으로 끌어올린다.
+   */
+  const graded = products
+    .filter((p) => (p.actives ?? []).some((a) => activeInfo[a.key]?.evidence?.grade === "A"))
+    .slice(0, 4);
   const fresh = products.filter((p) => p.badges.includes("NEW"));
 
   return (
@@ -37,7 +48,6 @@ export default function HomePage() {
           <Link href="/search" aria-label="검색" className="flex h-11 w-11 items-center justify-center">
             <Icon name="search" size={21} />
           </Link>
-          <CartLink />
         </div>
       </header>
 
@@ -68,16 +78,23 @@ export default function HomePage() {
           <PickRail />
         </section>
 
-        {/* 연령대 인기 — 사회적 증거 모듈 */}
-        <CohortSection />
+        {/*
+          연령대 인기 모듈(`CohortSection`)을 내렸다 — `cohortViews`가 전부 창작이었다.
+          「이번 주 3,120명이 봤어요」는 우리가 셀 수 없는 숫자다.
+        */}
 
-        {/* 베스트 */}
+        {/* 근거가 두꺼운 것부터 — 창작 순위 대신 실제 값으로 정렬한다 */}
         <section>
-          <SectionHeader title="베스트" href="/category" linkLabel="더보기" />
+          <div className="px-4 pb-3 pt-5">
+            <h2 className="text-[20px] font-bold text-ink">근거가 두꺼운 성분부터</h2>
+            <p className="mt-[5px] text-[16px] leading-[1.6] text-soft">
+              메타분석·대규모 임상까지 확인된 성분이 든 제품입니다.
+            </p>
+          </div>
           <div className="grid grid-cols-2 gap-[3px]">
-            {best.map((p, i) => (
+            {graded.map((p, i) => (
               <div key={p.id} className={i % 2 === 0 ? "border-r-[3px] border-surface" : ""}>
-                <ProductCard product={p} rank={i + 1} imageClassName="h-[168px]" />
+                <ProductCard product={p} imageClassName="h-[168px]" />
               </div>
             ))}
           </div>
@@ -89,7 +106,7 @@ export default function HomePage() {
           <div className="rail flex gap-[11px] pb-4 pl-4 pr-4">
             {fresh.map((p) => (
               <div key={p.id} className="w-[150px] flex-shrink-0">
-                <ProductCard product={p} imageClassName="h-[150px] rounded" showRating={false} />
+                <ProductCard product={p} imageClassName="h-[150px] rounded" />
               </div>
             ))}
           </div>
@@ -113,8 +130,9 @@ export default function HomePage() {
         {/* 데모 고지 — 실제 판매로 오인하지 않도록 */}
         <section className="border-t border-hairline px-4 py-4">
           <p className="text-[15px] leading-[1.6] text-meta">
-            리베아는 준비 중인 서비스예요. 이 화면은 발표용 데모이고 실제 판매·결제는 이뤄지지
-            않아요. 리뷰·평점·조회수는 예시 수치입니다.
+            리베아는 준비 중인 서비스입니다. 결제를 받지 않고, 구매는 각 브랜드 공식몰에서
+            진행돼요. 아직 리뷰·평점을 모으지 않습니다. 상품 가격은 표시된 확인 시점 기준이라
+            지금과 다를 수 있어요.
           </p>
         </section>
       </main>

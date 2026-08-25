@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { addToCart } from "@/lib/cart";
 import { won } from "@/data/catalog";
-import { LoginSheet, useMemberGate } from "./MemberGate";
 import OutboundLink from "./OutboundLink";
-import Toast from "./Toast";
 import WishButton from "./WishButton";
 
 /**
- * 하단 구매 바 — 담기 실동작 + 토스트.
- * product: 찜 + 장바구니 + **공식몰에서 구매**(외부) / routine: 찜 + 세트가 + 세트 담기
+ * 하단 구매 바 — 찜 + **공식몰에서 구매**(외부).
+ *
+ * ## 2026-08-25 — 장바구니를 뺐다
+ *
+ * 우리는 결제를 받지 않는다. 장바구니는 `/checkout`으로 이어지고 거기엔
+ * 「N원 결제하기」 버튼이 있었다 — **결제하는 척하는 화면**이다. 실사용자를 인스타로
+ * 받기 시작하면 그건 데모가 아니라 거짓 약속이 된다.
+ *
+ * 담아두는 기능 자체는 **찜**이 이미 한다. 장바구니는 「결제 직전 단계」라는 뜻인데
+ * 그 다음 단계가 없으므로 자리가 없다.
  *
  * ## 「구매」는 왜 로그인을 묻지 않나 (2026-08-25, 운영자 결정)
  *
@@ -47,41 +50,17 @@ export default function BuyBar({
   /** 브랜드 공식몰로 나갈 때만 준다. 비어 있으면 「판매처에서 구매」로 쓴다 */
   brandName?: string;
 }) {
-  const router = useRouter();
-  const [toast, setToast] = useState(false);
-  // 담기·구매는 회원 전용 (MemberGate.tsx) — 게스트는 시트로 안내한다
-  const { guard, asking, close } = useMemberGate();
-
-  const add = () =>
-    guard(() => {
-      addToCart(kind, id);
-      setToast(true);
-    });
 
 
   return (
     <>
-      {asking && <LoginSheet onClose={close} what="담아두세요" />}
 
-      {toast && (
-        <Toast
-          message="장바구니에 담았어요"
-          onDone={() => setToast(false)}
-          action={{ label: "보러가기", onClick: () => router.push("/cart") }}
-        />
-      )}
 
       <div className="sticky bottom-0 z-40 flex items-center gap-3 border-t border-line bg-surface px-4 pb-[max(11px,env(safe-area-inset-bottom))] pt-[11px]">
         <WishButton kind={kind} id={id} variant="bar" baseLikes={likes} />
 
         {kind === "product" ? (
           <>
-            <button
-              onClick={add}
-              className="press h-[50px] flex-1 rounded-cta border border-ink text-[17px] font-medium text-ink"
-            >
-              장바구니
-            </button>
             {buyHref ? (
               <OutboundLink
                 productId={id}
@@ -99,18 +78,21 @@ export default function BuyBar({
             )}
           </>
         ) : (
-          <>
-            <div className="flex-shrink-0">
-              <p className="text-[14px] text-meta">세트가</p>
+          /*
+            루틴은 여러 브랜드가 섞여 있어 한 곳으로 내보낼 수 없다. 그래서 담기 대신
+            **합계만 보여주고 구성품에서 각자 나가게** 한다 (구성품 목록이 상세에 있다).
+          */
+          <div className="flex flex-1 items-center justify-between">
+            <div>
+              <p className="text-[14px] text-meta">단품 합계</p>
               <p className="text-[19px] font-bold leading-[1.1] text-ink">{won(price)}</p>
             </div>
-            <button
-              onClick={add}
-              className="press h-[52px] flex-1 rounded-cta bg-ink text-[18px] font-medium text-on-ink"
-            >
-              세트 담기
-            </button>
-          </>
+            <p className="text-[15px] leading-[1.5] text-meta">
+              구성품에서 각각
+              <br />
+              공식몰로 가요
+            </p>
+          </div>
         )}
       </div>
     </>

@@ -66,36 +66,6 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
 }
 
 /** 고민별 대표 리뷰 (더미) */
-const sampleReviews: Record<string, { meta: string; text: string }> = {
-  pigment: {
-    meta: "5.0 · 52세 · 건성",
-    text: "두 달 쓰니 눈가 잡티가 확실히 옅어졌어요. 자극 없이 순해서 계속 쓸 것 같아요.",
-  },
-  wrinkle: {
-    meta: "5.0 · 48세 · 복합성",
-    text: "아침에 쓰고 나가면 화장이 잘 먹어요. 턱선이 좀 정리된 느낌이라 꾸준히 쓰는 중입니다.",
-  },
-  dry: {
-    meta: "4.5 · 55세 · 건성",
-    text: "저녁에 바르고 자면 아침까지 안 당겨요. 향도 은은해서 부담 없습니다.",
-  },
-  sun: {
-    meta: "5.0 · 51세 · 민감성",
-    text: "백탁 없이 발리고 눈 시림이 없어요. 덧발라도 밀리지 않아 매일 씁니다.",
-  },
-  pore: {
-    meta: "4.5 · 47세 · 지성",
-    text: "볼 모공이 확 줄진 않아도 피부결이 매끈해졌어요. 순해서 매일 쓰기 좋아요.",
-  },
-  "scalp-hair": {
-    meta: "5.0 · 58세 · 두피 예민",
-    text: "정수리 볼륨이 조금씩 사는 게 보여요. 두피가 시원하고 가렵지 않아 좋습니다.",
-  },
-  inner: {
-    meta: "4.5 · 50세",
-    text: "8주째 먹는 중인데 피부가 덜 푸석해요. 한 포씩 나뉘어 있어 챙겨 먹기 편합니다.",
-  },
-};
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = products.find((p) => p.id === params.id);
@@ -104,7 +74,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const brand = brandOf(product.brand);
   const rate = discountRate(product);
   const mainConcern = concernOf(product.concerns[0]);
-  const review = sampleReviews[mainConcern.slug];
   // 성분이 겹치는 기사 우선, 없으면 고민이 겹치는 기사
   const productArticle = articlesForProduct(product)[0];
   const real = product.source;
@@ -188,14 +157,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             {rate !== null && rate > 0 && <span className="text-[20px] font-bold text-rose">{rate}%</span>}
             <span className="text-[24px] font-bold text-ink">{won(product.price)}</span>
           </div>
-          {/* 평점·조회를 두 줄로 쌓아둘 값어치가 없다. 둘 다 데모 수치이기도 하다 */}
-          <p className="flex items-center gap-1 text-[15px] text-meta">
-            <span className="text-ink">
-              <Icon name="star" size={13} />
-            </span>
-            {product.rating} · 리뷰 {won(product.reviewCount)}건 ·{" "}
-            {won(Math.round(product.likes / 22))}명이 보는 중
-          </p>
+          {/*
+            ⚠️ 평점·리뷰수·조회수를 뺐다 (2026-08-25). 셋 다 **우리가 지어낸 값**이었고,
+            상품 100종의 리뷰 합계가 106만 건에 평점 4.0 미만이 하나도 없었다.
+            논문 PMID까지 열어 근거 등급을 매기는 앱이 화면에서 가장 크게 읽히는 숫자를
+            창작하고 있으면, 근거표 전체가 같이 의심받는다.
+            실제 리뷰가 쌓이기 전까지 **없는 게 정확하다.**
+          */}
           <div className="mt-[11px] flex flex-wrap gap-[6px]">
             {product.tags.map((t) => (
               <span key={t} className="rounded border border-line px-[9px] py-1 text-[14px] text-body">
@@ -370,27 +338,16 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         {/* 내 화장대와의 조합 — 성분을 본 직후가 "같이 써도 되나"를 묻는 자리다 */}
         <ShelfConflict productId={product.id} />
 
-        {/* 리뷰 */}
+        {/*
+          리뷰 — **내가 쓴 것만.** 예시 리뷰(sampleReviews)와 평점·리뷰수를 전부 내렸다.
+          「리뷰 0건」이 「리뷰 41,200건(창작)」보다 낫다. 그게 실제 상태이기도 하고.
+        */}
         <section className="border-b border-hairline px-4 py-4">
-          <div className="mb-[11px] flex items-baseline justify-between">
-            <h3 className="text-[18px] font-bold text-ink">리뷰 {won(product.reviewCount)}</h3>
-            <span className="text-[15px] text-meta">전체보기</span>
-          </div>
-          <div className="mb-3 flex items-center gap-2">
-            <span className="text-[26px] font-bold text-ink">{product.rating}</span>
-            <span className="flex text-ink">
-              {[...Array(5)].map((_, i) => (
-                <Icon key={i} name="star" size={14} />
-              ))}
-            </span>
-          </div>
+          <h3 className="mb-[9px] text-[18px] font-bold text-ink">리뷰</h3>
           <MyReview productId={product.id} />
-          <div className="rounded border border-hairline px-3 py-[11px]">
-            <p className="flex items-center gap-1 text-[15px] text-ink">
-              <Icon name="star" size={12} /> {review.meta}
-            </p>
-            <p className="mt-[5px] text-[15px] leading-[1.6] text-body">{review.text}</p>
-          </div>
+          <p className="text-[16px] leading-[1.6] text-meta">
+            아직 리뷰를 모으지 않습니다. 준비 중인 서비스라 쌓인 후기가 없어요.
+          </p>
         </section>
 
         {/* 함께 쓰면 좋은 루틴 */}

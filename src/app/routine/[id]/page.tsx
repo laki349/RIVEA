@@ -163,13 +163,7 @@ export default function RoutineDetailPage({ params }: { params: { id: string } }
           })}
         </section>
 
-        {/* 리뷰 자리 (세트 리뷰는 추후) */}
-        <section className="px-4 py-4">
-          <p className="text-[15px] leading-[1.6] text-meta">
-            구성품 리뷰 {won(routine.steps.reduce((s, st) => s + productOf(st.productId).reviewCount, 0))}
-            건이 이 세트를 뒷받침해요. 개별 상품에서 확인해 보세요.
-          </p>
-        </section>
+        {/* 세트를 뒷받침하는 건 리뷰수가 아니라 조합의 이유다 — 위 「왜 이 조합인가요」 */}
       </main>
 
       {/* 하단 CTA — 세트 담기 실동작 */}

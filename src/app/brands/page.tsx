@@ -27,7 +27,7 @@ export default function BrandsPage() {
               <div className="flex-1">
                 <p className="text-[17px] font-bold text-ink">{b.name}</p>
                 <p className="mt-[2px] text-[14px] text-meta">
-                  {b.tagline} · 평점 {b.rating} · 상품 {count}
+                  {b.tagline} · 상품 {count}
                 </p>
               </div>
               <span className="text-disabled">

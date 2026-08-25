@@ -185,7 +185,7 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
           <div className="grid grid-cols-2 gap-[3px] border-t border-hairline">
             {concernProducts.map((p, i) => (
               <div key={p.id} className={i % 2 === 0 ? "border-r-[3px] border-surface" : ""}>
-                <ProductCard product={p} imageClassName="h-[160px]" showRating={false} />
+                <ProductCard product={p} imageClassName="h-[160px]" />
               </div>
             ))}
           </div>

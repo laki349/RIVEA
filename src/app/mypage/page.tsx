@@ -1,12 +1,8 @@
 import Link from "next/link";
 import Icon from "@/components/Icon";
-import CartLink from "@/components/CartLink";
 import TabBar from "@/components/TabBar";
 import WishQuickAction from "./WishQuickAction";
-import OrderQuickAction from "./OrderQuickAction";
-import WalletQuickActions from "./WalletQuickActions";
 import ReviewQuickAction from "./ReviewQuickAction";
-import GradeCard from "./GradeCard";
 import ProfileEntry from "./ProfileEntry";
 import AccountBlock from "./AccountBlock";
 
@@ -23,13 +19,15 @@ const menuGroups: { title: string; items: { label: string; href?: string; note?:
     items: [
       { label: "내 루틴", href: "/my-routine", note: "고민에 맞춘 아침·저녁 순서" },
       { label: "내 화장대", href: "/shelf", note: "쓰고 있는 것과 같이 써도 되는지" },
-      { label: "재구매 목록", href: "/repurchase", note: "다 쓸 때쯤 알려드려요" },
+      // 재구매 목록은 주문에서 파생된다 — 결제를 닫은 지금은 영영 빈 화면이다
+
     ],
   },
   {
     title: "쇼핑",
     items: [
-      { label: "선물하기", href: "/gift", note: "어머니께 대신 골라드려요" },
+      // 선물하기는 결제 동선을 타므로 지금은 내린다 (docs/16 「안 하는 것」에도 9/2 이후로 적혀 있다)
+
       { label: "최근 본 상품", href: "/recent" },
       { label: "내가 쓴 리뷰", href: "/reviews" },
     ],
@@ -55,7 +53,6 @@ export default function MyPage() {
           <button aria-label="알림" className="flex h-11 w-11 items-center justify-center">
             <Icon name="bell" size={21} />
           </button>
-          <CartLink />
         </div>
       </header>
 
@@ -66,14 +63,14 @@ export default function MyPage() {
         {/* 피부 고민 설정 — concern-first 개인화 진입 (lib/profile.ts) */}
         <ProfileEntry />
 
-        {/* 등급 카드 — 누적 구매액에서 파생 */}
-        <GradeCard />
-
-        {/* 퀵액션 */}
-        <div className="flex border-b border-hairline border-t">
-          <OrderQuickAction />
+        {/*
+          ⚠️ 등급 카드·주문·쿠폰/포인트를 내렸다 (2026-08-25).
+          셋 다 **주문에서 파생**되는데, 결제 동선을 닫아 주문이 생길 수 없다.
+          영영 0인 숫자를 등급·잔액이라고 띄우면 그게 또 하나의 거짓 화면이다.
+          남긴 건 실제로 동작하는 둘 — 내가 쓴 리뷰와 찜.
+        */}
+        <div className="flex border-b border-t border-hairline">
           <ReviewQuickAction />
-          <WalletQuickActions />
           <WishQuickAction />
         </div>
 

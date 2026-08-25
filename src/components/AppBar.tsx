@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Icon from "./Icon";
-import CartLink from "./CartLink";
 import ShareButton from "./ShareButton";
 
 /**
@@ -50,7 +49,6 @@ export default function AppBar({
             <Icon name="search" size={20} />
           </Link>
         )}
-        <CartLink size={20} />
       </div>
     </header>
   );

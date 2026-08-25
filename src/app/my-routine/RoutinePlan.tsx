@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { brandOf, concernOf, productImage, productOf, won, type Product } from "@/data/catalog";
-import { addToCart } from "@/lib/cart";
 import { pmNoteFor, prescribe, type Slotted } from "@/lib/prescribe";
 import { useProfile } from "@/lib/profile";
 import { track } from "@/lib/events";
@@ -12,8 +11,6 @@ import { regimenOf } from "@/data/regimen";
 import Icon from "@/components/Icon";
 import ImageSlot from "@/components/ImageSlot";
 import InteractionNotes from "@/components/InteractionNotes";
-import { LoginSheet, useMemberGate } from "@/components/MemberGate";
-import Toast from "@/components/Toast";
 
 /**
  * 내 루틴 — 고민에서 만든 아침·저녁 순서.
@@ -29,8 +26,6 @@ import Toast from "@/components/Toast";
 export default function RoutinePlan() {
   const profile = useProfile();
   const [mounted, setMounted] = useState(false);
-  const [added, setAdded] = useState(0);
-  const { guard, asking, close } = useMemberGate();
   useEffect(() => setMounted(true), []);
 
   const shelf = useShelfEntries();
@@ -131,35 +126,28 @@ export default function RoutinePlan() {
         ids={[...buyable, ...plan.weeklyIds].map((id) => ({ kind: "product" as const, id }))}
       />
 
+      {/*
+        「전부 담기」를 뺐다 (2026-08-25). 담으면 `/checkout`으로 이어지는데 우리는
+        결제를 받지 않는다. 루틴은 여러 브랜드가 섞여 있어 한 번에 내보낼 수도 없다.
+        각 제품 상세에서 그 브랜드 공식몰로 나가는 게 실제로 가능한 동선이다.
+      */}
       <div className="px-4 py-4">
-        <button
-          onClick={() =>
-            guard(() => {
-              buyable.forEach((id) => addToCart("product", id));
-              setAdded(buyable.length);
-            })
-          }
-          className="press h-[52px] w-full rounded-cta bg-ink text-[18px] font-medium text-on-ink"
+        <Link
+          href="/shelf"
+          className="press flex h-[52px] w-full items-center justify-center rounded-cta bg-ink text-[18px] font-medium text-on-ink"
         >
-          루틴 {buyable.length}개 전부 담기
-        </button>
+          쓰고 있는 것 등록하고 판정받기
+        </Link>
         <Link
           href="/shelf"
           className="press mt-2 flex h-11 items-center justify-center text-[16px] text-body"
         >
-          이미 쓰는 게 있으면 화장대에 등록하세요
+          14·28일 뒤에 효과를 같이 봐드려요
           <Icon name="chevron-right" size={15} />
         </Link>
       </div>
 
-      {asking && <LoginSheet onClose={close} what="루틴을 담아두세요" />}
 
-      {added > 0 && (
-        <Toast
-          message={`${added}개를 장바구니에 담았어요`}
-          onDone={() => setAdded(0)}
-        />
-      )}
     </main>
   );
 }

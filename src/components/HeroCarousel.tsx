@@ -44,10 +44,6 @@ type Slide = {
 
 function buildSlides(): Slide[] {
   const wrinkleCount = products.filter((p) => p.concerns.includes("wrinkle")).length;
-  const bestSaving = routines.reduce((max, r) => {
-    const rate = discountRate({ price: r.price, listPrice: routineListPrice(r) }) ?? 0;
-    return Math.max(max, rate);
-  }, 0);
 
   return [
     {
@@ -61,7 +57,8 @@ function buildSlides(): Slide[] {
       image: heroImages[1],
       href: "/pick",
       title: "기기와 화장품을\n한 세트로",
-      sub: `루틴 세트 ${routines.length}개 · 단품 합계보다 최대 ${bestSaving}% 절감`,
+      // 세트 할인을 없앤 뒤로 「절감」을 말할 수 없다 (routines 주석). 조합의 값을 말한다
+      sub: `루틴 세트 ${routines.length}개 · 순서까지 짜인 조합`,
       position: "center 35%",
     },
     {
