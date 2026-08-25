@@ -63,8 +63,8 @@ export default function KeepPrompt({ count }: { count: number }) {
             {count}개를 등록하셨어요. 14일 뒤에 판정해드릴게요
           </p>
           <p className="mt-[5px] text-[16px] leading-[1.6] text-body">
-            지금 이 기록은 <b className="font-bold">이 브라우저에만</b> 있어요. 계정을
-            만들어두시면 폰을 바꾸거나 다른 앱에서 열어도 그대로 이어집니다.
+            지금 이 기록은 <b className="font-bold">이 브라우저에만</b> 남습니다. 계정을
+            만들어두시면 폰을 바꿔도 그대로 이어져요.
           </p>
           <div className="mt-[11px] flex gap-[8px]">
             <Link

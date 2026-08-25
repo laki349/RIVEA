@@ -6,49 +6,53 @@ import { track } from "@/lib/events";
 import Icon from "./Icon";
 
 /**
- * 「이 루틴이 내 피부에 맞을까요?」 — 고민과 **다른 축**을 받는 자리.
+ * 피부 상태 — 고민과 **다른 축**을 받는 자리.
  *
- * ## 왜 처방 아래인가
+ * 고민은 「뭘 해결할까」고 이건 「내 피부가 견딜 만한가」다. 기미 고민인 사람이
+ * 지성일 수도 건성일 수도 있는데, 전까지 처방은 그걸 안 봤다. 설문에서 「고를 때
+ * 불편」 1위가 「이게 나한테 맞는 건지 모르겠다」 16/32(50%)였고(`docs/15`),
+ * 그 문장의 '맞는'이 정확히 이쪽이다.
  *
- * 고민 다음에 바로 물으면 관문이 하나 더 생긴다. 그건 2026-08-25에 입구에서 로그인을
- * 걷어낸 것과 정확히 같은 실수다. **값을 먼저 보여주고 입력을 받는다** — 처방을 본
- * 사람만 「어, 이게 나한테 맞나?」를 묻게 되고, 그때가 답할 이유가 생긴 시점이다.
+ * ## 타입을 묻지 않는 이유
  *
- * ## 왜 타입을 안 묻나
- *
- * 「건성/지성/복합성」은 안 맞는 사람을 만든다. 40대+에 흔한 「당기면서 번들거림」이
+ * 「건성/지성/복합성」은 **안 맞는 사람을 만든다.** 40대+에 흔한 「당기면서 번들거림」이
  * 4분법 어디에도 없고, 이 프로젝트는 강제 단일선택으로 이미 데였다(설문 72%).
- * 그래서 **복수 선택**이고, 고른 것들이 타입 이름으로 합쳐지지 않는다 —
- * 곧장 처방 조정값이 된다 (`lib/fit.ts`).
+ * 그래서 복수 선택이고, 고른 것들이 타입 이름으로 합쳐지지 않는다 —
+ * 곧장 처방 조정값이 된다(`lib/fit.ts`).
  *
- * 아무것도 안 고르면 처방은 **이 기능이 없을 때와 똑같다.** 그게 「모르겠다」의 자리다.
+ * 진단이 아니라는 점도 같은 이유다. `youIf`와 같은 원칙으로, 관찰 가능한 상황만 받고
+ * 「당신은 지성입니다」로 단정하지 않는다.
+ *
+ * 아무것도 안 고르면 처방은 이 기능이 없을 때와 **정확히 같다.** 그게 「모르겠다」의 자리다.
+ *
+ * ⚠️ 자리는 **고민 바로 다음**이다(`ProfileForm`). 처방 아래에 뒀더니 설정이 두 곳으로
+ *    갈라졌다 — 사용자에게는 한 번에 끝내야 할 일이다.
  */
 export default function FitPanel() {
   const profile = useProfile();
   const chosen = profile.signals;
   const on = chosen.length > 0;
-  // 자극을 낮추면 **근거가 두꺼운 성분이 빠질 수 있다.** 그건 공짜가 아니라 교환이고,
-  // 교환이라는 사실을 말하지 않으면 앱이 유리한 절반만 보여주는 게 된다.
+  // 자극을 낮추면 **근거가 두꺼운 성분이 뒤로 밀린다.** 그건 공짜가 아니라 교환이고,
+  // 교환이라는 사실을 말하지 않으면 유리한 절반만 보여주는 게 된다.
   const gentle = weightsFrom(chosen).gentle > 0;
 
   const toggle = (key: SkinSignal) => {
     const next = chosen.includes(key) ? chosen.filter((k) => k !== key) : [...chosen, key];
     setSignals(next);
-    // 몇 %가 이걸 실제로 쓰는지 남긴다 — 의향 진술이 아니라 행동으로 확인한다
+    // 몇 명이 실제로 쓰는지 남긴다 — 의향 진술이 아니라 행동으로 확인한다
     if (next.length > 0) track("concern_select", "fit");
   };
 
   return (
-    <section className="border-t border-hairline px-4 py-4">
-      <h2 className="text-[19px] font-bold leading-[1.4] text-ink">
-        이 루틴이 내 피부에 맞을까요?
-      </h2>
-      <p className="mt-[6px] text-[16px] leading-[1.6] text-soft">
-        해당하는 걸 <b className="font-bold">전부</b> 골라주세요. 고르면 위 순서가 그
-        자리에서 다시 짜여요. 해당하는 게 없으면 안 고르셔도 됩니다.
+    <section className="border-b border-hairline px-4 pb-5 pt-[18px]">
+      <h2 className="text-[21px] font-bold text-ink">요즘 피부는 어떠세요?</h2>
+      <p className="mt-2 text-[17px] leading-[1.6] text-body">
+        해당하는 걸 다 골라주세요. 고른 만큼 제형과 자극 세기를 맞춰드려요.
+        <br />
+        해당하는 게 없으면 넘어가셔도 됩니다.
       </p>
 
-      <div className="mt-[13px] flex flex-col gap-[8px]">
+      <div className="mt-4 flex flex-col gap-[8px]">
         {SKIN_SIGNALS.map((s) => {
           const active = chosen.includes(s.key);
           return (
@@ -57,9 +61,7 @@ export default function FitPanel() {
               onClick={() => toggle(s.key)}
               aria-pressed={active}
               className={`press flex min-h-[52px] items-center gap-[10px] rounded border px-[13px] py-[10px] text-left text-[17px] leading-[1.45] ${
-                active
-                  ? "border-ink bg-subtle font-medium text-ink"
-                  : "border-line text-body"
+                active ? "border-ink bg-bg-tint font-medium text-ink" : "border-line text-body"
               }`}
             >
               <span
@@ -77,23 +79,21 @@ export default function FitPanel() {
       </div>
 
       {on && (
-        <div className="mt-[11px] rounded bg-subtle px-[11px] py-[9px]">
-          <p className="text-[15px] leading-[1.6] text-body">
-            고르신 걸 반영해 <b className="font-bold">제형과 자극 세기</b>를 조정했어요.
-            제품을 빼지는 않고, 같은 자리에서 더 맞는 쪽을 앞에 둡니다.
+        <div className="mt-[13px] rounded bg-subtle px-[12px] py-[10px]">
+          <p className="text-[16px] leading-[1.6] text-ink">
+            루틴에 반영했어요. 제품을 빼는 게 아니라, 같은 자리에서 더 맞는 쪽을 앞에 둡니다.
           </p>
           {gentle && (
-            <p className="mt-[7px] border-t border-line pt-[7px] text-[15px] leading-[1.6] text-body">
-              대신 <b className="font-bold">레티놀·산처럼 근거가 두꺼운 성분이 뒤로 밀릴 수 있어요.</b>{" "}
-              자극이 걱정되면 그게 맞지만, 쓰고 싶으시면 빼는 대신{" "}
-              <b className="font-bold">주 1~2회부터</b> 시작하는 방법도 있어요.
+            <p className="mt-[8px] border-t border-line pt-[8px] text-[16px] leading-[1.6] text-body">
+              대신 <b className="font-bold">레티놀·산이 뒤로 밀립니다.</b> 자극이 걱정되면 그게
+              맞아요. 쓰고 싶으시면 주 1~2회부터 시작하는 방법도 있습니다.
             </p>
           )}
         </div>
       )}
 
-      <p className="mt-[9px] text-[15px] leading-[1.6] text-meta">
-        피부 상태를 진단하지 않아요. 고르신 관찰만 쓰고, 반응은 사람마다 달라요.
+      <p className="mt-[10px] text-[16px] leading-[1.6] text-meta">
+        진단이 아니에요. 고르신 것만 반영하고, 반응은 사람마다 다릅니다.
       </p>
     </section>
   );

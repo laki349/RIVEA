@@ -49,7 +49,7 @@ export default function ActiveBars({ product }: { product: Product }) {
       <section className="border-b border-hairline px-4 py-4">
         <h3 className="mb-[6px] text-[18px] font-bold text-ink">성분이 하는 일</h3>
         <p className="text-[16px] leading-[1.6] text-meta">
-          브랜드가 주요 성분과 함량을 공개하지 않았어요.
+          브랜드가 주요 성분과 함량을 공개하지 않았습니다.
         </p>
       </section>
     );
@@ -129,7 +129,7 @@ export default function ActiveBars({ product }: { product: Product }) {
       </ul>
 
       <p className="mt-3 border-t border-subtle pt-[10px] text-[15px] leading-[1.6] text-meta">
-        작용 지점만 적었어요. 효과는 사람마다 다르고, 근거는 동료심사 논문만 씁니다.
+        작용 지점만 적습니다. 효과는 사람마다 다르고, 근거는 동료심사 논문만 씁니다.
       </p>
     </section>
   );

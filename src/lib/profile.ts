@@ -36,10 +36,10 @@ export type AgeKey = "40s" | "50s" | "60s";
 export type SkinSignal = "tight" | "shiny" | "flaky" | "sting" | "breakout";
 
 export const SKIN_SIGNALS: { key: SkinSignal; label: string }[] = [
-  { key: "tight", label: "세수하고 조금 지나면 당겨요" },
+  { key: "tight", label: "세수하고 나면 금방 당겨요" },
   { key: "shiny", label: "오후엔 이마·코가 번들거려요" },
-  { key: "flaky", label: "뭘 발라도 각질이 일어나요" },
-  { key: "sting", label: "새 제품을 쓰면 따갑거나 붉어질 때가 있어요" },
+  { key: "flaky", label: "발라도 각질이 일어나요" },
+  { key: "sting", label: "새로 바르면 따갑거나 붉어져요" },
   { key: "breakout", label: "트러블이 잘 나요" },
 ];
 

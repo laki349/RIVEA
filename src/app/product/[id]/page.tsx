@@ -229,7 +229,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   </b>
                   에서 진행돼요
                   <span className="block text-[15px] text-meta">
-                    배송비·주문조회도 그쪽 기준이에요 · 리베아는 수수료를 받지 않아요
+                    배송비·주문조회도 그쪽 기준입니다 · 리베아는 수수료를 받지 않아요
                   </span>
                 </>
               ),
@@ -241,7 +241,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   {real?.priceNote ?? "판매처 표시가"}
                   <span className="block text-[15px] text-meta">
                     {real?.pricedAt ? `${real.pricedAt} 확인 · ` : ""}
-                    최종 가격·재고는 {viaOfficial ? "공식몰" : "판매처"} 표시가 우선이에요
+                    최종 가격·재고는 {viaOfficial ? "공식몰" : "판매처"} 표시를 따릅니다
                   </span>
                 </>
               ),

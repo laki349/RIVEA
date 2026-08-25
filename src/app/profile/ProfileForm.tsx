@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { concernImage, concerns } from "@/data/catalog";
 import Icon from "@/components/Icon";
+import FitPanel from "@/components/FitPanel";
 import ImageSlot from "@/components/ImageSlot";
 import {
   AGE_LABELS,
@@ -86,6 +87,13 @@ export default function ProfileForm() {
           })}
         </div>
       </section>
+
+      {/*
+        피부 상태 — 고민 바로 다음이다.
+        고민은 「뭘 해결할까」고 이건 「내 피부가 견딜 만한가」라서 다른 축인데,
+        고르는 자리가 떨어져 있으면 사용자에게는 두 번의 설정이 된다.
+      */}
+      <FitPanel />
 
       <section className="border-b border-hairline px-4 pb-5 pt-[18px]">
         <h2 className="text-[21px] font-bold text-ink">연령대를 알려주세요</h2>
