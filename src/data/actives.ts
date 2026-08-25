@@ -82,8 +82,13 @@ export const activeInfo: Record<ActiveKey, ActiveInfo> = {
     evidence: {
       grade: "A",
       claim: "바르는 형태는 8주차부터 색소 지표가 움직이는 것으로 보고됩니다.",
-      source: "J Dermatolog Treat 2024, RCT 63편 메타분석 · PMID 38843906",
-      caveat: "먹는 것·주사·바르는 것은 근거가 다릅니다. 네트워크 메타분석에서 바르는 형태는 레이저·IPL보다 순위가 낮았어요. 후기를 볼 때 형태를 확인하세요.",
+      // ⚠️ 2026-08-25 수정 (QA ISSUE-004). 전에는 출처가 하나였는데 caveat의 「레이저·IPL
+      //    대비 순위」는 PMID 38843906이 아니라 **다른 논문**의 내용이었다. 사실은 맞고
+      //    출처가 틀린 인용이라, 발표에서 PMID를 열면 그 문장이 없다. 둘로 나눴다.
+      //    확인 못 한 「RCT 63편」은 뺐다 — 초록·검색 어디에도 그 수가 없다.
+      source:
+        "Tranexamic acid as a therapeutic option for melasma management, J Dermatolog Treat 2024 · PMID 38843906 (경구>주사>바르는 것 순) / 형태 간 순위는 별도 네트워크 메타분석 PMC12562867 (14개 시험·738명)",
+      caveat: "먹는 것·주사·바르는 것은 근거가 다르고, 바르는 형태가 셋 중 가장 약합니다. 별도 네트워크 메타분석에서는 바르는 형태가 레이저·시술 병용보다 순위가 낮았어요. 후기를 볼 때 형태를 확인하세요.",
     },
     verdictWeeks: 8,
   },
@@ -152,7 +157,11 @@ export const activeInfo: Record<ActiveKey, ActiveInfo> = {
   },
   sunscreen: {
     name: "자외선 차단 성분",
-    concerns: ["sun"],
+    // 주름을 넣은 건 마케팅이 아니라 **아래 인용이 광노화 시험이기 때문**이다.
+    // Hughes 2013이 4.5년간 측정한 게 정확히 노화 지표고, 화장품에서 「노화를 늦춘다」를
+    // 장기 시험으로 보인 사실상 유일한 항목이다. 여기에 wrinkle이 없으면 처방에서
+    // 주름 고민에 선크림을 놓고도 이유를 말하지 못한다 — 근거가 가장 두꺼운 자리인데.
+    concerns: ["sun", "wrinkle"],
     role: "자외선을 막거나 흩어요",
     evidence: {
       grade: "A",

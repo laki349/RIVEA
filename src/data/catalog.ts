@@ -2070,7 +2070,10 @@ export const products: Product[] = [
     brand: "glasslike",
     name: "콜라겐 하이드로 모델링 마스크 4매",
     category: "mask",
-    concerns: ["wrinkle", "dry"],
+    // ⚠️ 주름 태그를 뺐다 (QA ISSUE-002). `activeInfo.collagen`이 "바르는 형태의 실제
+    //    역할은 표면 보습막"이라고 적어놓고 이 제품을 주름 자리에 놓는 건 앱이 자기
+    //    근거표와 모순되는 것이다. 보습은 남긴다 — 그건 근거표가 인정하는 역할이다.
+concerns: ["dry"],
     tags: ["모델링 팩", "콜라겐", "4매"],
     price: 35000,
     listPrice: null,
@@ -2369,7 +2372,10 @@ export const products: Product[] = [
     brand: "torriden",
     name: "셀메이징 저분자 콜라겐 탄력 크림 60ml",
     category: "skincare",
-    concerns: ["wrinkle", "dry"],
+    // ⚠️ 주름 태그를 뺐다 (QA ISSUE-002). `activeInfo.collagen`이 "바르는 형태의 실제
+    //    역할은 표면 보습막"이라고 적어놓고 이 제품을 주름 자리에 놓는 건 앱이 자기
+    //    근거표와 모순되는 것이다. 보습은 남긴다 — 그건 근거표가 인정하는 역할이다.
+concerns: ["dry"],
     tags: ["크림", "콜라겐", "탄력"],
     price: 18900,
     listPrice: null,
@@ -2396,7 +2402,10 @@ export const products: Product[] = [
     brand: "torriden",
     name: "셀메이징 저분자 콜라겐 모공 탄력 마스크 10매",
     category: "mask",
-    concerns: ["pore", "wrinkle"],
+    // ⚠️ 주름 태그를 뺐다 (QA ISSUE-002). `activeInfo.collagen`이 "바르는 형태의 실제
+    //    역할은 표면 보습막"이라고 적어놓고 이 제품을 주름 자리에 놓는 건 앱이 자기
+    //    근거표와 모순되는 것이다. 보습은 남긴다 — 그건 근거표가 인정하는 역할이다.
+concerns: ["dry"],
     tags: ["시트 마스크", "콜라겐", "10매"],
     price: 15000,
     listPrice: null,

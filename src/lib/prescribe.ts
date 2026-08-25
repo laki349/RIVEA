@@ -1,4 +1,5 @@
 import { productOf, products, type Product } from "@/data/catalog";
+import { activeInfo } from "@/data/actives";
 import {
   devicePlacement,
   findDeviceCautions,
@@ -118,7 +119,7 @@ function pick(
   slot: "am" | "pm",
   concerns: string[],
   used: Set<string>
-): { product: Product; reason: string } | null {
+): { product: Product; reason: string | null } | null {
   const pool = products
     .filter((p) => p.category !== "device")
     .filter((p) => {
@@ -135,7 +136,29 @@ function pick(
   // 이 제품이 붙은 고민 중, 사용자 우선순위가 가장 높은 것을 이유로 쓴다
   const hit = p.concerns.filter((c) => concerns.includes(c));
   const top = hit.sort((a, b) => concerns.indexOf(a) - concerns.indexOf(b))[0];
-  return { product: p, reason: top };
+  return { product: p, reason: backedReason(p, top) };
+}
+
+/**
+ * **이유 라벨은 근거가 있을 때만 붙인다.**
+ *
+ * 화면에서 「· 주름·탄력」은 "당신의 그 고민 때문에 여기 있다"로 읽힌다. 그런데
+ * 그 말의 출처는 `catalog.ts`의 손으로 붙인 `concerns` 태그였다. QA(ISSUE-001)에서
+ * 주름 단독 처방 10칸 중 근거가 있는 건 2칸인데 8칸에도 같은 라벨이 붙는 게 확인됐다.
+ *
+ * 그래서 라벨은 **`actives`를 통해 `activeInfo`까지 이어질 때만** 남긴다.
+ * 성분이 `activeInfo`에 있고, 그 성분이 다루는 고민에 이 자리의 고민이 들어 있어야 한다.
+ * 아니면 `null` — 제품은 그대로 추천하되 **이유를 지어내지 않는다.**
+ *
+ * ⚠️ 제품을 빼지 않는 이유: 자리를 비우면 세안·토너 같은 기본 단계가 통째로 사라진다.
+ *    「근거가 없다」와 「추천하면 안 된다」는 다른 말이다. 말하지 않을 뿐이다.
+ */
+function backedReason(p: Product, concern: string | undefined): string | null {
+  if (!concern) return null;
+  const backed = (p.actives ?? []).some((a) =>
+    activeInfo[a.key]?.concerns.includes(concern)
+  );
+  return backed ? concern : null;
 }
 
 /**

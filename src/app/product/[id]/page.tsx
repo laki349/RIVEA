@@ -188,14 +188,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             {rate !== null && rate > 0 && <span className="text-[20px] font-bold text-rose">{rate}%</span>}
             <span className="text-[24px] font-bold text-ink">{won(product.price)}</span>
           </div>
-          <p className="mb-[5px] flex items-center gap-1 text-[15px] text-meta">
+          {/* 평점·조회를 두 줄로 쌓아둘 값어치가 없다. 둘 다 데모 수치이기도 하다 */}
+          <p className="flex items-center gap-1 text-[15px] text-meta">
             <span className="text-ink">
               <Icon name="star" size={13} />
             </span>
-            {product.rating} · 리뷰 {won(product.reviewCount)}건
-          </p>
-          <p className="text-[15px] text-meta">
-            {won(Math.round(product.likes / 22))}명이 보고 있어요
+            {product.rating} · 리뷰 {won(product.reviewCount)}건 ·{" "}
+            {won(Math.round(product.likes / 22))}명이 보는 중
           </p>
           <div className="mt-[11px] flex flex-wrap gap-[6px]">
             {product.tags.map((t) => (
@@ -220,31 +219,17 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         <section className="border-b border-hairline px-4 py-1">
           {[
             {
-              label: "결제",
+              // 전에는 결제·배송이 각각 한 행이었는데, 두 행이 사실상 같은 말을 두 번 했다
+              // ("공식몰에서 진행돼요" / "주문·배송 조회도 공식몰에서"). 한 행으로 합친다.
+              label: "결제·배송",
               value: (
                 <>
-                  {viaOfficial ? (
-                    <>
-                      <b className="font-bold">{brand.name} 공식몰</b>에서 진행돼요
-                    </>
-                  ) : (
-                    <>
-                      <b className="font-bold">가격비교에 연결된 판매처</b>에서 진행돼요
-                    </>
-                  )}
+                  <b className="font-bold">
+                    {viaOfficial ? `${brand.name} 공식몰` : "가격비교에 연결된 판매처"}
+                  </b>
+                  에서 진행돼요
                   <span className="block text-[15px] text-meta">
-                    리베아는 결제를 받지 않고 판매 수수료도 받지 않아요
-                  </span>
-                </>
-              ),
-            },
-            {
-              label: "배송",
-              value: (
-                <>
-                  {viaOfficial ? "공식몰" : "판매처"}의 배송비·기준을 따라요
-                  <span className="block text-[15px] text-meta">
-                    주문·배송 조회도 {viaOfficial ? "공식몰" : "그쪽"}에서 하시게 돼요
+                    배송비·주문조회도 그쪽 기준이에요 · 리베아는 수수료를 받지 않아요
                   </span>
                 </>
               ),
