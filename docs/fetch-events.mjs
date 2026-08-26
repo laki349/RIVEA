@@ -4,6 +4,7 @@
  *   node docs/fetch-events.mjs            전체 기간
  *   node docs/fetch-events.mjs --days=7   최근 7일
  *   node docs/fetch-events.mjs --json     원본도 저장 (docs/events-export.json)
+ *   node docs/fetch-events.mjs --html     **사람별 이동 경로 대시보드** (docs/events-dashboard.html)
  *
  * ── 왜 스크립트가 필요한가 ────────────────────────────────────────────────
  * `firestore.rules`는 `events`의 **read를 아무에게도 열지 않는다.** 브라우저에서
@@ -33,6 +34,18 @@ const 키경로 = 루트 + "service-account.json";
 const 인자 = process.argv.slice(2);
 const 일수 = Number(인자.find((a) => a.startsWith("--days="))?.split("=")[1] ?? 0);
 const 원본저장 = 인자.includes("--json");
+/**
+ * `--html` — 사람별 이동 경로가 보이는 대시보드를 파일로 뽑는다.
+ *
+ * 왜 필요한가: 터미널 출력은 **집계**다. "몇 명이 어디까지 갔나"는 답하지만
+ * **"이 사람이 어떻게 움직였나"**는 답하지 못한다. 관찰 3명을 하고 나서
+ * "그 사람이 앱에서 뭘 눌렀는지"를 보려면 사람 단위 타임라인이 있어야 한다.
+ *
+ * GA4를 붙이는 대신 이걸 만든 이유: 우리 `events`에는 **uid·시각·이벤트·값이 전부 있다.**
+ * 데이터가 부족한 게 아니라 보여주는 방법이 없었을 뿐이다. GA4의 사용자 탐색기는
+ * 되긴 하지만 샘플링·보존기간(기본 2개월) 제한이 있고, 개인정보 수집 성격이 달라진다.
+ */
+const HTML저장 = 인자.includes("--html");
 /**
  * `--fixture=경로` — Firestore 대신 JSON 파일을 읽는다.
  * 키가 없는 환경에서 집계 로직을 검증하거나, 내보낸 원본으로 다시 돌려볼 때 쓴다.
@@ -297,6 +310,113 @@ for (const 목록 of 세션들.values()) {
 console.log("\n유입 경로 (세션)");
 for (const [r, n] of [...ref별].sort((a, z) => z[1] - a[1])) {
   console.log(`  ${맞춤(r, 24)} ${String(n).padStart(4)}`);
+}
+
+/* ── 사람별 이동 경로 대시보드 ─────────────────────────────────── */
+if (HTML저장) {
+  const 지도2 = 카탈로그();
+  const 제품명 = (e) => {
+    if (!e.value) return "";
+    return 지도2.get(e.value)?.name ?? e.value;
+  };
+  const 라벨 = {
+    app_open: "앱 열기",
+    concern_select: "고민 선택",
+    prescription_view: "처방 봄",
+    shelf_add: "화장대 등록",
+    verdict_answer: "판정 응답",
+    outbound_click: "공식몰로 나감",
+    product_view: "제품 봄",
+  };
+  const 색 = {
+    outbound_click: "#8a3324",
+    prescription_view: "#2c5c3f",
+    verdict_answer: "#2c5c3f",
+    shelf_add: "#2c5c3f",
+  };
+
+  // uid별로 묶고, 마지막 활동이 최근인 사람부터
+  const 사람별 = new Map();
+  for (const e of 이벤트) {
+    const u = e.uid ?? "(uid 없음)";
+    if (!사람별.has(u)) 사람별.set(u, []);
+    사람별.get(u).push(e);
+  }
+  const 사람들 = [...사람별.entries()]
+    .map(([uid, evs]) => {
+      evs.sort((a, z) => String(a.at).localeCompare(String(z.at)));
+      const refs = [...new Set(evs.map((e) => e.ref).filter((r) => r && r !== "direct"))];
+      return {
+        uid,
+        evs,
+        ref: refs[0] ?? "direct",
+        sessions: new Set(evs.map((e) => e.sid)).size,
+        out: evs.filter((e) => e.name === "outbound_click").length,
+        last: evs[evs.length - 1]?.at ?? "",
+      };
+    })
+    .sort((a, z) => String(z.last).localeCompare(String(a.last)));
+
+  const esc = (t) =>
+    String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const 짧은시각 = (t) => (t ? new Date(t).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "");
+
+  const 사람HTML = 사람들
+    .map((p, i) => {
+      const 줄 = p.evs
+        .map((e) => {
+          const c = 색[e.name] ?? "#6b6259";
+          const v = 제품명(e);
+          return `<li><span class="t">${esc(짧은시각(e.at))}</span><b style="color:${c}">${esc(라벨[e.name] ?? e.name)}</b>${v ? `<span class="v">${esc(v)}</span>` : ""}</li>`;
+        })
+        .join("");
+      return `<details ${i < 3 ? "open" : ""}>
+  <summary><b>#${i + 1}</b> <code>${esc(p.uid).slice(0, 10)}…</code>
+    <span class="chip">유입 ${esc(p.ref)}</span>
+    <span class="chip">방문 ${p.sessions}회</span>
+    <span class="chip">이벤트 ${p.evs.length}</span>
+    ${p.out > 0 ? `<span class="chip out">공식몰 ${p.out}</span>` : ""}
+  </summary>
+  <ol class="tl">${줄}</ol>
+</details>`;
+    })
+    .join("\n");
+
+  const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RIVEA 사용자 이동 경로</title><style>
+*{box-sizing:border-box}body{margin:0;padding:24px;background:#faf8f5;color:#1c1815;
+font:15px/1.6 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;max-width:900px;margin-inline:auto}
+h1{font-size:22px;margin:0 0 4px}.sub{color:#6b6259;font-size:14px;margin-bottom:20px}
+.cards{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.card{flex:1;min-width:120px;background:#fff;border:1px solid #e8e2d9;border-radius:8px;padding:14px}
+.card .n{font-size:26px;font-weight:700}.card .l{font-size:13px;color:#6b6259;margin-top:2px}
+details{background:#fff;border:1px solid #e8e2d9;border-radius:8px;margin-bottom:8px}
+summary{cursor:pointer;padding:12px 14px;list-style:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+summary::-webkit-details-marker{display:none}
+code{background:#f2eee7;padding:2px 6px;border-radius:4px;font-size:13px}
+.chip{font-size:12px;color:#6b6259;background:#f2eee7;padding:2px 8px;border-radius:99px}
+.chip.out{background:#8a3324;color:#fff}
+.tl{margin:0;padding:0 14px 14px 34px}
+.tl li{margin:3px 0;font-size:14px}
+.tl .t{color:#a09589;font-size:12px;margin-right:8px;font-variant-numeric:tabular-nums}
+.tl .v{color:#6b6259;margin-left:6px}
+</style></head><body>
+<h1>RIVEA 사용자 이동 경로</h1>
+<p class="sub">${esc(날짜(시각[0]))} ~ ${esc(날짜(시각.at(-1)))} · 사람 단위 타임라인 (uid는 브라우저마다 발급되는 익명 식별자라 실제 사람 수의 상한이다)</p>
+<div class="cards">
+  <div class="card"><div class="n">${사람들.length}</div><div class="l">고유 사용자</div></div>
+  <div class="card"><div class="n">${세션들.size}</div><div class="l">방문(세션)</div></div>
+  <div class="card"><div class="n">${이벤트.length}</div><div class="l">이벤트</div></div>
+  <div class="card"><div class="n">${이벤트.filter((e) => e.name === "outbound_click").length}</div><div class="l">공식몰 이동</div></div>
+</div>
+${사람HTML || "<p>아직 데이터가 없습니다.</p>"}
+</body></html>`;
+
+  const 경로H = 루트 + "docs/events-dashboard.html";
+  writeFileSync(경로H, html);
+  console.log(`\n대시보드 → docs/events-dashboard.html (${사람들.length}명)`);
+  console.log(`   열기: open docs/events-dashboard.html`);
 }
 
 if (원본저장) {

@@ -38,3 +38,7 @@ service-account*.json
 
 # 계측 로그 원본 (node docs/fetch-events.mjs --json)
 docs/events-export.json
+
+# 계측 산출물 — 사용자 행동 로그라 커밋하지 않는다
+docs/events-dashboard.html
+docs/events-export.json
