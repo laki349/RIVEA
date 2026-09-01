@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { brands, products } from "@/data/catalog";
+import { products } from "@/data/catalog";
 import { activeInfo } from "@/data/actives";
 import Icon from "@/components/Icon";
-import ImageSlot from "@/components/ImageSlot";
 import TabBar from "@/components/TabBar";
 import SectionHeader from "@/components/SectionHeader";
 import ProductCard from "@/components/ProductCard";
@@ -107,20 +106,19 @@ export default function HomePage() {
           기준이 두 개면 사용자는 둘 다 안 믿는다. 신상은 `/category`에 NEW 뱃지로 남아 있다.
         */}
 
-        {/* 브랜드 */}
-        <section className="border-t border-hairline pb-5">
-          <SectionHeader title="브랜드" href="/brands" />
-          <div className="rail flex gap-[14px] px-4">
-            {brands.map((b) => (
-              <Link key={b.slug} href={`/brand/${b.slug}`} className="w-[64px] flex-shrink-0 text-center">
-                <div className="flex h-[64px] w-[64px] items-center justify-center rounded border border-line bg-surface">
-                  <span className="text-[17px] font-bold text-ink">{b.name.slice(0, 1)}</span>
-                </div>
-                <p className="mt-[6px] whitespace-nowrap text-[14px] text-ink">{b.name}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
+        {/*
+          ⚠️ 「브랜드」 레일을 내렸다 (2026-09-01).
+
+          이 앱의 축은 concern-first다 — 「세럼」이 아니라 「기미·잡티」로 찾게 한다.
+          브랜드로 찾기는 **그 반대축**이고, 홈 마지막에 24개를 깔아두면 「고민으로 찾기」로
+          세운 관문을 스스로 흐린다.
+
+          게다가 타일이 이니셜 한 글자였다(「글」·「셀」·「듀」). 40대+ 사용자에게 그 글자는
+          브랜드를 알려주지 않는다 — 아래 이름을 읽어야 아는, 정보 없는 도형이었다.
+
+          브랜드로 찾는 길은 남아 있다 — `/brands` 전용 페이지, 상품 카드의 브랜드명,
+          상품 상세의 브랜드 링크.
+        */}
 
         {/* 데모 고지 — 실제 판매로 오인하지 않도록 */}
         <section className="border-t border-hairline px-4 py-4">
