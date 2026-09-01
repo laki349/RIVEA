@@ -4,32 +4,33 @@ import { useCallback, useEffect, useState } from "react";
 import { track } from "@/lib/events";
 
 /**
- * 첫 방문 안내 — **첫 화면을 한 번에 설명한다.**
+ * 첫 방문 안내 — 홈의 세 자리를 **하나씩** 비추고 무엇을 하는 앱인지 말한다.
  *
  * ## 왜 만들었나
  *
- * `docs/12` §6-1이 대면 인터뷰의 **가장 아픈 지적**으로 기록한 문장이다.
+ * `docs/12` §6-1이 대면에서 **가장 아픈 지적**으로 기록한 문장이다.
  *
  * > "광고를 보고 온 상황이면 모르겠으나, **홈화면에 딱 40·50대를 위한 앱이라는 게 잘 모르겠다.**"
  *
  * ⚠️ **이건 그 지적의 답이 아니라 우회다.** 설명이 필요한 화면은 여전히 설명이 필요한
  * 화면이고, 진짜 답은 홈이 첫 화면만으로 읽히게 만드는 것이다. 이건 그때까지의 다리다.
- * 안내를 넣었다고 §6-1이 닫혔다고 적으면 안 된다.
  *
- * ## 왜 단계별로 넘기지 않는가
+ * ## 모양에 대한 결정 세 가지
  *
- * 처음엔 3단계 코치마크(다음 → 다음 → 알겠어요)로 만들었다가 버렸다.
- * **단계를 넘기게 하면 화면 사이의 관계가 안 보인다.** 「고민을 고른다」와 「순서가 나온다」와
- * 「여기 남는다」는 따로 있는 사실이 아니라 **한 줄기**인데, 한 번에 하나씩 비추면
- * 그 줄기가 안 그려진다. 게다가 40대+ 대상이라 「다음」을 세 번 누르는 동안 첫 장을 잊는다.
+ * ① **하나씩 넘긴다.** 세 곳을 한 번에 펼쳐도 봤는데, 40대+ 대상에 화살표 셋과 문장 셋이
+ *    동시에 뜨면 어디부터 읽을지가 안 정해진다. 한 번에 하나만 밝히면 시선이 갈 곳이 하나다.
  *
- * 그래서 **첫 화면을 그대로 어둡게 덮고, 가리킬 곳 세 군데를 동시에 뚫는다.**
- * 점선 화살표가 라벨과 대상을 잇는다. 눈이 한 번에 전체 구조를 받는다.
+ * ② **화살표는 실선이고, 곡선이 아니라 한 번 꺾이는 직선이다.** 점선·곡선은 손으로 그린
+ *    메모처럼 보인다. 이 앱의 디자인은 각진 기조(`docs/03`)라 곡선이 혼자 튄다.
+ *    가로로 간 다음 세로로 꺾어 대상에 꽂는다 — 꺾임은 **한 번뿐**이다.
+ *
+ * ③ **색을 쓰지 않는다.** 흰 선과 흰 글자만. 유채색은 rose 하나라는 규칙(`docs/03`)을
+ *    안내가 깨면 안 된다.
  *
  * ## 스크롤하지 않는다
  *
  * 세 자리를 **스크롤 없이 보이는 것 중에서만** 골랐다. 안내 중에 화면이 움직이면
- * 무엇을 가리키는지 놓친다. 그래서 대상은 고민 레일 · Pick 섹션 머리 · 하단 Pick 탭이다.
+ * 무엇을 가리키는지 놓친다.
  *
  * ## 계측이 이 컴포넌트의 절반이다
  *
@@ -39,10 +40,16 @@ import { track } from "@/lib/events";
  */
 
 /** 버전을 키에 박아둔다 — 내용이 바뀌면 다시 보여줘야 한다 */
-const SEEN_KEY = "rivea-tour-v2";
+const SEEN_KEY = "rivea-tour-v3";
 
 /** 구멍이 대상 주위에 남기는 여백(px) */
 const PAD = 6;
+/** 대상과 라벨 사이. 꺾인 화살표가 이 사이를 지난다 */
+const GAP = 48;
+/** 라벨 한 줄 높이 */
+const LINE_H = 25;
+/** 「다음」 버튼 높이 + 위 여백 */
+const BTN_BLOCK = 52;
 
 type Spot = {
   /** 대상의 `data-tour` 값 */
@@ -52,7 +59,7 @@ type Spot = {
   label: string;
   /** 라벨을 대상의 위/아래 중 어디에 둘 것인가 */
   side: "below" | "above";
-  /** 라벨을 대상 왼쪽 끝에서 얼마나 들여쓸지 (0~1, 화면 폭 기준) */
+  /** 라벨 왼쪽 위치 (0~1, 화면 폭 기준) */
   x: number;
 };
 
@@ -68,13 +75,13 @@ const SPOTS: Spot[] = [
     maxH: 44,
     label: "고민에 맞는 순서까지\n짜여 있어요",
     side: "below",
-    x: 0.08,
+    x: 0.07,
   },
   {
     anchor: "tab-pick",
     label: "고른 고민은\n여기 남아요",
     side: "above",
-    x: 0.42,
+    x: 0.3,
   },
 ];
 
@@ -95,35 +102,26 @@ function markSeen(how: "done" | "skip") {
 }
 
 type Hole = { top: number; left: number; width: number; height: number };
-type Placed = Spot & { hole: Hole; labelTop: number; labelLeft: number };
-
-/** 라벨 한 줄 높이 · 두 줄이 기본이다 */
-const LINE_H = 25;
-const GAP = 34; // 대상과 라벨 사이 화살표가 지나갈 거리
 
 export default function Tour() {
-  const [open, setOpen] = useState(false);
-  const [placed, setPlaced] = useState<Placed[]>([]);
+  const [i, setI] = useState<number | null>(null);
+  const [hole, setHole] = useState<Hole | null>(null);
   const [vw, setVw] = useState(0);
+  const [vh, setVh] = useState(0);
 
-  const measure = useCallback(() => {
-    const w = window.innerWidth;
-    setVw(w);
-    const out: Placed[] = [];
-    for (const s of SPOTS) {
-      const el = document.querySelector<HTMLElement>(`[data-tour="${s.anchor}"]`);
-      if (!el) continue;
-      const r = el.getBoundingClientRect();
-      // 화면 밖이면 가리킬 수 없다 — 조용히 건너뛴다
-      if (r.bottom < 0 || r.top > window.innerHeight) continue;
-      const height = Math.min(r.height, s.maxH ?? r.height);
-      const hole = { top: r.top, left: r.left, width: r.width, height };
-      const lines = s.label.split("\n").length;
-      const labelTop =
-        s.side === "below" ? hole.top + hole.height + GAP : hole.top - GAP - lines * LINE_H;
-      out.push({ ...s, hole, labelTop, labelLeft: w * s.x });
-    }
-    setPlaced(out);
+  const measure = useCallback((step: number) => {
+    setVw(window.innerWidth);
+    setVh(window.innerHeight);
+    const s = SPOTS[step];
+    const el = document.querySelector<HTMLElement>(`[data-tour="${s.anchor}"]`);
+    if (!el) return setHole(null);
+    const r = el.getBoundingClientRect();
+    setHole({
+      top: r.top,
+      left: r.left,
+      width: r.width,
+      height: Math.min(r.height, s.maxH ?? r.height),
+    });
   }, []);
 
   // 첫 방문에만. 화면이 다 그려진 뒤에 열어야 좌표가 맞다.
@@ -131,31 +129,77 @@ export default function Tour() {
     if (seen()) return;
     const t = window.setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "auto" }); // 첫 화면을 설명하므로 맨 위에서 연다
-      measure();
-      setOpen(true);
+      measure(0);
+      setI(0);
       track("tutorial_start");
     }, 900);
     return () => window.clearTimeout(t);
   }, [measure]);
 
+  useEffect(() => {
+    if (i === null) return;
+    measure(i);
+  }, [i, measure]);
+
   // 회전·주소창 접힘으로 좌표가 밀린다
   useEffect(() => {
-    if (!open) return;
-    window.addEventListener("resize", measure);
-    window.addEventListener("orientationchange", measure);
+    if (i === null) return;
+    const on = () => measure(i);
+    window.addEventListener("resize", on);
+    window.addEventListener("orientationchange", on);
     return () => {
-      window.removeEventListener("resize", measure);
-      window.removeEventListener("orientationchange", measure);
+      window.removeEventListener("resize", on);
+      window.removeEventListener("orientationchange", on);
     };
-  }, [open, measure]);
+  }, [i, measure]);
 
   const close = (how: "done" | "skip") => {
     markSeen(how);
     track(how === "done" ? "tutorial_done" : "tutorial_skip");
-    setOpen(false);
+    setI(null);
   };
 
-  if (!open) return null;
+  if (i === null) return null;
+
+  const spot = SPOTS[i];
+  const last = i === SPOTS.length - 1;
+  const lines = spot.label.split("\n").length;
+  const labelH = lines * LINE_H + BTN_BLOCK;
+  const labelLeft = vw * spot.x;
+  const labelTop = hole
+    ? spot.side === "below"
+      ? hole.top + hole.height + GAP
+      : hole.top - GAP - labelH
+    : Math.max(24, vh / 2 - labelH / 2);
+
+  /**
+   * 꺾인 실선 화살표 — 라벨에서 가로로 갔다가 세로로 꺾어 대상에 꽂는다.
+   * 꺾임은 한 번뿐이다.
+   */
+  let arrow: { path: string; head: string } | null = null;
+  if (hole) {
+    // 좁은 대상(탭 하나)은 한가운데를, 넓은 섹션은 왼쪽 1/4 지점을 가리킨다
+    const tx =
+      hole.width < 200 ? hole.left + hole.width / 2 : hole.left + hole.width * 0.25;
+    const startX = labelLeft + 10;
+    if (spot.side === "below") {
+      const y = labelTop - 12; // 라벨 바로 위에서 가로로 달린다
+      const endY = hole.top + hole.height + PAD + 3;
+      arrow = {
+        path: `M ${startX} ${y} L ${tx} ${y} L ${tx} ${endY}`,
+        head: `M ${tx - 6} ${endY + 9} L ${tx} ${endY} L ${tx + 6} ${endY + 9}`,
+      };
+    } else {
+      // 라벨 묶음(글자 + 버튼) **아래**에서 출발한다.
+      // 글자와 버튼 사이에서 출발시켰더니 가로 선이 버튼을 관통했다.
+      const y = labelTop + labelH + 8;
+      const endY = hole.top - PAD - 3;
+      arrow = {
+        path: `M ${startX} ${y} L ${tx} ${y} L ${tx} ${endY}`,
+        head: `M ${tx - 6} ${endY - 9} L ${tx} ${endY} L ${tx + 6} ${endY - 9}`,
+      };
+    }
+  }
 
   return (
     <div
@@ -164,27 +208,22 @@ export default function Tour() {
       role="dialog"
       aria-modal="true"
       aria-label="리베아 첫 화면 안내"
-      onClick={() => close("done")}
     >
-      {/*
-        딤 + 구멍들 + 점선 화살표를 SVG 한 장으로 그린다.
-        구멍이 여러 개라 box-shadow 트릭(구멍 1개)을 못 쓴다 — mask로 뚫는다.
-      */}
+      {/* 딤 + 구멍 + 화살표를 SVG 한 장으로. mask로 뚫는다 */}
       <svg className="absolute inset-0 h-full w-full" aria-hidden>
         <defs>
-          <mask id="tour-holes">
+          <mask id="tour-hole">
             <rect x="0" y="0" width="100%" height="100%" fill="#fff" />
-            {placed.map((p) => (
+            {hole && (
               <rect
-                key={p.anchor}
-                x={p.hole.left - PAD}
-                y={p.hole.top - PAD}
-                width={p.hole.width + PAD * 2}
-                height={p.hole.height + PAD * 2}
+                x={hole.left - PAD}
+                y={hole.top - PAD}
+                width={hole.width + PAD * 2}
+                height={hole.height + PAD * 2}
                 rx="4"
                 fill="#000"
               />
-            ))}
+            )}
           </mask>
         </defs>
         <rect
@@ -192,72 +231,54 @@ export default function Tour() {
           y="0"
           width="100%"
           height="100%"
-          fill="rgba(28,24,21,0.8)"
-          mask="url(#tour-holes)"
+          fill="rgba(28,24,21,0.82)"
+          mask="url(#tour-hole)"
         />
-
-        {placed.map((p) => {
-          // 라벨 왼쪽 위에서 출발해 대상 가장자리로 휘어 들어가는 점선
-          const from = { x: p.labelLeft + 10, y: p.labelTop + (p.side === "below" ? -8 : LINE_H * p.label.split("\n").length + 8) };
-          const to = {
-            x: Math.min(Math.max(p.hole.left + p.hole.width * 0.3, 24), vw - 24),
-            y: p.side === "below" ? p.hole.top + p.hole.height + PAD + 4 : p.hole.top - PAD - 4,
-          };
-          const midY = (from.y + to.y) / 2;
-          const d = `M ${from.x} ${from.y} C ${from.x} ${midY}, ${to.x} ${midY}, ${to.x} ${to.y}`;
-          return (
-            <g key={`a-${p.anchor}`}>
-              <path d={d} stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="5 5" fill="none" />
-              {/* 화살촉 — 대상 쪽을 향한다 */}
-              <path
-                d={
-                  p.side === "below"
-                    ? `M ${to.x - 5} ${to.y + 7} L ${to.x} ${to.y} L ${to.x + 5} ${to.y + 7}`
-                    : `M ${to.x - 5} ${to.y - 7} L ${to.x} ${to.y} L ${to.x + 5} ${to.y - 7}`
-                }
-                stroke="#FFFFFF"
-                strokeWidth="1.5"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </g>
-          );
-        })}
+        {arrow && (
+          <g>
+            <path d={arrow.path} stroke="#FFFFFF" strokeWidth="2" fill="none" />
+            <path
+              d={arrow.head}
+              stroke="#FFFFFF"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        )}
       </svg>
 
-      {/* 라벨 — SVG 밖에 둔다. 한글 줄바꿈·자간을 브라우저 텍스트 엔진에 맡기는 게 안전하다 */}
-      {placed.map((p) => (
+      {/* 라벨 — SVG 밖에 둔다. 한글 줄바꿈·자간은 브라우저 텍스트 엔진에 맡기는 게 안전하다 */}
+      <div className="absolute" style={{ top: labelTop, left: labelLeft }}>
         <p
-          key={`l-${p.anchor}`}
-          className="absolute whitespace-pre-line text-[17px] font-medium leading-[25px] text-white"
+          className="whitespace-pre-line text-[17px] font-medium leading-[25px] text-white"
           style={{
-            top: p.labelTop,
-            left: p.labelLeft,
-            /* 구멍(밝은 대상) 위로 라벨이 걸칠 수 있다. 그림자가 없으면 흰 글씨가 사라진다 */
+            /* 라벨이 밝은 구멍 위로 걸칠 수 있다. 그림자가 없으면 흰 글씨가 사라진다 */
             textShadow: "0 1px 3px rgba(28,24,21,0.9), 0 0 12px rgba(28,24,21,0.7)",
           }}
         >
-          {p.label}
+          {spot.label}
         </p>
-      ))}
+        <button
+          onClick={() => (last ? close("done") : setI(i + 1))}
+          className="press mt-[10px] flex h-[42px] items-center rounded bg-surface px-5 text-[16px] font-medium text-ink"
+        >
+          {last ? "알겠어요" : `다음 (${i + 1}/${SPOTS.length})`}
+        </button>
+      </div>
 
       {/*
-        닫기는 **우상단**이다. 처음엔 화면 아래 가운데에 큰 버튼으로 뒀는데,
-        하단 탭을 가리키는 라벨과 자리가 겹쳐서 그 라벨이 통째로 가렸다.
-        위로 올리면 세 라벨 어느 것과도 안 부딪힌다.
-
-        아이콘 하나(✕)만 두지 않고 「닫기」를 같이 쓴다 — 40대+ 대상이고,
-        `TabBar` 주석과 같은 이유다. 아이콘만으로는 무엇인지 판별이 어렵다.
+        닫기는 우상단이다. 처음엔 화면 아래 가운데 큰 버튼으로 뒀는데,
+        하단 탭을 가리키는 라벨과 자리가 겹쳐 그 라벨이 통째로 가렸다.
+        아이콘 하나(✕)만 두지 않고 「건너뛰기」를 쓴다 — `TabBar` 주석과 같은 이유로
+        40대+ 대상에 아이콘 단독은 판별이 어렵다.
       */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          close("done");
-        }}
+        onClick={() => close("skip")}
         className="press absolute right-3 top-3 flex h-11 items-center gap-[6px] rounded bg-surface px-4 text-[16px] font-medium text-ink"
       >
-        닫기
+        건너뛰기
         <span aria-hidden className="text-[17px] leading-none">
           ✕
         </span>
