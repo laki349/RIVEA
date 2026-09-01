@@ -15,6 +15,7 @@ import TabBar from "@/components/TabBar";
 import RoutineCard from "@/components/RoutineCard";
 import ProductCard from "@/components/ProductCard";
 import ArticleLink from "@/components/ArticleLink";
+import ConcernStart from "@/components/ConcernStart";
 import { articlesForConcern } from "@/data/magazine";
 
 export default function ConcernDetail({ concern }: { concern: Concern }) {
@@ -91,6 +92,9 @@ export default function ConcernDetail({ concern }: { concern: Concern }) {
             해당하는 게 하나도 없으면 다른 고민일 수 있어요. 진단이 아니라 방향을 잡는 문장입니다.
           </p>
         </section>
+
+        {/* 「내 얘기다」가 성립한 직후 — 여기가 행동을 묻는 자리다 (ConcernStart 주석) */}
+        <ConcernStart slug={concern.slug} name={concern.name} />
 
         {/*
           「언제 판정하나」 — 쓰는 중 불편 1위가 「효과가 있는 건지 모르겠다」 72%로

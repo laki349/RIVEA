@@ -235,6 +235,8 @@ export const brands: Brand[] = [
   // 아래 넷은 **공식몰 주소를 확인하지 못했다.** 지어내지 않고 비워둔다 —
   // 구매 목적지는 `buyUrlOf`가 다나와 가격비교 페이지로 떨어뜨리고, 화면 문구도
   // 「공식몰」이 아니라 「판매처」로 바뀐다 (product 상세의 결제 행).
+  { slug: "ckd", name: "CKD", tagline: "종근당건강 더마", isReal: true },
+  { slug: "drg", name: "닥터지", tagline: "고운세상코스메틱 저자극", isReal: true },
   { slug: "eucerin", name: "유세린", tagline: "바이어스도르프 더마", isReal: true },
   { slug: "centellian24", name: "센텔리안24", tagline: "동국제약 마데카 라인", isReal: true },
   { slug: "ahc", name: "AHC", tagline: "카버코리아 아이케어", isReal: true },
@@ -3047,6 +3049,74 @@ concerns: ["dry"],
     source: {
       sourceUrl: "https://prod.danawa.com/info/?pcode=41406944",
       pricedAt: "2026-08-25",
+      priceNote: "다나와 최저가",
+    },
+  },
+  // ── 2026-08-26: 자리별 후보 수를 보고 채운다 ──
+  // 단계별로 세보니 목·턱선 1개, 눈가 4개였다. 40대+ 고민에서 큰 자리인데
+  // 후보가 하나면 적합성 축(fit.ts)이 고를 게 없다 — 자리를 만들어놓은 값이 없어진다.
+  {
+    id: "c-ckd-neck-cream",
+    actives: [{ key: "collagen" }],
+    image: "product-p4.jpg",
+    brand: "ckd",
+    name: "레티노콜라겐 저분자 300 괄사 목주름 크림 50ml",
+    category: "skincare",
+    concerns: ["wrinkle"],
+    tags: ["목·턱선", "콜라겐", "괄사"],
+    price: 32490,
+    listPrice: null,
+    badges: [],
+    keyIngredient: "저분자 콜라겐 300 (함량 미공개)",
+    volume: "50ml",
+    usage:
+      "얼굴 마무리 뒤 목과 턱선에 아래에서 위로 폅니다. 얼굴만 관리하고 목을 빼면 경계가 그대로 보여요.",
+    source: {
+      sourceUrl: "https://prod.danawa.com/info/?pcode=32017871",
+      pricedAt: "2026-08-26",
+      priceNote: "다나와 최저가",
+    },
+  },
+  {
+    id: "c-drg-moisture-sun",
+    actives: [{ key: "sunscreen" }],
+    image: "product-p5.jpg",
+    brand: "drg",
+    name: "브라이트닝 업 모이스처 선 50ml PA++++",
+    category: "suncare",
+    concerns: ["sun", "dry"],
+    tags: ["자외선", "촉촉", "톤업"],
+    price: 15570,
+    listPrice: null,
+    badges: ["빠른배송"],
+    keyIngredient: "자외선 차단 성분 (PA++++)",
+    volume: "50ml",
+    usage:
+      "아침 마지막 단계에 충분히 폅니다. 건조한 편이면 무기자차 특유의 뻑뻑함이 덜한 쪽이에요.",
+    source: {
+      sourceUrl: "https://prod.danawa.com/info/?pcode=19063871",
+      pricedAt: "2026-08-26",
+      priceNote: "다나와 최저가",
+    },
+  },
+  {
+    id: "c-drg-red-peeling",
+    image: "product-p3.jpg",
+    brand: "drg",
+    name: "레드 블레미쉬 필링 젤 150g",
+    category: "cleansing",
+    concerns: ["pore", "dry"],
+    tags: ["각질", "필링", "저자극"],
+    price: 7240,
+    listPrice: null,
+    badges: [],
+    keyIngredient: "브랜드 미공개",
+    volume: "150g",
+    usage:
+      "물기 없는 얼굴에 펴 바르고 굴린 뒤 헹굽니다. 산이 아니라 굴려서 걷는 방식이라 순한 편이에요.",
+    source: {
+      sourceUrl: "https://prod.danawa.com/info/?pcode=5577400",
+      pricedAt: "2026-08-26",
       priceNote: "다나와 최저가",
     },
   },

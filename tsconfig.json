@@ -16,5 +16,12 @@
     "paths": { "@/*": ["./src/*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    // 별도 프로젝트 — 각자 package.json·tsconfig가 있고 자기 빌드로 돈다.
+    // include의 "**/*.ts"가 이걸 빨아들여 앱 빌드가 남의 타입 에러로 깨졌다.
+    "video",
+    "cardnews",
+    "out"
+  ]
 }

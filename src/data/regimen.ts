@@ -117,6 +117,7 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-paulas-bha": { step: "exfoliate", slot: "pm", lifespanDays: 80 },
   // 필링젤·토너패드도 마찬가지 — 카테고리는 클렌징인데 자리는 각질 정리다
   "c-roundlab-dokdo-peeling": { step: "exfoliate", slot: "pm", lifespanDays: 90 },
+  "c-drg-red-peeling": { step: "exfoliate", slot: "pm", lifespanDays: 90 },
   "c-mediheal-teatree-pad": { step: "exfoliate", slot: "pm", lifespanDays: 50 },
   "c-mediheal-pdrn-pad": { step: "exfoliate", slot: "pm", lifespanDays: 50 },
   "c-anua-clear-pad": { step: "exfoliate", slot: "pm", lifespanDays: 45 },
@@ -208,6 +209,7 @@ const OVERRIDES: Record<string, Partial<Regimen>> = {
   "c-eucerin-eyecream": { slot: "both", lifespanDays: 60 },
   "c-centellian24-eyecream": { slot: "both", lifespanDays: 60 },
   "c-medicube-neck-cream": { slot: "pm", lifespanDays: 90 },
+  "c-ckd-neck-cream": { slot: "pm", lifespanDays: 90 },
   "c-estra-atobarrier-cream": { slot: "both", lifespanDays: 75 },
   // 50ml 크림 두 종 — 아침·저녁 둘 다 쓰는 마지막 자리
   "c-anua-pdrn-cream": { slot: "both", lifespanDays: 60 },
