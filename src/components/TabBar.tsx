@@ -24,6 +24,8 @@ export default function TabBar() {
           <Link
             key={t.href}
             href={t.href}
+            /* 첫 방문 안내(components/Tour.tsx)가 가리키는 자리 */
+            data-tour={t.href === "/pick" ? "tab-pick" : undefined}
             /*
               비활성 라벨이 text-disabled(#B0A89D)였다. 흰 배경에서 2.35:1로
               앱 전체에서 가장 심한 대비 위반이었다. 탭바는 어느 화면에서나

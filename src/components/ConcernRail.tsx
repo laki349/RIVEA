@@ -23,7 +23,7 @@ export default function ConcernRail() {
   const personalized = profile.concerns.length > 0;
 
   return (
-    <section className="border-b border-hairline pb-[14px] pt-[13px]">
+    <section data-tour="concern" className="border-b border-hairline pb-[14px] pt-[13px]">
       <div className="flex items-baseline justify-between px-4 pb-[11px]">
         <h2 className="text-[19px] font-bold text-ink">고민으로 찾기</h2>
         <Link

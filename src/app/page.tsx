@@ -9,6 +9,7 @@ import ConcernRail from "@/components/ConcernRail";
 import HeroCarousel from "@/components/HeroCarousel";
 import PickRail from "@/components/PickRail";
 import VerdictSlot from "@/components/VerdictSlot";
+import Tour from "@/components/Tour";
 
 export default function HomePage() {
   /**
@@ -64,7 +65,7 @@ export default function HomePage() {
         <HeroCarousel />
 
         {/* 리베아's Pick — 루틴 섹션 */}
-        <section className="border-b border-hairline">
+        <section data-tour="pick" className="border-b border-hairline">
           <SectionHeader
             title={
               <>
@@ -82,7 +83,7 @@ export default function HomePage() {
         */}
 
         {/* 근거가 두꺼운 것부터 — 창작 순위 대신 실제 값으로 정렬한다 */}
-        <section>
+        <section data-tour="graded">
           <div className="px-4 pb-3 pt-5">
             <h2 className="text-[20px] font-bold text-ink">근거가 두꺼운 성분부터</h2>
             <p className="mt-[5px] text-[16px] leading-[1.6] text-soft">
@@ -131,6 +132,9 @@ export default function HomePage() {
       </main>
 
       <TabBar />
+
+      {/* 첫 방문 튜토리얼 — 홈에서만. 안 본 사람에게만 뜬다 */}
+      <Tour />
     </>
   );
 }

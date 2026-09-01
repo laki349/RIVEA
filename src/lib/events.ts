@@ -35,7 +35,17 @@ export type EventName =
   | "outbound_click" // 공식몰로 나갔다
   // ── 진입·이탈 파악
   | "app_open" // 세션 시작
-  | "product_view"; // 제품 상세를 봤다
+  | "product_view" // 제품 상세를 봤다
+  /**
+   * ── 첫 방문 튜토리얼 (components/Tour.tsx)
+   *
+   * 이 셋은 기능 계측이 아니라 **설문을 읽기 위한 축**이다.
+   * `docs/19` 판정 기준 1번이 「친구한테 한 문장으로 설명」으로 포지셔닝 전달을 재는데,
+   * 튜토리얼을 본 사람은 그 문장을 배운 뒤에 답한다. 갈라서 읽지 않으면 그 숫자가 거짓이 된다.
+   */
+  | "tutorial_start" // 튜토리얼이 떴다
+  | "tutorial_done" // 끝까지 봤다
+  | "tutorial_skip"; // 건너뛰었다
 
 /**
  * 이벤트에 딸리는 값 하나. 예: 고민 slug, 제품 id, 판정 답("continue"|"stop"|"unsure").
