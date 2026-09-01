@@ -25,7 +25,6 @@ export default function HomePage() {
   const graded = products
     .filter((p) => (p.actives ?? []).some((a) => activeInfo[a.key]?.evidence?.grade === "A"))
     .slice(0, 4);
-  const fresh = products.filter((p) => p.badges.includes("NEW"));
 
   return (
     <>
@@ -100,17 +99,13 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 신상 */}
-        <section className="border-t border-hairline">
-          <SectionHeader title="신상" href="/category" linkLabel="더보기" />
-          <div className="rail flex gap-[11px] pb-4 pl-4 pr-4">
-            {fresh.map((p) => (
-              <div key={p.id} className="w-[150px] flex-shrink-0">
-                <ProductCard product={p} imageClassName="h-[150px] rounded" />
-              </div>
-            ))}
-          </div>
-        </section>
+        {/*
+          ⚠️ 「신상」 레일을 내렸다 (2026-09-01).
+
+          바로 위에서 「근거가 두꺼운 성분부터」로 순서의 기준을 세워놓고, 그다음 줄에서
+          **근거와 무관한 「새로 들어온 순서」**를 또 하나의 기준으로 내놓고 있었다.
+          기준이 두 개면 사용자는 둘 다 안 믿는다. 신상은 `/category`에 NEW 뱃지로 남아 있다.
+        */}
 
         {/* 브랜드 */}
         <section className="border-t border-hairline pb-5">
